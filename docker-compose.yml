@@ -4,6 +4,6 @@ services:
     build:
       context: ./
     volumes:
-      - .:/tickets
+      - .:/app
     ports:
       - "3000:3000"
