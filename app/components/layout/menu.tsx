@@ -1,9 +1,13 @@
-import { unstable_getServerSession } from "next-auth/next";
+"use client";
+
+// import { unstable_getServerSession } from "next-auth/next";
 import LoginBtn from "../buttons/login-button";
 import Link from "next/link";
+import { useSession, signIn, signOut } from "next-auth/react";
 
-export default async function Menu() {
-  const session = await unstable_getServerSession();
+export default function Menu() {
+  //   const session = await unstable_getServerSession();
+  const { data: session } = useSession();
   return (
     <>
       <header aria-label="Page Header" className="bg-gray-100">
@@ -148,7 +152,7 @@ export default async function Menu() {
                 <span className="sr-only">Menu</span>
                 <img
                   alt="Man"
-                  src={session?.user?.image}
+                  src={`${session?.user?.image}`}
                   className="h-10 w-10 rounded-full object-cover"
                 />
                 <p className="ml-2 hidden text-left text-xs sm:block">

@@ -30,6 +30,9 @@ export default function NewTicket() {
 
   const [step, setStep] = useState(1);
 
+  let key = country;
+  let countryname = countryList[key as keyof typeof countryList];
+
   return (
     <div className="w-3/4">
       <section className="bg-gray-900 text-white rounded-lg">
@@ -415,7 +418,7 @@ export default function NewTicket() {
                         autoComplete="country-name"
                         className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                       >
-                        {countryList[country]?.sort().map((key, index) => {
+                        {countryname?.sort().map((key, index) => {
                           return <option value={key}>{key}</option>;
                         })}
                       </select>

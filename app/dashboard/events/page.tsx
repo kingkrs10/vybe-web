@@ -47,7 +47,7 @@ export default async function Events() {
           </a>
         </nav>
         <div className="divide-y divide-gray-100 divide-solid">
-          {data.map((item) => (
+          {data.map((item: any) => (
             <article className="bg-white relative">
               <div className="inline-flex absolute right-2 top-2 items-stretch rounded-md border bg-white">
                 <a
