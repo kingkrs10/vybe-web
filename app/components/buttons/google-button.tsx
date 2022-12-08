@@ -47,7 +47,7 @@ export default function Component() {
         <button
           onClick={() =>
             signIn("google", {
-              callbackUrl: "http://localhost:3000/dashboard",
+              callbackUrl: `${process.env.NEXTAUTH_URL}/dashboard/events`,
             })
           }
           className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 px-6 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500 dark:hover:bg-blue-700 dark:hover:text-white"
