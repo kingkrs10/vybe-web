@@ -1,10 +1,13 @@
 import Image from "next/image";
 import axios from "axios";
+import moment from "moment";
 
 async function getData(eventId: any) {
   // console.log("test");
   // const params = { uid: "8f46e094-ada7-4163-873f-87c2e0d38c72", pageNo: 1 };
-  const response = await axios.get(`${process.env.APIURL}/events/${eventId}`);
+  const response = await axios.get(
+    `${process.env.NEXT_PUBLIC_APIURL}/events/${eventId}`
+  );
   // console.log(response.data);
   return response.data.data;
 }
@@ -67,11 +70,13 @@ export default async function Overview({ params }: { params: any }) {
               <h2 className="text-3xl font-bold sm:text-4xl">{data.name}</h2>
 
               <p className="mt-4 text-gray-600">{data.description}</p>
-              <p className="mt-4 text-gray-600">
-                {data.address} {data.city} {data.country}
+              <p className="mt-4 text-gray-600">{data.address}</p>
+              <p className="text-gray-600">
+                {data.city}, {data.country}
               </p>
               <p className="mt-4 text-gray-600">
-                {data.startDate} {data.startTime}
+                {moment(data.startDate).format("MMMM, Do YYYY")} &mdash;{" "}
+                {moment(data.startTime, "HH:mm:ss").format("h:mm A")}
               </p>
 
               <a

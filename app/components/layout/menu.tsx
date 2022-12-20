@@ -3,7 +3,7 @@
 // import { unstable_getServerSession } from "next-auth/next";
 import LoginBtn from "../buttons/login-button";
 import Link from "next/link";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 export default function Menu() {
   //   const session = await unstable_getServerSession();
@@ -152,7 +152,8 @@ export default function Menu() {
                 <span className="sr-only">Menu</span>
                 <img
                   alt="Man"
-                  src={`${session?.user?.image}`}
+                  src={session?.user?.image!}
+                  referrerPolicy="no-referrer"
                   className="h-10 w-10 rounded-full object-cover"
                 />
                 <p className="ml-2 hidden text-left text-xs sm:block">

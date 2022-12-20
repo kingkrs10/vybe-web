@@ -1,12 +1,18 @@
 import Image from "next/image";
 import axios from "axios";
+import moment from "moment";
 // import styles from "./page.module.css";
+import { unstable_getServerSession } from "next-auth/next";
+import { authOptions } from "../../../pages/api/auth/[...nextauth]";
 
 async function getData() {
   // console.log("test");
-  const params = { uid: "8f46e094-ada7-4163-873f-87c2e0d38c72", pageNo: 1 };
+  const session = await unstable_getServerSession(authOptions);
+  console.log(session);
+
+  const params = { uid: session?.user.userData?.userId, pageNo: 1 };
   const response = await axios.get(
-    `${process.env.APIURL}/events/all?uid=${params.uid}&pageNo=${params.pageNo}`
+    `${process.env.NEXT_PUBLIC_APIURL}/events/all?uid=${params.uid}&pageNo=${params.pageNo}`
   );
   return response.data.data;
 }
@@ -47,17 +53,17 @@ export default async function Events() {
           </a>
         </nav>
         <div className="divide-y divide-gray-100 divide-solid">
-          {data.map((item: any) => (
-            <article className="bg-white relative">
+          {data.map((item: any, index: any) => (
+            <article className="bg-white relative" key={index}>
               <div className="inline-flex absolute right-2 top-2 items-stretch rounded-md border bg-white">
                 <a
-                  href="/edit"
+                  href={`/dashboard/events/information/${item.eventId}`}
                   className="rounded-l-md px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-700"
                 >
                   Edit
                 </a>
 
-                <div className="relative">
+                {/* <div className="relative">
                   <button
                     type="button"
                     className="inline-flex h-full items-center justify-center rounded-r-md border-l border-gray-100 px-2 text-gray-600 hover:bg-gray-50 hover:text-gray-700"
@@ -123,7 +129,7 @@ export default async function Events() {
                       </form>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
               <div className="flex items-start p-6">
                 <a
@@ -152,7 +158,7 @@ export default async function Events() {
                   </div>
                   <img
                     alt="Speaker"
-                    src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8YXZhdGFyfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60"
+                    src={item.image ? item.image : "/login.jpeg"}
                     className="h-24 w-48 rounded-lg object-cover"
                   />
                 </a>
@@ -173,7 +179,7 @@ export default async function Events() {
 
                   <div className="mt-2 sm:flex sm:items-center sm:gap-2">
                     <div className="flex items-center text-gray-500">
-                      <svg
+                      {/* <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-4 w-4"
                         fill="none"
@@ -186,23 +192,23 @@ export default async function Events() {
                           strokeLinejoin="round"
                           d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"
                         />
-                      </svg>
-                      <p className="ml-1 text-xs">14 comments</p>
+                      </svg> */}
+                      <p className="text-xs">
+                        {moment(item.startDate).format("MMMM, Do YYYY")} &mdash;{" "}
+                        {moment(item.startTime, "HH:mm:ss").format("h:mm A")}
+                      </p>
                     </div>
 
-                    <span className="hidden sm:block" aria-hidden="true">
-                      &middot;
-                    </span>
-
-                    <p className="hidden sm:block sm:text-xs sm:text-gray-500">
-                      Posted by
-                      <a
-                        href="#"
-                        className="font-medium underline hover:text-gray-700"
-                      >
-                        John
-                      </a>
-                    </p>
+                    {item.address && item.city && (
+                      <>
+                        <span className="hidden sm:block" aria-hidden="true">
+                          &middot;
+                        </span>
+                        <p className="text-xs">
+                          {item.address}, {item.city}
+                        </p>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

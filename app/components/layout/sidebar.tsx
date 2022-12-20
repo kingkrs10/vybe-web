@@ -45,7 +45,8 @@ export default function Sidebar() {
                 <div className="pl-2">tickets</div>
               </div>
 
-              {(pathname === "/dashboard/events" ||
+              {(pathname === "/dashboard" ||
+                pathname === "/dashboard/events" ||
                 pathname === "/dashboard/profile") && (
                 <nav
                   aria-label="Main Nav"

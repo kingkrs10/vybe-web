@@ -4,7 +4,9 @@ import axios from "axios";
 async function getData(eventId: any) {
   // console.log("test");
   // const params = { uid: "8f46e094-ada7-4163-873f-87c2e0d38c72", pageNo: 1 };
-  const response = await axios.get(`${process.env.APIURL}/events/${eventId}`);
+  const response = await axios.get(
+    `${process.env.NEXT_PUBLIC_APIURL}/events/${eventId}`
+  );
   // console.log(response.data);
   return response.data.data;
 }
