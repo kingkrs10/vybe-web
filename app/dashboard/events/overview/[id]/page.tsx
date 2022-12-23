@@ -3,19 +3,14 @@ import axios from "axios";
 import moment from "moment";
 
 async function getData(eventId: any) {
-  // console.log("test");
-  // const params = { uid: "8f46e094-ada7-4163-873f-87c2e0d38c72", pageNo: 1 };
   const response = await axios.get(
     `${process.env.NEXT_PUBLIC_APIURL}/events/${eventId}`
   );
-  // console.log(response.data);
   return response.data.data;
 }
 
 export default async function Overview({ params }: { params: any }) {
-  // console.log(params);
   const data = await getData(params.id);
-  // console.log(data);
   return (
     <div className="w-3/4">
       <section className="bg-gray-900 text-white rounded-lg">

@@ -1,59 +1,63 @@
-import Image from "next/image";
-// import styles from "./page.module.css";
+import axios from "axios";
+import moment from "moment";
 
-export default function Tickets() {
+// import { unstable_getServerSession } from "next-auth/next";
+// import { authOptions } from "../../../../../pages/api/auth/[...nextauth]";
+
+async function getData(eventId: any) {
+  const params = { eventId: eventId, pageNo: 1 };
+  const response = await axios.get(
+    `${process.env.NEXT_PUBLIC_APIURL}/tickets/all?eventId=${params.eventId}&pageNo=${params.pageNo}`
+  );
+  return response.data.data;
+}
+
+function statusDetail(startDate: any, endDate: any) {
+  const date = Date.now();
+  const today = new Date(date).toISOString();
+  // console.log(startDate, endDate, today);
+  if (startDate >= today && endDate <= today) {
+    return (
+      <>
+        <strong className="rounded bg-red-100 px-3 py-1.5 text-xs font-medium text-red-700">
+          On sale
+        </strong>
+        <p className="mt-2 text-xs">
+          Ends {moment(endDate).format("MMMM, Do YYYY")}
+        </p>
+      </>
+    );
+  } else if (startDate > today) {
+    return (
+      <>
+        <strong className="rounded bg-red-100 px-3 py-1.5 text-xs font-medium text-red-700">
+          Scheduled
+        </strong>
+        <p className="mt-2 text-xs">
+          Ends {moment(endDate).format("MMMM, Do YYYY")}
+        </p>
+      </>
+    );
+  } else if (endDate < today) {
+    return (
+      <>
+        <strong className="rounded bg-red-100 px-3 py-1.5 text-xs font-medium text-red-700">
+          Ended
+        </strong>
+        <p className="mt-2 text-xs">
+          Ends {moment(endDate).format("MMMM, Do YYYY")}
+        </p>
+      </>
+    );
+  }
+}
+
+export default async function Tickets({ params }: { params: any }) {
+  const data = await getData(params.id);
+
+  // console.log(data);
   return (
     <div className="w-3/4">
-      <article className="rounded-lg border border-gray-100 bg-white p-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm text-gray-500">Profit</p>
-
-            <p className="text-2xl font-medium text-gray-900">$240.94</p>
-          </div>
-
-          <span className="rounded-full bg-blue-100 p-3 text-blue-600">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
-              />
-            </svg>
-          </span>
-        </div>
-
-        <div className="mt-1 flex gap-1 text-green-600">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-            />
-          </svg>
-
-          <p className="flex gap-2 text-xs">
-            <span className="font-medium"> 67.81% </span>
-
-            <span className="text-gray-500"> Since last week </span>
-          </p>
-        </div>
-      </article>
-
       <section className="">
         <div className="overflow-hidden overflow-x-auto rounded-lg border border-gray-200">
           <table className="min-w-full divide-y divide-gray-200 text-sm">
@@ -69,23 +73,6 @@ export default function Tickets() {
                     type="checkbox"
                     id="SelectAll"
                   />
-                </th>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
-                  <div className="flex items-center gap-2">
-                    ID
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 text-gray-700"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
                   <div className="flex items-center gap-2">
@@ -106,7 +93,7 @@ export default function Tickets() {
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
                   <div className="flex items-center gap-2">
-                    Email
+                    Quantity
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-4 w-4 text-gray-700"
@@ -123,7 +110,7 @@ export default function Tickets() {
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
                   <div className="flex items-center gap-2">
-                    Amount
+                    Price
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-4 w-4 text-gray-700"
@@ -146,122 +133,41 @@ export default function Tickets() {
             </thead>
 
             <tbody className="divide-y divide-gray-200">
-              <tr>
-                <td className="sticky inset-y-0 left-0 bg-white px-4 py-2">
-                  <label className="sr-only" htmlFor="Row1">
-                    Row 1
-                  </label>
+              {data.map((item: any) => (
+                <tr>
+                  <td className="sticky inset-y-0 left-0 bg-white px-4 py-2">
+                    <label className="sr-only" htmlFor="Row1">
+                      Row 1
+                    </label>
 
-                  <input
-                    className="h-5 w-5 rounded border-gray-200"
-                    type="checkbox"
-                    id="Row1"
-                  />
-                </td>
-                <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                  #00001
-                </td>
-                <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                  John Frusciante
-                </td>
-                <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                  john@rhcp.com
-                </td>
-                <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                  $783.23
-                </td>
-                <td className="whitespace-nowrap px-4 py-2">
-                  <strong className="rounded bg-red-100 px-3 py-1.5 text-xs font-medium text-red-700">
-                    Cancelled
-                  </strong>
-                </td>
-                <td className="whitespace-nowrap px-4 py-2">
-                  <a
-                    href="#"
-                    className="text-sm font-medium text-blue-600 hover:underline"
-                  >
-                    View
-                  </a>
-                </td>
-              </tr>
-
-              <tr>
-                <td className="sticky inset-y-0 left-0 bg-white px-4 py-2">
-                  <label className="sr-only" htmlFor="Row2">
-                    Row 2
-                  </label>
-
-                  <input
-                    className="h-5 w-5 rounded border-gray-200"
-                    type="checkbox"
-                    id="Row2"
-                  />
-                </td>
-                <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                  #00002
-                </td>
-                <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                  George Harrison
-                </td>
-                <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                  george@beatles.com
-                </td>
-                <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                  $128.99
-                </td>
-                <td className="whitespace-nowrap px-4 py-2">
-                  <strong className="rounded bg-green-100 px-3 py-1.5 text-xs font-medium text-green-700">
-                    Paid
-                  </strong>
-                </td>
-                <td className="whitespace-nowrap px-4 py-2">
-                  <a
-                    href="#"
-                    className="text-sm font-medium text-blue-600 hover:underline"
-                  >
-                    View
-                  </a>
-                </td>
-              </tr>
-
-              <tr>
-                <td className="sticky inset-y-0 left-0 bg-white px-4 py-2">
-                  <label className="sr-only" htmlFor="Row3">
-                    Row 3
-                  </label>
-
-                  <input
-                    className="h-5 w-5 rounded border-gray-200"
-                    type="checkbox"
-                    id="Row3"
-                  />
-                </td>
-                <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                  #00003
-                </td>
-                <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                  Dave Gilmour
-                </td>
-                <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                  dave@pinkfloyd.com
-                </td>
-                <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                  $459.43
-                </td>
-                <td className="whitespace-nowrap px-4 py-2">
-                  <strong className="rounded bg-amber-100 px-3 py-1.5 text-xs font-medium text-amber-700">
-                    Partially Refunded
-                  </strong>
-                </td>
-                <td className="whitespace-nowrap px-4 py-2">
-                  <a
-                    href="#"
-                    className="text-sm font-medium text-blue-600 hover:underline"
-                  >
-                    View
-                  </a>
-                </td>
-              </tr>
+                    <input
+                      className="h-5 w-5 rounded border-gray-200"
+                      type="checkbox"
+                      id="Row1"
+                    />
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                    {item.name}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    {item.quantity}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    {item.price}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-2">
+                    {statusDetail(item.startDate, item.endDate)}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-2">
+                    <a
+                      href="#"
+                      className="text-sm font-medium text-blue-600 hover:underline"
+                    >
+                      View
+                    </a>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

@@ -5,6 +5,7 @@ import countryList from "../../../resources/countries-cities.json";
 import timezones from "../../../resources/timezones.json";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import moment from "moment";
 
 // async function getData(eventId: any) {
 //   // console.log("test");
@@ -71,9 +72,11 @@ export default function NewTicket() {
     // console.log(`${res}`);
     const formData = new FormData();
 
-    Object.entries({ ...fields, file }).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
+    Object.entries({ ...fields, file }).forEach(
+      ([key, value]: [key: string, value: any]) => {
+        formData.append(key, value);
+      }
+    );
 
     const upload = await fetch(`https://cors-anywhere.herokuapp.com/${url}`, {
       method: "POST",
@@ -89,6 +92,55 @@ export default function NewTicket() {
       console.error("Upload failed.");
     }
   };
+
+  function statusDetail(startDate: any, endDate: any) {
+    const date = Date.now();
+    const today = new Date(date).toISOString();
+    // console.log(startDate, endDate, today);
+    if (startDate >= today && endDate <= today) {
+      return (
+        <>
+          <strong className="rounded bg-red-100 px-3 py-1.5 text-xs font-medium text-red-700">
+            On sale
+          </strong>
+          <p className="mt-2 text-xs">
+            Ends {moment(endDate).format("MMMM, Do YYYY")}
+          </p>
+        </>
+      );
+    } else if (startDate > today) {
+      return (
+        <>
+          <strong className="rounded bg-red-100 px-3 py-1.5 text-xs font-medium text-red-700">
+            Scheduled
+          </strong>
+          <p className="mt-2 text-xs">
+            Ends {moment(endDate).format("MMMM, Do YYYY")}
+          </p>
+        </>
+      );
+    } else if (endDate < today) {
+      return (
+        <>
+          <strong className="rounded bg-red-100 px-3 py-1.5 text-xs font-medium text-red-700">
+            Ended
+          </strong>
+          <p className="mt-2 text-xs">
+            Ends {moment(endDate).format("MMMM, Do YYYY")}
+          </p>
+        </>
+      );
+    }
+  }
+
+  async function getTickets(eventId: any) {
+    const params = { eventId: eventId, pageNo: 1 };
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_APIURL}/tickets/all?eventId=${params.eventId}&pageNo=${params.pageNo}`
+    );
+    setTickets(response.data.data);
+    // return response.data.data;
+  }
 
   const createEvent = async () => {
     const data = {
@@ -147,8 +199,10 @@ export default function NewTicket() {
         `${process.env.NEXT_PUBLIC_APIURL!}/tickets`,
         data
       );
-      console.log(response.data.data);
-      return response.data.data;
+      // console.log(response.data.data);
+      getTickets(response.data.data.eventId);
+      // return response.data.data;
+      setNewTicket(false);
     } catch (error) {
       console.error(error);
     }
@@ -1091,7 +1145,7 @@ export default function NewTicket() {
                         onClick={async (e) => {
                           e.preventDefault();
                           const event = await createEvent();
-                          // console.log(event);
+                          console.log(event);
                           setEventId(event.eventId);
                           if (event) setStep(3);
                         }}
@@ -1157,6 +1211,150 @@ export default function NewTicket() {
                     </button>
                   </form>
                 </div>
+              </div>
+            </section>
+          )}
+
+          {tickets.length !== 0 && (
+            <section className="mt-4 sm:mt-4">
+              <div className="mx-auto mt-8 m-4 max-w-xl w-full items-end justify-end">
+                <button
+                  type="submit"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setNewTicket(true);
+                  }}
+                  className="group mt-4 flex rounded-md bg-blue-600 px-8 py-3 text-white transition focus:outline-none focus:ring focus:ring-yellow-400 sm:mt-0 sm:w-auto"
+                >
+                  <span className="text-sm font-medium">Add ticket</span>
+
+                  <svg
+                    className="ml-3 h-5 w-5"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div className="overflow-hidden overflow-x-auto rounded-lg border border-gray-200 mt-4">
+                <table className="min-w-full divide-y divide-gray-200 text-sm">
+                  <thead className="bg-gray-100">
+                    <tr>
+                      <th className="sticky inset-y-0 left-0 bg-gray-100 px-4 py-2 text-left">
+                        <label className="sr-only" htmlFor="SelectAll">
+                          Select All
+                        </label>
+
+                        <input
+                          className="h-5 w-5 rounded border-gray-200"
+                          type="checkbox"
+                          id="SelectAll"
+                        />
+                      </th>
+                      <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                        <div className="flex items-center gap-2">
+                          Name
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-4 w-4 text-gray-700"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </div>
+                      </th>
+                      <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                        <div className="flex items-center gap-2">
+                          Quantity
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-4 w-4 text-gray-700"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </div>
+                      </th>
+                      <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                        <div className="flex items-center gap-2">
+                          Price
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-4 w-4 text-gray-700"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </div>
+                      </th>
+                      <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                        Status
+                      </th>
+                      <th className="px-4 py-2"></th>
+                    </tr>
+                  </thead>
+
+                  <tbody className="divide-y divide-gray-200">
+                    {tickets.map((item: any) => (
+                      <tr>
+                        <td className="sticky inset-y-0 left-0 bg-white px-4 py-2">
+                          <label className="sr-only" htmlFor="Row1">
+                            Row 1
+                          </label>
+
+                          <input
+                            className="h-5 w-5 rounded border-gray-200"
+                            type="checkbox"
+                            id="Row1"
+                          />
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                          {item.name}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                          {item.quantity}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                          {item.price}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2">
+                          {statusDetail(item.startDate, item.endDate)}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2">
+                          <a
+                            href="#"
+                            className="text-sm font-medium text-blue-600 hover:underline"
+                          >
+                            View
+                          </a>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </section>
           )}
@@ -1608,7 +1806,10 @@ export default function NewTicket() {
                           </button>
                           <button
                             type="submit"
-                            onClick={() => createTicket()}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              createTicket();
+                            }}
                             className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 ml-4 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                           >
                             Save
