@@ -1,10 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import categoryList from "../../../resources/categories.json";
 import countryList from "../../../resources/countries-cities.json";
 import timezones from "../../../resources/timezones.json";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
 import moment from "moment";
 
 // async function getData(eventId: any) {
@@ -59,7 +60,15 @@ export default function NewTicket() {
   const [tickets, setTickets] = useState([]);
   const [newTicket, setNewTicket] = useState(false);
 
+  const [sessionId, setSession] = useState({});
+
   const { data: session } = useSession();
+
+  useEffect(() => {
+    setSession(session?.user?.userData?.userId);
+  });
+
+  // console.log(session);
 
   let key = country;
   let countryname = countryList[key as keyof typeof countryList];
@@ -144,7 +153,7 @@ export default function NewTicket() {
 
   const createEvent = async () => {
     const data = {
-      userId: session?.user?.userData?.userId,
+      userId: sessionId,
       name,
       description,
       category,
@@ -212,6 +221,7 @@ export default function NewTicket() {
     <div className="w-3/4">
       <section className="bg-gray-900 text-white rounded-lg">
         <div className="max-w-screen-xl px-4 py-4 sm:px-6 lg:px-8">
+          {/* <p>{JSON.stringify(sessionId)}</p> */}
           {/* <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 md:grid-cols-2 md:gap-12 lg:grid-cols-3"> */}
           <div className="flex items-start">
             <span className="flex-shrink-0 rounded-lg bg-gray-800 p-4">

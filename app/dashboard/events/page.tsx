@@ -8,7 +8,7 @@ import { authOptions } from "../../../pages/api/auth/[...nextauth]";
 async function getData() {
   // console.log("test");
   const session = await unstable_getServerSession(authOptions);
-  console.log(session);
+  // console.log(session);
 
   const params = { uid: session?.user.userData?.userId, pageNo: 1 };
   const response = await axios.get(

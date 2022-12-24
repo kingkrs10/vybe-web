@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import axios from "axios";
+import { signOut } from "next-auth/react";
 
 export const authOptions = {
   // Configure one or more authentication providers
@@ -36,6 +37,9 @@ export const authOptions = {
       }
       return true;
     },
+    // async signOut({
+
+    // }),
     async jwt({
       token,
       account,
@@ -67,6 +71,7 @@ export const authOptions = {
       session.accessToken = token.accessToken;
       // session.user.id = token.id;
       session.user.userData = userData.data.data;
+      // localStorage.setItem("userData", JSON.stringify(userData.data.data));
 
       return session;
     },
