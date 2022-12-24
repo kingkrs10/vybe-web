@@ -60,14 +60,19 @@ export default function NewTicket() {
   const [tickets, setTickets] = useState([]);
   const [newTicket, setNewTicket] = useState(false);
 
-  const [sessionId, setSession] = useState({});
+  const [session, setSession] = useState<any>({});
 
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
+  // let sessionId;
 
   useEffect(() => {
-    setSession(session?.user?.userData?.userId);
-  });
-
+    async function fetchSession() {
+      const session = await getSession();
+      setSession(session);
+      // if (session) sessionId = session?.user?.userData?.userId!;
+    }
+    fetchSession();
+  }, []);
   // console.log(session);
 
   let key = country;
@@ -95,11 +100,11 @@ export default function NewTicket() {
     setImage(`${url}${filename}`);
     // console.log(JSON.stringify(upload));
 
-    if (upload.ok) {
-      console.log("Uploaded successfully!");
-    } else {
-      console.error("Upload failed.");
-    }
+    // if (upload.ok) {
+    //   console.log("Uploaded successfully!");
+    // } else {
+    //   console.error("Upload failed.");
+    // }
   };
 
   function statusDetail(startDate: any, endDate: any) {
@@ -152,8 +157,10 @@ export default function NewTicket() {
   }
 
   const createEvent = async () => {
+    // const session = await getSession();
+    // setSession(session?.user?.userData?.userId);
     const data = {
-      userId: sessionId,
+      userId: session?.user?.userData?.userId,
       name,
       description,
       category,
@@ -174,13 +181,11 @@ export default function NewTicket() {
       twitter,
       instagram,
     };
-    // console.log(data);
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_APIURL!}/events`,
         data
       );
-      console.log(response.data.data);
       return response.data.data;
     } catch (error) {
       console.error(error);
@@ -202,13 +207,11 @@ export default function NewTicket() {
       endTime: ticketEndTime,
       invitationOnly: ticketInvitationOnly,
     };
-    // console.log(data);
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_APIURL!}/tickets`,
         data
       );
-      // console.log(response.data.data);
       getTickets(response.data.data.eventId);
       // return response.data.data;
       setNewTicket(false);
@@ -221,7 +224,7 @@ export default function NewTicket() {
     <div className="w-3/4">
       <section className="bg-gray-900 text-white rounded-lg">
         <div className="max-w-screen-xl px-4 py-4 sm:px-6 lg:px-8">
-          {/* <p>{JSON.stringify(sessionId)}</p> */}
+          {/* <p>{JSON.stringify(session)}</p> */}
           {/* <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 md:grid-cols-2 md:gap-12 lg:grid-cols-3"> */}
           <div className="flex items-start">
             <span className="flex-shrink-0 rounded-lg bg-gray-800 p-4">
@@ -445,7 +448,116 @@ export default function NewTicket() {
                     <div className="bg-white px-4 py-5 sm:p-6">
                       <div className="grid grid-cols-6 gap-6">
                         <div className="col-span-6">
-                          <fieldset className="grid grid-cols-2 gap-4">
+                          <ul className="items-center w-full text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <li className="w-full border-b border-gray-400 sm:border-b-0 border-r sm:border-r dark:border-gray-600">
+                              <div className="flex items-center pl-3">
+                                <input
+                                  id="horizontal-list-radio-license"
+                                  type="radio"
+                                  value=""
+                                  name="list-radio"
+                                  className="w-4 h-4 ml-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                                />
+                                <label
+                                  htmlFor="horizontal-list-radio-license"
+                                  className="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300"
+                                >
+                                  Live
+                                </label>
+                              </div>
+                            </li>
+                            <li className="w-full border-b border-gray-400 sm:border-b-0 border-r sm:border-r dark:border-gray-600">
+                              <div className="flex items-center pl-3">
+                                <input
+                                  id="horizontal-list-radio-id"
+                                  type="radio"
+                                  value=""
+                                  name="list-radio"
+                                  className="w-4 h-4 ml-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                                />
+                                <label
+                                  htmlFor="horizontal-list-radio-id"
+                                  className="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300"
+                                >
+                                  Virtual
+                                </label>
+                              </div>
+                            </li>
+                          </ul>
+                          {/* <ul className="grid gap-6 w-full md:grid-cols-2">
+                            <li>
+                              <input
+                                type="radio"
+                                id="hosting-small"
+                                name="hosting"
+                                value="hosting-small"
+                                className="hidden peer"
+                                required
+                              />
+                              <label
+                                htmlFor="hosting-small"
+                                className="inline-flex justify-between items-center p-5 w-full text-gray-500 bg-white rounded-lg border border-gray-200 cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
+                              >
+                                <div className="block">
+                                  <div className="w-full text-lg font-semibold">
+                                    0-50 MB
+                                  </div>
+                                  <div className="w-full">
+                                    Good for small websites
+                                  </div>
+                                </div>
+                                <svg
+                                  aria-hidden="true"
+                                  className="ml-3 w-6 h-6"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                                    clipRule="evenodd"
+                                  ></path>
+                                </svg>
+                              </label>
+                            </li>
+                            <li>
+                              <input
+                                type="radio"
+                                id="hosting-big"
+                                name="hosting"
+                                value="hosting-big"
+                                className="hidden peer"
+                              />
+                              <label
+                                htmlFor="hosting-big"
+                                className="inline-flex justify-between items-center p-5 w-full text-gray-500 bg-white rounded-lg border border-gray-200 cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
+                              >
+                                <div className="block">
+                                  <div className="w-full text-lg font-semibold">
+                                    500-1000 MB
+                                  </div>
+                                  <div className="w-full">
+                                    Good for large websites
+                                  </div>
+                                </div>
+                                <svg
+                                  aria-hidden="true"
+                                  className="ml-3 w-6 h-6"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                                    clipRule="evenodd"
+                                  ></path>
+                                </svg>
+                              </label>
+                            </li>
+                          </ul> */}
+                          {/* <fieldset className="grid grid-cols-2 gap-4">
                             <legend className="sr-only">Delivery</legend>
 
                             <div className="">
@@ -515,7 +627,7 @@ export default function NewTicket() {
                                 </div>
                               </label>
                             </div>
-                          </fieldset>
+                          </fieldset> */}
                         </div>
 
                         <div className="col-span-6">
@@ -1155,7 +1267,7 @@ export default function NewTicket() {
                         onClick={async (e) => {
                           e.preventDefault();
                           const event = await createEvent();
-                          console.log(event);
+                          // console.log(event);
                           setEventId(event.eventId);
                           if (event) setStep(3);
                         }}
