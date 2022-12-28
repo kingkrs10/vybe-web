@@ -29,6 +29,7 @@ export default function Component() {
   //     </div>
   //   );
   const { data: session } = useSession();
+  let url = process.env.NEXT_PUBLIC_NEXTAUTH_URL || process.env.NEXTAUTH_URL;
   if (!session) {
     return (
       <div
@@ -47,8 +48,7 @@ export default function Component() {
         <button
           onClick={() =>
             signIn("google", {
-              callbackUrl: `${process.env
-                .NEXT_PUBLIC_NEXTAUTH_URL!}/dashboard/events`,
+              callbackUrl: `${url}/dashboard/events`,
               // callbackUrl: "/dashboard",
             })
           }
