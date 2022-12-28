@@ -47,7 +47,8 @@ export default function Component() {
         <button
           onClick={() =>
             signIn("google", {
-              callbackUrl: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/dashboard/events`,
+              callbackUrl: `${process.env
+                .NEXT_PUBLIC_NEXTAUTH_URL!}/dashboard/events`,
               // callbackUrl: "/dashboard",
             })
           }
