@@ -29,7 +29,9 @@ export default function Component() {
   //     </div>
   //   );
   const { data: session } = useSession();
-  let url = process.env.NEXT_PUBLIC_NEXTAUTH_URL || process.env.NEXTAUTH_URL;
+  let url =
+    process.env.NEXT_PUBLIC_NEXTAUTH_URL ||
+    "https://ticket-web-43uaohqtiq-uc.a.run.app";
   if (!session) {
     return (
       <div
