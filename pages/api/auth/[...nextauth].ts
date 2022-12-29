@@ -20,7 +20,7 @@ export const authOptions = {
         const user = await axios.get(
           `${process.env.NEXT_PUBLIC_APIURL}/users/getAuthToken/${profile.email}`
         );
-        // console.log(user.data.data);
+        console.log(user.data);
         account.userData = user.data.data;
 
         if (user.data.data.length === 0) {
