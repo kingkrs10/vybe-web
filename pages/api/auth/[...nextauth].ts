@@ -1,7 +1,6 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import axios from "axios";
-import { signOut } from "next-auth/react";
 
 export const authOptions = {
   // Configure one or more authentication providers
@@ -14,13 +13,10 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async signIn({ account, profile }: { account: any; profile?: any }) {
-      // console.log(account, profile);
-      // return response.data.data;
       if (account.provider === "google") {
         const user = await axios.get(
           `${process.env.NEXT_PUBLIC_APIURL}/users/getAuthToken/${profile.email}`
         );
-        console.log(user.data);
         account.userData = user.data.data;
 
         if (user.data.data.length === 0) {
@@ -32,14 +28,10 @@ export const authOptions = {
               lastName: profile.family_name,
             }
           );
-          // console.log(newUser);
         }
       }
       return true;
     },
-    // async signOut({
-
-    // }),
     async jwt({
       token,
       account,
@@ -51,7 +43,6 @@ export const authOptions = {
     }) {
       if (account) {
         token.accessToken = account.access_token;
-        // token.userData = userData.data.data;
       }
       return token;
     },
@@ -67,11 +58,8 @@ export const authOptions = {
       const userData = await axios.get(
         `${process.env.NEXT_PUBLIC_APIURL}/users/${token.email}`
       );
-      // console.log("user: " + JSON.stringify(userData.data.data));
       session.accessToken = token.accessToken;
-      // session.user.id = token.id;
       session.user.userData = userData.data.data;
-      // localStorage.setItem("userData", JSON.stringify(userData.data.data));
 
       return session;
     },

@@ -29,9 +29,6 @@ export default function Component() {
   //     </div>
   //   );
   const { data: session } = useSession();
-  let url =
-    process.env.NEXT_PUBLIC_NEXTAUTH_URL ||
-    "https://ticket-web-43uaohqtiq-uc.a.run.app";
   if (!session) {
     return (
       <div
@@ -50,23 +47,19 @@ export default function Component() {
         <button
           onClick={() =>
             signIn("google", {
-              callbackUrl: `${url}/dashboard/events`,
-              // callbackUrl: "/dashboard",
+              callbackUrl: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/dashboard/events`,
             })
           }
-          className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 px-6 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500 dark:hover:bg-blue-700 dark:hover:text-white"
+          className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 px-6 text-sm font-medium text-white transition hover:bg-indigo-600 hover:text-white focus:outline-none focus:ring active:text-blue-500 dark:hover:bg-blue-700"
         >
-          Proceed
+          Continue
         </button>
       </div>
     );
   } else {
     return (
       <>
-        {/* Signed in as {session.user.email} <br /> */}
-        {/* <UserInformation data={session.user} /> */}
         <button onClick={() => signOut()}>Sign out</button>
-        {/* {children} */}
       </>
     );
   }
