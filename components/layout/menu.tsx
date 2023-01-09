@@ -41,7 +41,7 @@ export default function HeaderMenu() {
         <button
           type="button"
           className="border-r border-gray-200 px-4 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
-          onClick={() => setSidebarOpen({ open: true })}
+          onClick={() => setSidebarOpen(true)}
         >
           <span className="sr-only">Open sidebar</span>
           <Bars3BottomLeftIcon className="h-6 w-6" aria-hidden="true" />
@@ -99,7 +99,7 @@ export default function HeaderMenu() {
                 <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                   {userNavigation.map((item) => (
                     <Menu.Item key={item.name}>
-                      {({ active }) => (
+                      {({ active }: { active: any }) => (
                         <a
                           href={item.href}
                           className={classNames(

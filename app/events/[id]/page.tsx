@@ -488,7 +488,7 @@ export default function EventPage({ params }: { params: any }) {
                 {/* Activity Feed */}
                 <div className="mt-6 flow-root px-4 py-0 sm:px-6">
                   <ul role="list" className="">
-                    {tickets.map((item, itemIdx) => (
+                    {tickets.map((item: any, itemIdx: any) => (
                       <li key={item.id}>
                         <div className="flex">
                           <div className="mr-4 flex-shrink-0">
