@@ -1,8 +1,35 @@
 "use client";
 import Link from "next/link";
+import { Fragment, useState } from "react";
+import { Dialog, Menu, Transition } from "@headlessui/react";
+import {
+  Bars3BottomLeftIcon,
+  BellIcon,
+  CalendarIcon,
+  ChartBarIcon,
+  FolderIcon,
+  HomeIcon,
+  InboxIcon,
+  UsersIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import { useAtom } from "jotai";
+import { menuAtom } from "../../lib/atoms";
+
+const navigation = [
+  { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
+  { name: "Team", href: "#", icon: UsersIcon, current: false },
+  { name: "Projects", href: "#", icon: FolderIcon, current: false },
+  { name: "Calendar", href: "#", icon: CalendarIcon, current: false },
+  { name: "Documents", href: "#", icon: InboxIcon, current: false },
+  { name: "Reports", href: "#", icon: ChartBarIcon, current: false },
+];
 import { usePathname, useSelectedLayoutSegment } from "next/navigation";
 
 export default function Sidebar() {
+  const [sidebarOpen, setSidebarOpen] = useAtom(menuAtom);
+
   const pathname = usePathname();
   // const uuid = /^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;
   let eventId;
@@ -21,13 +48,153 @@ export default function Sidebar() {
   }
   // console.log(eventId);
   // const eventId = searchParams.get("eventId");
+  function classNames(...classes: string[]) {
+    return classes.filter(Boolean).join(" ");
+  }
+
   return (
     <>
-      <aside className="w-full sm:w-1/3 md:w-1/4 ">
+      <Transition.Root show={sidebarOpen.open} as={Fragment}>
+        <Dialog
+          as="div"
+          className="relative z-40 md:hidden"
+          onClose={setSidebarOpen}
+        >
+          <Transition.Child
+            as={Fragment}
+            enter="transition-opacity ease-linear duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="transition-opacity ease-linear duration-300"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-gray-600 bg-opacity-75" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 z-40 flex">
+            <Transition.Child
+              as={Fragment}
+              enter="transition ease-in-out duration-300 transform"
+              enterFrom="-translate-x-full"
+              enterTo="translate-x-0"
+              leave="transition ease-in-out duration-300 transform"
+              leaveFrom="translate-x-0"
+              leaveTo="-translate-x-full"
+            >
+              <Dialog.Panel className="relative flex w-full max-w-xs flex-1 flex-col bg-white pt-5 pb-4">
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-in-out duration-300"
+                  enterFrom="opacity-0"
+                  enterTo="opacity-100"
+                  leave="ease-in-out duration-300"
+                  leaveFrom="opacity-100"
+                  leaveTo="opacity-0"
+                >
+                  <div className="absolute top-0 right-0 -mr-12 pt-2">
+                    <button
+                      type="button"
+                      className="ml-1 flex h-10 w-10 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                      onClick={() => setSidebarOpen({ open: false })}
+                    >
+                      <span className="sr-only">Close sidebar</span>
+                      <XMarkIcon
+                        className="h-6 w-6 text-white"
+                        aria-hidden="true"
+                      />
+                    </button>
+                  </div>
+                </Transition.Child>
+                <div className="flex flex-shrink-0 items-center px-4">
+                  <img
+                    className="h-8 w-auto"
+                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                    alt="Your Company"
+                  />
+                </div>
+                <div className="mt-5 h-0 flex-1 overflow-y-auto">
+                  <nav className="space-y-1 px-2">
+                    {navigation.map((item) => (
+                      <a
+                        key={item.name}
+                        href={item.href}
+                        className={classNames(
+                          item.current
+                            ? "bg-gray-100 text-gray-900"
+                            : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+                          "group rounded-md py-2 px-2 flex items-center text-base font-medium"
+                        )}
+                      >
+                        <item.icon
+                          className={classNames(
+                            item.current
+                              ? "text-gray-500"
+                              : "text-gray-400 group-hover:text-gray-500",
+                            "mr-4 flex-shrink-0 h-6 w-6"
+                          )}
+                          aria-hidden="true"
+                        />
+                        {item.name}
+                      </a>
+                    ))}
+                  </nav>
+                </div>
+              </Dialog.Panel>
+            </Transition.Child>
+            <div className="w-14 flex-shrink-0">
+              {/* Dummy element to force sidebar to shrink to fit close icon */}
+            </div>
+          </div>
+        </Dialog>
+      </Transition.Root>
+
+      {/* Static sidebar for desktop */}
+      <div className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
+        {/* Sidebar component, swap this element with another sidebar if you like */}
+        <div className="flex flex-grow flex-col overflow-y-auto border-r border-gray-200 bg-white pt-5">
+          <div className="flex flex-shrink-0 items-center px-4">
+            <img
+              className="h-8 w-auto"
+              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+              alt="Your Company"
+            />
+          </div>
+          <div className="mt-5 flex flex-grow flex-col">
+            <nav className="flex-1 space-y-1 px-2 pb-4">
+              {navigation.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className={classNames(
+                    item.current
+                      ? "bg-gray-100 text-gray-900"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+                    "group rounded-md py-2 px-2 flex items-center text-sm font-medium"
+                  )}
+                >
+                  <item.icon
+                    className={classNames(
+                      item.current
+                        ? "text-gray-500"
+                        : "text-gray-400 group-hover:text-gray-500",
+                      "mr-3 flex-shrink-0 h-6 w-6"
+                    )}
+                    aria-hidden="true"
+                  />
+                  {item.name}
+                </a>
+              ))}
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      {/* <aside className="w-full sm:w-1/3 md:w-1/4 ">
         <div className="sticky top-0 w-full">
           <div className="flex h-screen flex-col justify-between border-r bg-white">
             <div className="px-4 py-6">
-              <div className="inline-block flex h-10 w-32 rounded-lg p-2">
+              <div className="flex h-10 w-32 rounded-lg p-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -52,33 +219,7 @@ export default function Sidebar() {
                   aria-label="Main Nav"
                   className="mt-6 flex flex-col space-y-1"
                 >
-                  {/* <Link
-                    href={`/dashboard`}
-                    className="flex items-center rounded-lg bg-gray-100 px-4 py-2 text-gray-700"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 opacity-75"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
-
-                    <span className="ml-3 text-sm font-medium">Dashboard</span>
-                  </Link> */}
-
+                  
                   <Link
                     href={`/dashboard/events`}
                     className={`flex items-center rounded-lg px-4 py-2 hover:bg-gray-100 hover:text-gray-700 ${
@@ -130,307 +271,6 @@ export default function Sidebar() {
 
                     <span className="ml-3 text-sm font-medium">Profile</span>
                   </Link>
-
-                  {/* <details className="group">
-                    <summary className="flex cursor-pointer items-center rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 opacity-75"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                        />
-                      </svg>
-
-                      <span className="ml-3 text-sm font-medium">Events</span>
-
-                      <span className="ml-auto shrink-0 transition duration-300 group-open:-rotate-180">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </span>
-                    </summary>
-
-                    <nav
-                      aria-label="Teams Nav"
-                      className="mt-1.5 ml-8 flex flex-col"
-                    >
-                      <Link
-                        href={`/dashboard/events/1/overview`}
-                        className="flex items-center rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 opacity-75"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                          />
-                        </svg>
-
-                        <span className="ml-3 text-sm font-medium">
-                          Overview
-                        </span>
-                      </Link>
-
-                      <Link
-                        href={`/dashboard/events/1/information`}
-                        className="flex items-center rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 opacity-75"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                          />
-                        </svg>
-
-                        <span className="ml-3 text-sm font-medium">
-                          Information
-                        </span>
-                      </Link>
-
-                      <Link
-                        href={`/dashboard/events/1/tickets`}
-                        className="flex items-center rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 opacity-75"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                          />
-                        </svg>
-
-                        <span className="ml-3 text-sm font-medium">
-                          Tickets
-                        </span>
-                      </Link>
-
-                      <Link
-                        href={`/dashboard/events/1/sales`}
-                        className="flex items-center rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 opacity-75"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                          />
-                        </svg>
-
-                        <span className="ml-3 text-sm font-medium">Sales</span>
-                      </Link>
-
-                      <Link
-                        href={`/dashboard/events/1/guestlist`}
-                        className="flex items-center rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 opacity-75"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                          />
-                        </svg>
-
-                        <span className="ml-3 text-sm font-medium">
-                          Guestlist
-                        </span>
-                      </Link>
-
-                      <Link
-                        href={`/dashboard/events/1/payments`}
-                        className="flex items-center rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 opacity-75"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                          />
-                        </svg>
-
-                        <span className="ml-3 text-sm font-medium">
-                          Payments
-                        </span>
-                      </Link>
-                    </nav>
-                  </details>
-
-                  <details className="group">
-                    <summary className="flex cursor-pointer items-center rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 opacity-75"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                        />
-                      </svg>
-
-                      <span className="ml-3 text-sm font-medium">Settings</span>
-
-                      <span className="ml-auto shrink-0 transition duration-300 group-open:-rotate-180">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </span>
-                    </summary>
-
-                    <nav
-                      aria-label="Account Nav"
-                      className="mt-1.5 ml-8 flex flex-col"
-                    >
-                      <Link
-                        href={`/dashboard/settings/password`}
-                        className="flex items-center rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 opacity-75"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"
-                          />
-                        </svg>
-
-                        <span className="ml-3 text-sm font-medium">
-                          {" "}
-                          Details{" "}
-                        </span>
-                      </Link>
-
-                      <Link
-                        href={`/dashboard/settings/password`}
-                        className="flex items-center rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 opacity-75"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                          />
-                        </svg>
-
-                        <span className="ml-3 text-sm font-medium">
-                          {" "}
-                          Security{" "}
-                        </span>
-                      </Link>
-
-                      <form action="/logout">
-                        <button
-                          type="submit"
-                          className="flex w-full items-center rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5 opacity-75"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                            />
-                          </svg>
-
-                          <span className="ml-3 text-sm font-medium">
-                            {" "}
-                            Logout{" "}
-                          </span>
-                        </button>
-                      </form>
-                    </nav>
-                  </details> */}
                 </nav>
               )}
               {pathname?.includes(`/dashboard/events/`) &&
@@ -503,27 +343,6 @@ export default function Sidebar() {
                       aria-label="Main Nav"
                       className="mt-6 flex flex-col space-y-1"
                     >
-                      {/* <Link
-                    href={`/dashboard/events`}
-                    className="flex items-center rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 opacity-75"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
-                      />
-                    </svg>
-
-                    <span className="ml-3 text-sm font-medium">My events</span>
-                  </Link> */}
                       <Link
                         href={`/dashboard/events/overview/${eventId}`}
                         className={`flex items-center rounded-lg px-4 py-2 hover:bg-gray-100 hover:text-gray-700 ${
@@ -700,7 +519,7 @@ export default function Sidebar() {
             </div>
           </div>
         </div>
-      </aside>
+      </aside> */}
     </>
   );
 }

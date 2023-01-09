@@ -21,7 +21,7 @@ export default async function Events() {
   const data = await getData();
   // console.log(data);
   return (
-    <div className="w-3/4">
+    <div className="">
       <section className="bg-white border-2 border-gray-100 rounded-lg rounded-b-none mt-4">
         <nav className="flex border-b border-gray-100 text-sm font-medium">
           <a

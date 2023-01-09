@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Dashboard() {
   return (
-    <div className="w-3/4">
+    <div className="">
       <section className="bg-gray-900 text-white rounded-lg">
         <div className="max-w-screen-xl px-4 py-4 sm:px-6 lg:px-8">
           {/* <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 md:grid-cols-2 md:gap-12 lg:grid-cols-3"> */}

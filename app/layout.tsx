@@ -1,25 +1,17 @@
-import Image from "next/image";
 import Providers from "./providers";
-import Menu from "./components/layout/menu";
-import Sidebar from "./components/layout/sidebar";
-import GoogleButton from "./components/buttons/google-button";
-// import LoginImg from "../public/login.jpeg";
-import { unstable_getServerSession } from "next-auth/next";
-
 import "../styles/dist.css";
+import "tailwindcss/tailwind.css";
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // console.log(params);
-
   return (
     <Providers>
-      <html lang="en">
+      <html lang="en" className="h-full">
         <head />
-        <body>{children}</body>
+        <body className="h-full">{children}</body>
       </html>
     </Providers>
   );

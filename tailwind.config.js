@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+// const defaultTheme = require("tailwindcss/defaulttheme");
 module.exports = {
   content: [
     "./app/**/*.{js,ts,jsx,tsx}",

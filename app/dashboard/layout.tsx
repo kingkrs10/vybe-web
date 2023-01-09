@@ -1,12 +1,12 @@
 import Image from "next/image";
 import Providers from "../providers";
-import Menu from "../components/layout/menu";
-import Sidebar from "../components/layout/sidebar";
-import GoogleButton from "../components/buttons/google-button";
+import Menu from "../../components/layout/menu";
+import Sidebar from "../../components/layout/sidebar";
+import GoogleButton from "../../components/buttons/google-button";
 // import LoginImg from "../public/login.jpeg";
 import { unstable_getServerSession } from "next-auth/next";
 
-import "../../styles/dist.css";
+// import "../../styles/dist.css";
 
 export default async function DashboardLayout({
   children,
@@ -135,13 +135,13 @@ export default async function DashboardLayout({
         </div>
       )}
       {session && (
-        <div className="">
-          <div className="flex flex-row flex-wrap">
-            <Sidebar />
-            <main role="main" className="w-full sm:w-2/3 md:w-3/4 ">
-              <Menu />
+        <div>
+          <Sidebar />
+          <div className="md:pl-64">
+            <Menu />
+            <div className="mx-auto flex max-w-4xl flex-col md:px-8 xl:px-0">
               <div className="px-4 py-4">{children}</div>
-            </main>
+            </div>
           </div>
         </div>
       )}

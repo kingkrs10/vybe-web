@@ -1,16 +1,124 @@
 "use client";
 
 // import { unstable_getServerSession } from "next-auth/next";
+import { Fragment, useState } from "react";
 import LoginBtn from "../buttons/login-button";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { Dialog, Menu, Transition } from "@headlessui/react";
+import {
+  Bars3BottomLeftIcon,
+  BellIcon,
+  CalendarIcon,
+  ChartBarIcon,
+  FolderIcon,
+  HomeIcon,
+  InboxIcon,
+  UsersIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import { useAtom } from "jotai";
+import { menuAtom } from "../../lib/atoms";
 
-export default function Menu() {
+const userNavigation = [
+  { name: "Your Profile", href: "#" },
+  { name: "Settings", href: "#" },
+  { name: "Sign out", href: "#" },
+];
+
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(" ");
+}
+
+export default function HeaderMenu() {
+  const [sidebarOpen, setSidebarOpen] = useAtom(menuAtom);
   //   const session = await unstable_getServerSession();
   const { data: session } = useSession();
   return (
     <>
-      <header aria-label="Page Header" className="bg-gray-100">
+      <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 border-b border-gray-200 bg-white">
+        <button
+          type="button"
+          className="border-r border-gray-200 px-4 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
+          onClick={() => setSidebarOpen({ open: true })}
+        >
+          <span className="sr-only">Open sidebar</span>
+          <Bars3BottomLeftIcon className="h-6 w-6" aria-hidden="true" />
+        </button>
+        <div className="flex flex-1 justify-between px-4 md:px-0">
+          <div className="flex flex-1">
+            <form className="flex w-full md:ml-0" action="#" method="GET">
+              <label htmlFor="search-field" className="sr-only">
+                Search
+              </label>
+              <div className="relative w-full ml-4 text-gray-400 focus-within:text-gray-600">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center">
+                  <MagnifyingGlassIcon className="h-5 w-5" aria-hidden="true" />
+                </div>
+                <input
+                  id="search-field"
+                  className="block h-full w-full border-transparent py-2 pl-8 pr-3 text-gray-900 placeholder-gray-500 focus:border-transparent focus:placeholder-gray-400 focus:outline-none focus:ring-0 sm:text-sm"
+                  placeholder="Search"
+                  type="search"
+                  name="search"
+                />
+              </div>
+            </form>
+          </div>
+          <div className="ml-4 flex items-center md:ml-4">
+            <button
+              type="button"
+              className="rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            >
+              <span className="sr-only">View notifications</span>
+              <BellIcon className="h-6 w-6" aria-hidden="true" />
+            </button>
+
+            {/* Profile dropdown */}
+            <Menu as="div" className="relative ml-3 mr-4">
+              <div>
+                <Menu.Button className="flex max-w-xs items-center rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                  <span className="sr-only">Open user menu</span>
+                  <img
+                    className="h-8 w-8 rounded-full"
+                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    alt=""
+                  />
+                </Menu.Button>
+              </div>
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-100"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
+              >
+                <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  {userNavigation.map((item) => (
+                    <Menu.Item key={item.name}>
+                      {({ active }) => (
+                        <a
+                          href={item.href}
+                          className={classNames(
+                            active ? "bg-gray-100" : "",
+                            "block py-2 px-4 text-sm text-gray-700"
+                          )}
+                        >
+                          {item.name}
+                        </a>
+                      )}
+                    </Menu.Item>
+                  ))}
+                </Menu.Items>
+              </Transition>
+            </Menu>
+          </div>
+        </div>
+      </div>
+      {/* <header aria-label="Page Header" className="bg-gray-100">
         <div className=" max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="flex items-center sm:justify-between sm:gap-4">
             <div className="relative hidden sm:block">
@@ -92,9 +200,9 @@ export default function Menu() {
                       d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
                     />
                   </svg>
-                </a> */}
+                </a> 
 
-                {/* <a
+                <a
                   href="#"
                   className="block shrink-0 rounded-lg bg-white p-2.5 text-gray-600 shadow-sm hover:text-gray-700"
                 >
@@ -113,7 +221,7 @@ export default function Menu() {
                       d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
                     />
                   </svg>
-                </a> */}
+                </a>
                 <span className="inline-flex divide-x overflow-hidden rounded-md border bg-white shadow-sm my-0">
                   <Link
                     href={`/dashboard/events/new`}
@@ -183,7 +291,7 @@ export default function Menu() {
             </div>
           </div>
         </div>
-      </header>
+      </header> */}
     </>
   );
 }

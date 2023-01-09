@@ -1,13 +1,14 @@
-import Image from "next/image";
+// "use client";
+// import Image from "next/image";
 import axios from "axios";
 import moment from "moment";
-import { unstable_getServerSession } from "next-auth/next";
-import { authOptions } from "../pages/api/auth/[...nextauth]";
+// import { unstable_getServerSession } from "next-auth/next";
+// import { authOptions } from "../pages/api/auth/[...nextauth]";
+import LandingNav from "../components/header/landing";
+import LandingFooter from "../components/footer/landing-footer";
 
 async function getData() {
-  // console.log("test");
-  const session = await unstable_getServerSession(authOptions);
-  // console.log(session);
+  // const session = await unstable_getServerSession(authOptions);
 
   const params = { pageNo: 1 };
   const response = await axios.get(
@@ -20,36 +21,40 @@ export default async function EventsHome() {
   const data = await getData();
   // console.log(data);
   return (
-    <div className="bg-white">
-      <div className="mx-auto max-w-2xl py-16 px-8 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-          {data.map((item: any, index: any) => (
-            <a key={index} href={`/event/${item.eventId}`} className="group">
-              <article className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8">
-                <img
-                  alt="Office"
-                  src={item.image ? item.image : "/login.jpeg"}
-                  className="h-56 w-full object-cover"
-                />
-                <div className="bg-white p-2 sm:p-4">
-                  <time
-                    dateTime="2022-10-10"
-                    className="block text-xs text-gray-500"
-                  >
-                    10th Oct 2022
-                  </time>
+    <>
+      <LandingNav />
+      <div className="bg-white">
+        <div className="mx-auto max-w-2xl py-6 px-8 sm:py-8 sm:px-6 lg:max-w-7xl lg:px-8">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+            {data.map((item: any, index: any) => (
+              <a key={index} href={`/events/${item.eventId}`} className="group">
+                <article className="w-full border overflow-hidden rounded-lg bg-gray-200">
+                  <img
+                    alt="Office"
+                    src={item.image ? item.image : "/login.jpeg"}
+                    className="h-56 w-full object-cover"
+                  />
+                  <div className="bg-white p-3 sm:p-4">
+                    <p className="text-xs">
+                      {moment(item.startDate).format("MMMM, Do YYYY")} &mdash;{" "}
+                      {moment(item.startTime, "HH:mm:ss").format("h:mm A")}
+                    </p>
 
-                  <h3 className="mt-0.5 text-lg text-gray-900">{item.name}</h3>
-                  <p className="mt-1 text-sm leading-relaxed text-gray-500 line-clamp-3">
-                    {item.description}
-                  </p>
-                </div>
-              </article>
-            </a>
-          ))}
+                    <h3 className="mt-0.5 text-lg text-gray-900">
+                      {item.name}
+                    </h3>
+                    <p className="mt-1 text-sm leading-relaxed text-gray-500 line-clamp-3">
+                      {item.description}
+                    </p>
+                  </div>
+                </article>
+              </a>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+      <LandingFooter />
+    </>
   );
 }
 
