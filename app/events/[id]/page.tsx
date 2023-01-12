@@ -2,10 +2,10 @@
 import Image from "next/image";
 import axios from "axios";
 import moment from "moment";
-import LandingNav from "../../../components/header/landing";
+import LandingNav from "../../../components/header/landing-header";
 import LandingFooter from "../../../components/footer/landing-footer";
-import { Fragment, useEffect, useState } from "react";
-import { Menu, Popover, Transition } from "@headlessui/react";
+import { Fragment, useEffect, useState, useRef } from "react";
+import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import {
   ArrowLongLeftIcon,
   CheckIcon,
@@ -132,28 +132,69 @@ function statusDetail(startDate: any, endDate: any) {
   if (startDate >= today && endDate <= today) {
     return (
       <>
-        <p className="mt-2 text-xs">
-          Ends {moment(endDate).format("MMMM, Do YYYY")}
+        <p className="text-xs">
+          Ends on {moment(endDate).format("MMMM, Do YYYY")}
         </p>
       </>
     );
   } else if (startDate > today) {
     return (
       <>
-        <p className="mt-2 text-xs">
-          Scheduled {moment(startDate).format("MMMM, Do YYYY")}
+        <p className="text-xs">
+          Scheduled for {moment(startDate).format("MMMM, Do YYYY")}
         </p>
       </>
     );
   } else if (endDate < today) {
     return (
       <>
-        <p className="mt-2 text-xs inline-block">
-          Ended {moment(endDate).format("MMMM, Do YYYY")}
+        <p className="text-xs">
+          Ended on {moment(endDate).format("MMMM, Do YYYY")}
         </p>
       </>
     );
   }
+}
+
+const defaultProps = {
+  center: {
+    lat: 34.026884,
+    lng: -6.848299,
+  },
+  zoom: 18,
+};
+
+function MyMapComponent({
+  center,
+  zoom,
+}: {
+  center: google.maps.LatLngLiteral;
+  zoom: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  // const [map, setMap] = useState<google.maps.Map>();
+
+  // React.useEffect(() => {
+  //   if (ref.current && !map) {
+  //     setMap(new window.google.maps.Map(ref.current, {}));
+  //   }
+  // }, [ref, map]);
+  useEffect(() => {
+    if (ref.current) {
+      // setMap(new window.google.maps.Map(ref.current, {defaultProps.center, defaultProps.zoom}));
+      new window.google.maps.Map(ref.current, {
+        center,
+        zoom,
+        fullscreenControl: false,
+        mapTypeControl: false,
+        zoomControl: false,
+        panControl: false,
+        streetViewControl: false,
+      });
+    }
+  }, [ref]);
+
+  return <div ref={ref} id="map" style={{ flexGrow: "1", height: "100%" }} />;
 }
 
 export default function EventPage({ params }: { params: any }) {
@@ -294,11 +335,11 @@ export default function EventPage({ params }: { params: any }) {
             <div className="space-y-6 lg:col-span-2 lg:col-start-1">
               {/* Description list*/}
               <section aria-labelledby="applicant-information-title">
-                <div className="bg-white pb-4 shadow sm:rounded-lg">
+                <div className="bg-white shadow sm:rounded-lg">
                   <img
                     alt="Party"
                     src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-                    className=" object-cover rounded-t-lg"
+                    className="h-96 w-full object-cover rounded-t-lg"
                   />
                   <div className="px-4 py-5 sm:px-6">
                     <h2
@@ -339,21 +380,21 @@ export default function EventPage({ params }: { params: any }) {
                           {data.address}, {data.city}, {data.state}
                         </dd>
                       </div>
-                      {/* <div className="sm:col-span-1">
-                        <dt className="text-sm font-medium text-gray-500">
-                          Salary expectation
-                        </dt>
-                        <dd className="mt-1 text-sm text-gray-900">$120,000</dd>
-                      </div>
-                      <div className="sm:col-span-1">
-                        <dt className="text-sm font-medium text-gray-500">
-                          Phone
-                        </dt>
-                        <dd className="mt-1 text-sm text-gray-900">
-                          +1 555-555-5555
-                        </dd>
-                      </div> */}
                     </dl>
+                  </div>
+                  <div
+                    // style={{ display: "flex", height: "50vh" }}
+                    className="mt-4 h-96"
+                  >
+                    <Wrapper
+                      apiKey={"AIzaSyB0hYyI2S3b1bB--5Z-nRq2ZRcw1YXC-ag"}
+                      // render={render}
+                    >
+                      <MyMapComponent
+                        center={defaultProps.center}
+                        zoom={defaultProps.zoom}
+                      />
+                    </Wrapper>
                   </div>
                   {/* <div>
                     <a
@@ -480,18 +521,18 @@ export default function EventPage({ params }: { params: any }) {
               <div className="bg-white shadow sm:rounded-lg ">
                 <h2
                   id="timeline-title"
-                  className="text-lg font-medium px-4 py-4 sm:px-4 text-gray-900 border-b w-full"
+                  className="text-lg font-medium px-4 py-4 sm:px-6 text-gray-900 border-b w-full"
                 >
-                  Timeline
+                  Tickets
                 </h2>
 
                 {/* Activity Feed */}
                 <div className="mt-6 flow-root px-4 py-0 sm:px-6">
                   <ul role="list" className="">
                     {tickets.map((item: any, itemIdx: any) => (
-                      <li key={item.id}>
-                        <div className="flex">
-                          <div className="mr-4 flex-shrink-0">
+                      <li key={itemIdx}>
+                        <div className="flex mb-4">
+                          <div className="mr-4 flex-shrink-0 mb-0">
                             <p>{item.name}</p>
                             {statusDetail(item.startDate, item.endDate)}
                           </div>
@@ -499,53 +540,11 @@ export default function EventPage({ params }: { params: any }) {
                             <p>{item.price}</p>
                           </div>
                         </div>
-                        {/* <div className="relative pb-8">
-                          
-                          {itemIdx !== timeline.length - 1 ? (
-                            <span
-                              className="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
-                              aria-hidden="true"
-                            />
-                          ) : null}
-                          <div className="relative flex space-x-3">
-                            <div>
-                              <span
-                                className={classNames(
-                                  item.type.bgColorClass,
-                                  "h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white"
-                                )}
-                              >
-                                <item.type.icon
-                                  className="h-5 w-5 text-white"
-                                  aria-hidden="true"
-                                />
-                              </span>
-                            </div>
-                            <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
-                              <div>
-                                <p className="text-sm text-gray-500">
-                                  {item.content}{" "}
-                                  <a
-                                    href="#"
-                                    className="font-medium text-gray-900"
-                                  >
-                                    {item.target}
-                                  </a>
-                                </p>
-                              </div>
-                              <div className="whitespace-nowrap text-right text-sm text-gray-500">
-                                <time dateTime={item.datetime}>
-                                  {item.date}
-                                </time>
-                              </div>
-                            </div>
-                          </div>
-                        </div> */}
                       </li>
                     ))}
                   </ul>
                 </div>
-                <div className="justify-stretch mt-6 px-4 py-4 sm:px-4 flex flex-col">
+                <div className="justify-stretch px-4 py-4 sm:px-4 flex flex-col">
                   <button
                     type="button"
                     className="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"

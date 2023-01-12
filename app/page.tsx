@@ -4,7 +4,7 @@ import axios from "axios";
 import moment from "moment";
 // import { unstable_getServerSession } from "next-auth/next";
 // import { authOptions } from "../pages/api/auth/[...nextauth]";
-import LandingNav from "../components/header/landing";
+import LandingNav from "../components/header/landing-header";
 import LandingFooter from "../components/footer/landing-footer";
 
 async function getData() {

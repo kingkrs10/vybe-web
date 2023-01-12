@@ -1,10 +1,10 @@
 "use client";
 
 // import { unstable_getServerSession } from "next-auth/next";
-import { Fragment, useState } from "react";
+import { Fragment, useState, forwardRef, createRef } from "react";
 import LoginBtn from "../buttons/login-button";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { useSession, signIn, signOut } from "next-auth/react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
   Bars3BottomLeftIcon,
@@ -20,11 +20,23 @@ import {
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { useAtom } from "jotai";
 import { menuAtom } from "../../lib/atoms";
+import { useRouter } from "next/router";
+
+// const Button = forwardRef((props, ref) => (
+//   // <button ref={ref} className="FancyButton">
+//   //   {props.children}
+//   // </button>
+//   <LoginBtn ref={ref} />
+// ));
+
+// // You can now get a ref directly to the DOM button:
+// const ref = createRef();
+// <Button ref={ref}>Click me!</Button>;
 
 const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
+  { name: "Your Profile", href: "/dashboard/profile" },
+  { name: "Settings", href: "/dashboard/settings" },
+  { name: "Signout", href: "" },
 ];
 
 function classNames(...classes: string[]) {
@@ -35,9 +47,10 @@ export default function HeaderMenu() {
   const [sidebarOpen, setSidebarOpen] = useAtom(menuAtom);
   //   const session = await unstable_getServerSession();
   const { data: session } = useSession();
+  // let activeMenu: any;
   return (
     <>
-      <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 border-b border-gray-200 bg-white">
+      <div className="sticky top-0 z-20 flex h-16 flex-shrink-0 border-b border-gray-200 bg-white">
         <button
           type="button"
           className="border-r border-gray-200 px-4 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
@@ -67,6 +80,12 @@ export default function HeaderMenu() {
             </form>
           </div>
           <div className="ml-4 flex items-center md:ml-4">
+            <a
+              href="/dashboard/events/new"
+              className="inline-block mr-8 rounded-md border border-transparent bg-white py-2 px-4 text-base font-medium text-indigo-900 hover:bg-opacity-75"
+            >
+              Create an event
+            </a>
             <button
               type="button"
               className="rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -80,11 +99,14 @@ export default function HeaderMenu() {
               <div>
                 <Menu.Button className="flex max-w-xs items-center rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                   <span className="sr-only">Open user menu</span>
-                  <img
-                    className="h-8 w-8 rounded-full"
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                    alt=""
-                  />
+                  {session?.user?.image && (
+                    <img
+                      alt="Man"
+                      src={session?.user?.image!}
+                      referrerPolicy="no-referrer"
+                      className="h-8 w-8 rounded-full object-cover"
+                    />
+                  )}
                 </Menu.Button>
               </div>
               <Transition
@@ -97,21 +119,42 @@ export default function HeaderMenu() {
                 leaveTo="transform opacity-0 scale-95"
               >
                 <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  {userNavigation.map((item) => (
-                    <Menu.Item key={item.name}>
-                      {({ active }: { active: any }) => (
+                  {userNavigation.map((item) =>
+                    item.name === "Signout" ? (
+                      <Menu.Item key={item.name}>
                         <a
-                          href={item.href}
-                          className={classNames(
-                            active ? "bg-gray-100" : "",
-                            "block py-2 px-4 text-sm text-gray-700"
-                          )}
+                          className={
+                            "block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                          }
+                          onClick={(e) => {
+                            e.preventDefault();
+                            signOut();
+                            let router = useRouter();
+                            router.push("/");
+                          }}
                         >
-                          {item.name}
+                          Sign out
                         </a>
-                      )}
-                    </Menu.Item>
-                  ))}
+                      </Menu.Item>
+                    ) : (
+                      <Menu.Item key={item.name}>
+                        {({ active }: { active: any }) => (
+                          <a
+                            href={item.href}
+                            className={classNames(
+                              active ? "bg-gray-100" : "",
+                              "block py-2 px-4 text-sm text-gray-700"
+                            )}
+                          >
+                            {item.name}
+                          </a>
+                        )}
+                      </Menu.Item>
+                    )
+                  )}
+                  {/* <Menu.Item key={"signout"}>
+                    
+                  </Menu.Item> */}
                 </Menu.Items>
               </Transition>
             </Menu>

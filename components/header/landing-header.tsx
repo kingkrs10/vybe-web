@@ -300,7 +300,7 @@ export default function LandingNav() {
           </Popover.Group>
           <div className="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
             <a
-              href="#"
+              href="/dashboard/events"
               className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
             >
               Sign in
@@ -399,7 +399,10 @@ export default function LandingNav() {
                 </a>
                 <p className="mt-6 text-center text-base font-medium text-gray-500">
                   Existing customer?{" "}
-                  <a href="#" className="text-indigo-600 hover:text-indigo-500">
+                  <a
+                    href="/dashboard/events"
+                    className="text-indigo-600 hover:text-indigo-500"
+                  >
                     Sign in
                   </a>
                 </p>

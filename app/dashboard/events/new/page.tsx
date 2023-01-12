@@ -221,7 +221,7 @@ export default function NewTicket() {
   };
 
   return (
-    <div className="w-3/4">
+    <div className="">
       <section className="bg-gray-900 text-white rounded-lg">
         <div className="max-w-screen-xl px-4 py-4 sm:px-6 lg:px-8">
           {/* <p>{JSON.stringify(session)}</p> */}
