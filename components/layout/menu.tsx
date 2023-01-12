@@ -20,7 +20,7 @@ import {
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { useAtom } from "jotai";
 import { menuAtom } from "../../lib/atoms";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 
 // const Button = forwardRef((props, ref) => (
 //   // <button ref={ref} className="FancyButton">
@@ -47,7 +47,7 @@ export default function HeaderMenu() {
   const [sidebarOpen, setSidebarOpen] = useAtom(menuAtom);
   //   const session = await unstable_getServerSession();
   const { data: session } = useSession();
-  let router = useRouter();
+  // let router = useRouter();
   // let activeMenu: any;
   return (
     <>
@@ -127,11 +127,7 @@ export default function HeaderMenu() {
                           className={
                             "block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
                           }
-                          onClick={(e) => {
-                            e.preventDefault();
-                            signOut();
-                            router.push("/");
-                          }}
+                          onClick={(e) => signOut()}
                         >
                           Sign out
                         </a>
