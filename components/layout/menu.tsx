@@ -47,6 +47,7 @@ export default function HeaderMenu() {
   const [sidebarOpen, setSidebarOpen] = useAtom(menuAtom);
   //   const session = await unstable_getServerSession();
   const { data: session } = useSession();
+  let router = useRouter();
   // let activeMenu: any;
   return (
     <>
@@ -129,7 +130,6 @@ export default function HeaderMenu() {
                           onClick={(e) => {
                             e.preventDefault();
                             signOut();
-                            let router = useRouter();
                             router.push("/");
                           }}
                         >
