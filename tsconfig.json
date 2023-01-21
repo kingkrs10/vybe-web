@@ -15,6 +15,19 @@
     "jsx": "preserve",
     "incremental": true,
     "types": ["google.maps"],
+    "paths": {
+      "@/components/*": ["./components/*"],
+      "@/resources/*": ["./resources/*"],
+      "@/public/*": ["./public/*"],
+      // "@/ui/*": ["ui/*"],
+      // "@/hooks/*": ["hooks/*"],
+      "@/lib/*": ["./lib/*"],
+      // "@/config/*": ["config/*"],
+      "@/styles/*": ["./styles/*"],
+      "@/pages/*": ["./pages/*"]
+      // "@/prisma/*": ["prisma/*"],
+      // "contentlayer/generated": ["./.contentlayer/generated"]
+    },
     "plugins": [
       {
         "name": "next"

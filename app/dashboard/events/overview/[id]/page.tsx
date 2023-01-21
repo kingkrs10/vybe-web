@@ -12,7 +12,7 @@ async function getData(eventId: any) {
 export default async function Overview({ params }: { params: any }) {
   const data = await getData(params.id);
   return (
-    <div className="w-3/4">
+    <div className="">
       <section className="bg-gray-900 text-white rounded-lg">
         <div className="max-w-screen-xl px-4 py-4 sm:px-6 lg:px-8">
           {/* <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 md:grid-cols-2 md:gap-12 lg:grid-cols-3"> */}
@@ -66,15 +66,15 @@ export default async function Overview({ params }: { params: any }) {
 
               <p className="mt-4 text-gray-600">{data.description}</p>
               <p className="mt-4 text-gray-600">{data.address}</p>
-              <p className="text-gray-600">
+              {/* <p className="text-gray-600">
                 {data.city}, {data.country}
-              </p>
+              </p> */}
               <p className="mt-4 text-gray-600">
                 {moment(data.startDate).format("MMMM, Do YYYY")} &mdash;{" "}
                 {moment(data.startTime, "HH:mm:ss").format("h:mm A")}
               </p>
 
-              <a
+              {/* <a
                 href="#"
                 className="mt-8 inline-flex items-center rounded border border-indigo-600 bg-indigo-600 px-8 py-3 text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
               >
@@ -94,7 +94,7 @@ export default async function Overview({ params }: { params: any }) {
                     d="M17 8l4 4m0 0l-4 4m4-4H3"
                   />
                 </svg>
-              </a>
+              </a> */}
             </div>
           </div>
         </div>

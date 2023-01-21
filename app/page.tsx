@@ -1,15 +1,11 @@
 // "use client";
-// import Image from "next/image";
+import Image from "next/image";
 import axios from "axios";
 import moment from "moment";
-// import { unstable_getServerSession } from "next-auth/next";
-// import { authOptions } from "../pages/api/auth/[...nextauth]";
 import LandingNav from "../components/header/landing-header";
 import LandingFooter from "../components/footer/landing-footer";
 
 async function getData() {
-  // const session = await unstable_getServerSession(authOptions);
-
   const params = { pageNo: 1 };
   const response = await axios.get(
     `${process.env.NEXT_PUBLIC_APIURL}/events/allevents?pageNo=${params.pageNo}`
@@ -19,7 +15,6 @@ async function getData() {
 
 export default async function EventsHome() {
   const data = await getData();
-  // console.log(data);
   return (
     <>
       <LandingNav />
@@ -29,9 +24,11 @@ export default async function EventsHome() {
             {data.map((item: any, index: any) => (
               <a key={index} href={`/events/${item.eventId}`} className="group">
                 <article className="w-full border overflow-hidden rounded-lg bg-gray-200">
-                  <img
+                  <Image
                     alt="Office"
                     src={item.image ? item.image : "/login.jpeg"}
+                    width={500}
+                    height={500}
                     className="h-56 w-full object-cover"
                   />
                   <div className="bg-white p-3 sm:p-4">

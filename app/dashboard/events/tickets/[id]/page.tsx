@@ -55,7 +55,7 @@ function statusDetail(startDate: any, endDate: any) {
 export default async function Tickets({ params }: { params: any }) {
   const data = await getData(params.id);
   return (
-    <div className="w-3/4">
+    <div className="">
       <section className="">
         <div className="overflow-hidden overflow-x-auto rounded-lg border border-gray-200">
           <table className="min-w-full divide-y divide-gray-200 text-sm">

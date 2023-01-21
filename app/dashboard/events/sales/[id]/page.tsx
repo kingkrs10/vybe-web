@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Tickets() {
   return (
-    <div className="w-3/4">
+    <div className="">
       <article className="rounded-lg border border-gray-100 bg-white p-6">
         <div className="flex items-center justify-between">
           <div>
