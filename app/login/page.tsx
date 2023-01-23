@@ -1,6 +1,10 @@
 "use client";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 export default function Example() {
+  const url = new URL(window.location.href);
+  // const router = useRouter()
+  // const {id} = router.
   return (
     <>
       <div className="flex min-h-full">
@@ -39,6 +43,10 @@ export default function Example() {
                   <p className="text-sm font-medium text-gray-700">
                     Sign in with
                   </p>
+                  {/* <p>
+                    {process.env.NEXT_PUBLIC_NEXTAUTH_URL +
+                      url.searchParams.get("redirect")}
+                  </p> */}
 
                   <div className="mt-1 grid grid-cols-3 gap-3">
                     <div>
@@ -84,7 +92,10 @@ export default function Example() {
                         onClick={(e) => {
                           e.preventDefault();
                           signIn("google", {
-                            callbackUrl: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/dashboard/events`,
+                            callbackUrl: url.searchParams.get("redirect")
+                              ? process.env.NEXT_PUBLIC_NEXTAUTH_URL +
+                                url.searchParams.get("redirect")
+                              : `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/dashboard/events`,
                           });
                         }}
                         className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"

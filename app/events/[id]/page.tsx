@@ -1,22 +1,11 @@
 import Image from "next/image";
 import axios from "axios";
 import moment from "moment";
-import LandingNav from "../../../components/header/landing-header";
-import LandingFooter from "../../../components/footer/landing-footer";
-import Tickets from "../../../components/layout/tickets";
-import Map from "../../../components/layout/map";
-
-import {
-  ArrowLongLeftIcon,
-  CheckIcon,
-  HandThumbUpIcon,
-  HomeIcon,
-  MagnifyingGlassIcon,
-  PaperClipIcon,
-  QuestionMarkCircleIcon,
-  UserIcon,
-} from "@heroicons/react/20/solid";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import LandingNav from "@/components/header/landing-header";
+import LandingFooter from "@/components/footer/landing-footer";
+import Tickets from "@/components/layout/tickets";
+import Map from "@/components/layout/map";
+import { getCurrentUser } from "@/lib/session";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -36,7 +25,8 @@ async function getData(eventId: any) {
 
 export default async function EventPage({ params }: { params: any }) {
   const data = await getData(params.id);
-  // console.log(JSON.stringify(data));
+  const session = await getCurrentUser();
+  // console.log(JSON.stringify(session));
   return (
     <div className="">
       <LandingNav />
@@ -50,6 +40,7 @@ export default async function EventPage({ params }: { params: any }) {
                     alt="Party"
                     src={data.image ? data.image : "/login.jpeg"}
                     width={500}
+                    priority
                     height={500}
                     className="h-96 w-full object-cover rounded-t-lg"
                   />
@@ -95,7 +86,7 @@ export default async function EventPage({ params }: { params: any }) {
                 </div>
               </section>
             </div>
-            <Tickets id={params.id} />
+            <Tickets id={params.id} session={session} />
           </div>
         </main>
       </div>

@@ -17,7 +17,7 @@ export const authOptions = {
         const user = await axios.get(
           `${process.env.NEXT_PUBLIC_APIURL}/users/getAuthToken/${profile.email}`
         );
-        account.userData = user.data.data;
+        // account.userData = user.data.data;
 
         if (user.data.data.length === 0) {
           const newUser = await axios.post(

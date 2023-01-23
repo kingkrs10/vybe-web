@@ -4,8 +4,8 @@ WORKDIR /app
 
 ENV PATH /app/node_modules/.bin:$PATH
 ENV NODE_ENV production
-ENV NEXT_PUBLIC_NEXTAUTH_URL https://ticket-web-43uaohqtiq-uc.a.run.app
-ENV NEXT_PUBLIC_APIURL https://ticket-api-43uaohqtiq-uc.a.run.app
+ENV NEXT_PUBLIC_NEXTAUTH_URL https://dev.vybe.events
+ENV NEXT_PUBLIC_APIURL https://dev.api.vybe.events
 ENV NEXTAUTH_SECRET a11876ec2080d64dedc31635b40fa12b
 ENV GOOGLE_CLIENT_ID 1011651920389-r2uprm55ulpmofeee44hf68km996f4q5.apps.googleusercontent.com
 ENV GOOGLE_CLIENT_SECRET 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
