@@ -43,10 +43,10 @@ export default function Example({ searchParams }: { searchParams: any }) {
                   <p className="text-sm font-medium text-gray-700">
                     Sign in with
                   </p>
-                  <p>
+                  {/* <p>
                     {process.env.NEXT_PUBLIC_NEXTAUTH_URL +
                       searchParams.redirect}
-                  </p>
+                  </p> */}
 
                   <div className="mt-1 grid grid-cols-3 gap-3">
                     <div>
