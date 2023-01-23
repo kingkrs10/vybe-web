@@ -1,10 +1,10 @@
 "use client";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-export default function Example() {
-  const url = new URL(window.location.href);
-  // const router = useRouter()
-  // const {id} = router.
+export default function Example({ searchParams }: { searchParams: any }) {
+  // const url = new URL(window.location.href);
+  // const router = useRouter();
+  // const { redirect } = router.query;
   return (
     <>
       <div className="flex min-h-full">
@@ -43,10 +43,10 @@ export default function Example() {
                   <p className="text-sm font-medium text-gray-700">
                     Sign in with
                   </p>
-                  {/* <p>
+                  <p>
                     {process.env.NEXT_PUBLIC_NEXTAUTH_URL +
-                      url.searchParams.get("redirect")}
-                  </p> */}
+                      searchParams.redirect}
+                  </p>
 
                   <div className="mt-1 grid grid-cols-3 gap-3">
                     <div>
@@ -92,9 +92,9 @@ export default function Example() {
                         onClick={(e) => {
                           e.preventDefault();
                           signIn("google", {
-                            callbackUrl: url.searchParams.get("redirect")
+                            callbackUrl: searchParams.redirect
                               ? process.env.NEXT_PUBLIC_NEXTAUTH_URL +
-                                url.searchParams.get("redirect")
+                                searchParams.redirect
                               : `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/dashboard/events`,
                           });
                         }}

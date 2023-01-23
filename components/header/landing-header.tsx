@@ -319,7 +319,7 @@ export default function LandingNav() {
             >
               Create an event
             </a>
-            {session !== undefined && (
+            {session != undefined && (
               <>
                 <Menu as="div" className="relative ml-6 mr-4">
                   <div>
@@ -382,7 +382,7 @@ export default function LandingNav() {
               </>
             )}
 
-            {session === undefined && (
+            {session == undefined && (
               <a
                 href="/login"
                 className="ml-6 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
@@ -470,7 +470,7 @@ export default function LandingNav() {
                 ))}
               </div>
               <div>
-                {session === undefined && (
+                {session == undefined && (
                   <a
                     href="/login"
                     className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
