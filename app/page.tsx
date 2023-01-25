@@ -22,7 +22,7 @@ export default async function EventsHome() {
         <div className="mx-auto max-w-2xl py-6 px-8 sm:py-8 sm:px-6 lg:max-w-7xl lg:px-8">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
             {data.map((item: any, index: any) => (
-              <a key={index} href={`/events/${item.eventId}`} className="group">
+              <a key={index} href={`/${item.eventId}`} className="group">
                 <article className="w-full border overflow-hidden rounded-lg bg-gray-200">
                   <Image
                     alt="Office"

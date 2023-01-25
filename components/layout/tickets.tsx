@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import moment from "moment";
 import { useAtom } from "jotai";
-import { ticketsAtom } from "@/lib/atoms";
+import { ticketsAtom, checkoutStepAtom, guestFilledAtom } from "@/lib/atoms";
 
 import {
   CheckIcon,
@@ -51,7 +51,6 @@ function statusDetail(startDate: any, endDate: any) {
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
-
   // These options are needed to round to whole numbers if that's what you want.
   //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
   //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
@@ -61,11 +60,11 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
   const [tickets, setTickets] = useState<any>([]);
   const [total, setTotal] = useState<any>([]);
   const [count, setCount] = useAtom(ticketsAtom);
+  const [step, setStep] = useAtom(checkoutStepAtom);
+  const [isFilled] = useAtom(guestFilledAtom);
 
   const router = useRouter();
   const pathname = usePathname();
-
-  // console.log(session);
 
   useEffect(() => {
     async function getData(eventId: any) {
@@ -113,12 +112,27 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
     return defaultValue[0] ? defaultValue[0].details.count : 0;
   };
 
+  function buttonStatus(session: any, step: number, isFilled: boolean) {
+    console.log(session, step, isFilled);
+    if (session == undefined) {
+      return ["Login to purchase now", true];
+    } else if (session != undefined && step == 1) {
+      return ["Purchase now", true];
+    } else if (session != undefined && step == 2 && !isFilled) {
+      return ["Please add guest(s)", false];
+    } else if (session != undefined && step == 2 && isFilled) {
+      return ["Pay now", true];
+    } else if (session != undefined && step == 3) {
+      return ["Confirm payment", true];
+    }
+  }
+
   return (
     <section
       aria-labelledby="timeline-title"
-      className="lg:col-span-1 lg:col-start-3"
+      className="lg:col-span-1 lg:col-start-3 relative"
     >
-      <div className="bg-white shadow sm:rounded-lg ">
+      <div className="bg-white shadow sm:rounded-lg  sticky top-6">
         <h2
           id="timeline-title"
           className="text-lg font-medium px-4 py-4 sm:px-6 text-gray-900 border-b w-full"
@@ -141,6 +155,7 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
                     <select
                       id="count"
                       name="count"
+                      disabled={step === 2 || step === 3 ? true : false}
                       className="mt-1 w-16 self-end justify-self-end rounded-md border-gray-300 py-1 pl-3 pr-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                       defaultValue={getDefault(item.ticketId)}
                       onChange={(e) => {
@@ -150,19 +165,16 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
                             ticket: item.ticketId,
                             count: e.target.value,
                             cost: item.price,
+                            name: item.name,
                           },
                         };
                         const clean = (prev: any) => {
-                          // console.log(prev);
                           let cleared = prev.filter(function (item: any) {
                             return item.details.ticket !== data.details.ticket;
                           });
                           return [...cleared, data];
                         };
-                        // setCount()
                         setCount((prev: any) => (prev ? clean(prev) : [data]));
-
-                        // clean()
                       }}
                     >
                       {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i, n) => (
@@ -170,10 +182,6 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
                           {i}
                         </option>
                       ))}
-                      {/* <option>0</option>
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option> */}
                     </select>
                   </div>
                 </div>
@@ -181,65 +189,64 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
             ))}
           </ul>
         </div>
-        <div className=" flow-root">
-          {/* Order summary */}
-          <section
-            aria-labelledby="summary-heading"
-            className=" bg-gray-50 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-6"
-          >
-            <dl className="space-y-4">
-              <div className="flex items-center justify-between">
-                <dt className="text-sm text-gray-600">Subtotal</dt>
-                <dd className="text-sm font-medium text-gray-900">
-                  {total.subtotal ? total.subtotal : 0}
-                </dd>
-              </div>
-              <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-                <dt className="flex text-sm text-gray-600">
-                  <span>Service fee (7%)</span>
-                  <a
-                    href="#"
-                    className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500"
-                  >
-                    <span className="sr-only">
-                      Learn more about how tax is calculated
-                    </span>
-                    <QuestionMarkCircleIcon
-                      className="h-5 w-5"
-                      aria-hidden="true"
-                    />
-                  </a>
-                </dt>
-                <dd className="text-sm font-medium text-gray-900">
-                  {total.fee ? total.fee : 0}
-                </dd>
-              </div>
-              <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-                <dt className="text-base font-medium text-gray-900">
-                  Order total
-                </dt>
-                <dd className="text-base font-medium text-gray-900">
-                  {total.total ? total.total : 0}
-                </dd>
-              </div>
-            </dl>
-          </section>
-        </div>
+        {/* Order summary */}
+        <section
+          aria-labelledby="summary-heading"
+          className=" bg-gray-50 mt-4 sm:p-6 px-4 py-4 p-4 lg:col-span-5 lg:mt-4 lg:p-6"
+        >
+          <dl className="space-y-4">
+            <div className="flex items-center justify-between">
+              <dt className="text-sm text-gray-600">Subtotal</dt>
+              <dd className="text-sm font-medium text-gray-900">
+                {total.subtotal ? total.subtotal : 0}
+              </dd>
+            </div>
+            <div className="flex items-center justify-between border-t border-gray-200 pt-4">
+              <dt className="flex text-sm text-gray-600">
+                <span>Service fee (7%)</span>
+                <a
+                  href="#"
+                  className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500"
+                >
+                  <span className="sr-only">
+                    Learn more about how tax is calculated
+                  </span>
+                  <QuestionMarkCircleIcon
+                    className="h-5 w-5"
+                    aria-hidden="true"
+                  />
+                </a>
+              </dt>
+              <dd className="text-sm font-medium text-gray-900">
+                {total.fee ? total.fee : 0}
+              </dd>
+            </div>
+            <div className="flex items-center justify-between border-t border-gray-200 pt-4">
+              <dt className="text-base font-medium text-gray-900">
+                Order total
+              </dt>
+              <dd className="text-base font-medium text-gray-900">
+                {total.total ? total.total : 0}
+              </dd>
+            </div>
+          </dl>
+        </section>
 
         <div className="justify-stretch px-4 py-4 sm:px-4 flex flex-col">
           <button
             type="button"
+            // disabled={!buttonStatus(session, step, isFilled)[1].toString()}
             onClick={(e) => {
               e.preventDefault();
-              if (session === undefined) {
+              if (session == undefined) {
                 router.push(`/login?redirect=${pathname}`);
+              } else {
+                setStep(2);
               }
             }}
             className="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
-            {session !== undefined
-              ? "Purchase a ticket"
-              : "Login to purchase a ticket"}
+            {buttonStatus(session, step, isFilled)[0].toString()}
           </button>
         </div>
       </div>

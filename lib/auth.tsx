@@ -1,6 +1,8 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import axios from "axios";
+// import { useAtom } from "jotai";
+// import { sessionAtom } from "@/lib/atoms";
 
 export const authOptions = {
   // Configure one or more authentication providers
@@ -60,6 +62,7 @@ export const authOptions = {
       );
       session.accessToken = token.accessToken;
       session.user.userData = userData.data.data;
+      // setSession(session);
 
       return session;
     },

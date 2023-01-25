@@ -61,14 +61,10 @@ export default function NewTicket() {
 
   const [libraries] = useState(["places"]);
 
-  // const { data: session } = useSession();
-  // let sessionId;
-
   useEffect(() => {
     async function fetchSession() {
       const session = await getSession();
       setSession(session);
-      // if (session) sessionId = session?.user?.userData?.userId!;
     }
     fetchSession();
   }, []);
@@ -83,7 +79,6 @@ export default function NewTicket() {
     const filename = encodeURIComponent(file.name);
     const res = await fetch(`/api/upload-url?file=${filename}`);
     const { url, fields } = await res.json();
-    // console.log(`${res}`);
     const formData = new FormData();
 
     Object.entries({ ...fields, file }).forEach(
@@ -98,13 +93,6 @@ export default function NewTicket() {
     });
 
     setImage(`${url}${filename}`);
-    // console.log(JSON.stringify(upload));
-
-    // if (upload.ok) {
-    //   console.log("Uploaded successfully!");
-    // } else {
-    //   console.error("Upload failed.");
-    // }
   };
 
   function statusDetail(startDate: any, endDate: any) {
