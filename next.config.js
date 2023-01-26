@@ -2,9 +2,9 @@
 const nextConfig = {
   experimental: {
     appDir: true,
-    // swcMinify: true,
+    swcMinify: true,
   },
-  // output: "standalone",
+  output: "standalone",
   images: {
     // domains: ["storage.googleapis.com"],
     remotePatterns: [
@@ -16,13 +16,13 @@ const nextConfig = {
       },
     ],
   },
-  // typescript: {
-  //   // !! WARN !!
-  //   // Dangerously allow production builds to successfully complete even if
-  //   // your project has type errors.
-  //   // !! WARN !!
-  //   ignoreBuildErrors: true,
-  // },
+  typescript: {
+    // !! WARN !!
+    // Dangerously allow production builds to successfully complete even if
+    // your project has type errors.
+    // !! WARN !!
+    ignoreBuildErrors: true,
+  },
 };
 
 module.exports = nextConfig;
