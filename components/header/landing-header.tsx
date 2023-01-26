@@ -17,6 +17,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useSession, signOut } from "next-auth/react";
+import Image from "next/image";
 
 const solutions = [
   {
@@ -114,10 +115,12 @@ export default function LandingNav() {
           <div className="flex justify-start lg:w-0 lg:flex-1">
             <a href="#">
               <span className="sr-only">Your Company</span>
-              <img
+              <Image
                 className="h-8 w-auto sm:h-10"
                 src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                 alt=""
+                width={100}
+                height={100}
               />
             </a>
           </div>
@@ -326,11 +329,13 @@ export default function LandingNav() {
                     <Menu.Button className="flex max-w-xs items-center rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                       <span className="sr-only">Open user menu</span>
                       {session?.user?.image && (
-                        <img
+                        <Image
                           alt="Man"
                           src={session?.user?.image!}
                           referrerPolicy="no-referrer"
                           className="h-8 w-8 rounded-full object-cover"
+                          width={32}
+                          height={32}
                         />
                       )}
                     </Menu.Button>
@@ -411,10 +416,12 @@ export default function LandingNav() {
             <div className="px-5 pt-5 pb-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <img
+                  <Image
                     className="h-8 w-auto"
                     src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                     alt="Your Company"
+                    width={500}
+                    height={500}
                   />
                 </div>
                 <div className="-mr-2">

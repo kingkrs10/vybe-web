@@ -67,12 +67,12 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
   const pathname = usePathname();
 
   useEffect(() => {
-    async function getData(eventId: any) {
+    async function getData() {
       try {
         const tickets = await axios.get(
           `${
             process.env.NEXT_PUBLIC_APIURL
-          }/tickets/all?eventId=${eventId}&pageNo=${1}`
+          }/tickets/all?eventId=${id}&pageNo=${1}`
         );
 
         setTickets(tickets.data.data);
@@ -80,8 +80,8 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
         console.log(error);
       }
     }
-    getData(id);
-  }, []);
+    getData();
+  }, [id]);
 
   useEffect(() => {
     const initialValue = 0;
@@ -103,7 +103,7 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
       subtotal: formatter.format(subtotal.toFixed(2)),
       fee: formatter.format(+fee.toFixed(2)),
     });
-  }, [count]);
+  }, [count, id]);
 
   const getDefault = (ticket: any) => {
     let defaultValue = count.filter((i: any) => {
@@ -113,7 +113,7 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
   };
 
   function buttonStatus(session: any, step: number, isFilled: boolean) {
-    console.log(session, step, isFilled);
+    // console.log(session, step, isFilled);
     if (session == undefined) {
       return ["Login to purchase now", true];
     } else if (session != undefined && step == 1) {

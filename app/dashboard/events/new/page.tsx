@@ -59,7 +59,7 @@ export default function NewTicket() {
 
   const [session, setSession] = useState<any>({});
 
-  const [libraries] = useState(["places"]);
+  // const [libraries] = useState();
 
   useEffect(() => {
     async function fetchSession() {
@@ -208,10 +208,10 @@ export default function NewTicket() {
     }
   };
 
-  const inputRef = useRef();
+  const inputRef = useRef<any>();
 
   const handlePlaceChanged = () => {
-    const [place] = inputRef.current.getPlaces();
+    const [place] = inputRef?.current?.getPlaces();
     if (place) {
       setAddress({
         address: place.formatted_address,
@@ -227,7 +227,7 @@ export default function NewTicket() {
   return (
     <LoadScript
       googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY}
-      libraries={libraries}
+      libraries={["places"]}
     >
       <div className="">
         <section className="bg-gray-900 text-white rounded-lg">
@@ -848,10 +848,10 @@ export default function NewTicket() {
                                       type="text"
                                       name="address"
                                       id="address"
-                                      value={address.address}
-                                      onChange={(text) =>
-                                        setAddress(text.target.value)
-                                      }
+                                      // defaultValue={address?.address}
+                                      // onChange={(text) =>
+                                      //   setAddress(text.target.value)
+                                      // }
                                       autoComplete="street-address"
                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                     />

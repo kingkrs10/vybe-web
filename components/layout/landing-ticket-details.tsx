@@ -9,10 +9,10 @@ export default function TicketsDetails({ id }: { id: any }) {
   const [data, setData] = useState<any>([]);
 
   useEffect(() => {
-    async function getData(eventId: any) {
+    async function getData() {
       try {
         const event = await axios.get(
-          `${process.env.NEXT_PUBLIC_APIURL}/events/${eventId}`
+          `${process.env.NEXT_PUBLIC_APIURL}/events/${id}`
         );
 
         setData(event.data.data);
@@ -20,8 +20,8 @@ export default function TicketsDetails({ id }: { id: any }) {
         console.log(error);
       }
     }
-    getData(id);
-  }, []);
+    getData();
+  }, [id]);
 
   //   useEffect(() => {
   //     const initialValue = 0;

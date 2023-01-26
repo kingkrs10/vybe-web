@@ -126,7 +126,7 @@ export default function GuestFields({ item }: { item: any }) {
       };
       setGuests(clean(guests));
     }
-  }, [name, email]);
+  }, [name, email, guests, index, item.details.ticket, setGuests]);
 
   const fields = (item: any, index: any) => {
     if (item.target.name === "fullname") {

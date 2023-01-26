@@ -1,7 +1,16 @@
 "use client";
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-export default function Example({ searchParams }: { searchParams: any }) {
+
+type Props = {
+  params?: {};
+  searchParams?: {
+    redirect?: string;
+  };
+};
+
+export default function Example(props: Props) {
   // const url = new URL(window.location.href);
   // const router = useRouter();
   // const { redirect } = router.query;
@@ -18,10 +27,12 @@ export default function Example({ searchParams }: { searchParams: any }) {
         <div className="flex flex-1 flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
           <div className="mx-auto w-full max-w-sm lg:w-96">
             <div>
-              <img
+              <Image
                 className="h-12 w-auto"
                 src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                 alt="Your Company"
+                width={100}
+                height={100}
               />
               <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">
                 Sign in to your account
@@ -92,9 +103,9 @@ export default function Example({ searchParams }: { searchParams: any }) {
                         onClick={(e) => {
                           e.preventDefault();
                           signIn("google", {
-                            callbackUrl: searchParams.redirect
+                            callbackUrl: props.searchParams?.redirect
                               ? process.env.NEXT_PUBLIC_NEXTAUTH_URL +
-                                searchParams.redirect
+                                props.searchParams?.redirect
                               : `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/dashboard/events`,
                           });
                         }}

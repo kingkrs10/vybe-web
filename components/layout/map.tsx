@@ -15,8 +15,8 @@ function MyMapComponent({
     if (ref.current) {
       // setMap(new window.google.maps.Map(ref.current, {defaultProps.center, defaultProps.zoom}));
       new window.google.maps.Map(ref.current, {
-        center,
-        zoom,
+        center: center,
+        zoom: zoom,
         fullscreenControl: false,
         mapTypeControl: false,
         zoomControl: false,
@@ -24,7 +24,7 @@ function MyMapComponent({
         streetViewControl: false,
       });
     }
-  }, [ref, center]);
+  }, [ref, center, zoom]);
 
   return <div ref={ref} id="map" style={{ flexGrow: "1", height: "100%" }} />;
 }

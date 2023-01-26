@@ -26,6 +26,7 @@ const navigation = [
   { name: "Reports", href: "#", icon: ChartBarIcon, current: false },
 ];
 import { usePathname, useSelectedLayoutSegment } from "next/navigation";
+import Image from "next/image";
 
 export default function Sidebar() {
   const [sidebarOpen, setSidebarOpen] = useAtom(menuAtom);
@@ -107,10 +108,12 @@ export default function Sidebar() {
                   </div>
                 </Transition.Child>
                 <div className="flex flex-shrink-0 items-center px-4">
-                  <img
+                  <Image
                     className="h-8 w-auto"
                     src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                     alt="Your Company"
+                    width={32}
+                    height={32}
                   />
                 </div>
                 <div className="mt-5 h-0 flex-1 overflow-y-auto">
@@ -461,10 +464,12 @@ export default function Sidebar() {
         {/* Sidebar component, swap this element with another sidebar if you like */}
         <div className="flex flex-grow flex-col overflow-y-auto border-r border-gray-200 bg-white pt-5">
           <div className="flex flex-shrink-0 items-center px-4">
-            <img
+            <Image
               className="h-8 w-auto"
               src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
               alt="Your Company"
+              width={32}
+              height={32}
             />
           </div>
           <div className="mt-5 flex flex-grow flex-col">

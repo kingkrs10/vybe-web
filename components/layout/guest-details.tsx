@@ -38,7 +38,7 @@ export default function GuestDetails({
     } else {
       setFilled(true);
     }
-  }, [guests]);
+  }, [guests, setFilled]);
 
   return (
     <section
@@ -107,7 +107,7 @@ export default function GuestDetails({
                   Based on your number of tickets, you can assign each ticket to
                   others you wish to attend this event via invite.
                 </p>
-                <p>{JSON.stringify(guests)}</p>
+                {/* <p>{JSON.stringify(guests)}</p> */}
               </div>
               {count
                 .filter((item: any) => {

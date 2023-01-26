@@ -6,6 +6,7 @@ import timezones from "@/resources/timezones.json";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { getSession } from "next-auth/react";
+import Image from "next/image";
 import moment from "moment";
 import {
   StandaloneSearchBox,
@@ -60,7 +61,7 @@ export default function EventForm({ data }: { data: any }) {
 
   //   const [session, setSession] = useState<any>({});
 
-  const [libraries] = useState(["places"]);
+  // const [libraries] = useState();
 
   // const { data: session } = useSession();
   // let sessionId;
@@ -221,7 +222,7 @@ export default function EventForm({ data }: { data: any }) {
   //     }
   //   };
 
-  const inputRef = useRef();
+  const inputRef = useRef<any>();
 
   const handlePlaceChanged = () => {
     const [place] = inputRef.current.getPlaces();
@@ -240,7 +241,7 @@ export default function EventForm({ data }: { data: any }) {
   return (
     <LoadScript
       googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY}
-      libraries={libraries}
+      libraries={["places"]}
     >
       <div className="">
         {/* <section className="bg-gray-900 text-white rounded-lg">
@@ -1264,7 +1265,14 @@ export default function EventForm({ data }: { data: any }) {
                         </label> */}
                         <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
                           <div className="space-y-1 text-center">
-                            {image != "" && <img src={image} />}
+                            {image != "" && (
+                              <Image
+                                src={image}
+                                alt={"Event photo"}
+                                width={1024}
+                                height={1024}
+                              />
+                            )}
                             {image == "" && (
                               <>
                                 <svg
