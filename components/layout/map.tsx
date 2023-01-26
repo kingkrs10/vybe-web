@@ -12,9 +12,10 @@ function MyMapComponent({
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const google = (window as any).google;
     if (ref.current) {
       // setMap(new window.google.maps.Map(ref.current, {defaultProps.center, defaultProps.zoom}));
-      new window.google.maps.Map(ref.current, {
+      new google.maps.Map(ref.current, {
         center: center,
         zoom: zoom,
         fullscreenControl: false,
