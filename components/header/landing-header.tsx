@@ -106,6 +106,10 @@ const userNavigation = [
   { name: "Signout", href: "" },
 ];
 
+const loaderProp = ({ src }) => {
+  return src;
+};
+
 export default function LandingNav() {
   const { data: session } = useSession();
   return (
@@ -121,6 +125,7 @@ export default function LandingNav() {
                 alt=""
                 width={100}
                 height={100}
+                loader={loaderProp}
               />
             </a>
           </div>
