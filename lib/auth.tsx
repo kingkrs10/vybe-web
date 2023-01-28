@@ -62,7 +62,6 @@ export const authOptions = {
       );
       session.accessToken = token.accessToken;
       session.user.userData = userData.data.data;
-      // setSession(session);
 
       return session;
     },

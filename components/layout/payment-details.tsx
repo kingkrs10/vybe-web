@@ -70,7 +70,7 @@ export default function PaymentDetails({
     // passing the client secret obtained in step 3
     clientSecret: clientSecret,
     // Fully customizable with appearance API.
-    appearance: {},
+    appearance: { theme: "stripe" },
   };
   //   useEffect(() => {
   //     async function getData(eventId: any) {
@@ -98,7 +98,16 @@ export default function PaymentDetails({
         <div className="mx-auto bg-white shadow sm:rounded-lg p-6">
           <Elements stripe={stripePromise} options={options}>
             <form>
-              <PaymentElement />
+              <PaymentElement
+                options={{
+                  layout: {
+                    type: "accordion",
+                    defaultCollapsed: false,
+                    radios: false,
+                    spacedAccordionItems: false,
+                  },
+                }}
+              />
               {/* <button>Submit</button> */}
             </form>
           </Elements>
