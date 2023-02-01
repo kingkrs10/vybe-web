@@ -123,19 +123,19 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
     } else if (session != undefined && step == 2 && isFilled) {
       return ["Pay now", true];
     } else if (session != undefined && step == 3) {
-      return ["Confirm payment", true];
+      return ["Confirm payment", false];
     }
   }
 
   return (
     <section
       aria-labelledby="timeline-title"
-      className="lg:col-span-1 lg:col-start-3 relative"
+      className="relative lg:col-span-1 lg:col-start-3"
     >
-      <div className="bg-white shadow sm:rounded-lg  sticky top-6">
+      <div className="sticky top-6 bg-white  shadow sm:rounded-lg">
         <h2
           id="timeline-title"
-          className="text-lg font-medium px-4 py-4 sm:px-6 text-gray-900 border-b w-full"
+          className="w-full border-b px-4 py-4 text-lg font-medium text-gray-900 sm:px-6"
         >
           Tickets
         </h2>
@@ -144,13 +144,13 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
           <ul role="list" className="">
             {tickets.map((item: any, itemIdx: any) => (
               <li key={itemIdx}>
-                <div className="flex mb-4">
-                  <div className="mr-4 flex-shrink-0 mb-0">
+                <div className="mb-4 flex">
+                  <div className="mr-4 mb-0 flex-shrink-0">
                     <p className="text-lg">{item.name}</p>
                     {statusDetail(item.startDate, item.endDate)}
                     <p className="text-xs text-gray-500">{item.description}</p>
                   </div>
-                  <div className="text-right justify-items-end grow">
+                  <div className="grow justify-items-end text-right">
                     <p>${item.price}</p>
                     <select
                       id="count"
@@ -192,7 +192,7 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
         {/* Order summary */}
         <section
           aria-labelledby="summary-heading"
-          className=" bg-gray-50 mt-4 sm:p-6 px-4 py-4 p-4 lg:col-span-5 lg:mt-4 lg:p-6"
+          className=" mt-4 bg-gray-50 p-4 px-4 py-4 sm:p-6 lg:col-span-5 lg:mt-4 lg:p-6"
         >
           <dl className="space-y-4">
             <div className="flex items-center justify-between">
@@ -232,10 +232,10 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
           </dl>
         </section>
 
-        <div className="justify-stretch px-4 py-4 sm:px-4 flex flex-col">
+        <div className="justify-stretch flex flex-col px-4 py-4 sm:px-4">
           <button
             type="button"
-            // disabled={!buttonStatus(session, step, isFilled)[1].toString()}
+            disabled={!buttonStatus(session, step, isFilled)[1]}
             onClick={(e) => {
               e.preventDefault();
               if (session == undefined) {

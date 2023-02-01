@@ -18,6 +18,7 @@ import {
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
+import Logo from "../layout/logo";
 
 const solutions = [
   {
@@ -113,21 +114,12 @@ const loaderProp = ({ src }) => {
 export default function LandingNav() {
   const { data: session } = useSession();
   return (
-    <Popover className="relative bg-white border-b-2 border-gray-100 z-50">
+    <Popover className="relative z-50 border-b-2 border-gray-100 bg-white">
       <div className="mx-auto max-w-7xl px-4  sm:px-6">
         <div className="flex items-center justify-between  py-6 md:justify-start md:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
-            <a href="#">
-              <span className="sr-only">Your Company</span>
-              <Image
-                className="h-8 w-auto sm:h-10"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                alt=""
-                width={100}
-                height={100}
-                loader={loaderProp}
-              />
-            </a>
+            <span className="sr-only">VYBE Events</span>
+            <Logo />
           </div>
           <div className="-my-2 -mr-2 md:hidden">
             <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
@@ -135,7 +127,7 @@ export default function LandingNav() {
               <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </Popover.Button>
           </div>
-          <Popover.Group as="nav" className="hidden space-x-10 md:flex">
+          {/* <Popover.Group as="nav" className="hidden space-x-10 md:flex">
             <Popover className="relative">
               {({ open }) => (
                 <>
@@ -313,7 +305,7 @@ export default function LandingNav() {
                 </>
               )}
             </Popover>
-          </Popover.Group>
+          </Popover.Group> */}
           <div className="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
             <a
               href={`/`}
@@ -360,7 +352,7 @@ export default function LandingNav() {
                           <Menu.Item key={item.name}>
                             <a
                               className={
-                                "block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                                "block cursor-pointer py-2 px-4 text-sm text-gray-700 hover:bg-gray-100"
                               }
                               onClick={(e) => signOut()}
                             >

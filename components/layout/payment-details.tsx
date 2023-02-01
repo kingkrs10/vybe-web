@@ -1,21 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import moment from "moment";
-import { useAtom } from "jotai";
-import {
-  ticketsAtom,
-  checkoutStepAtom,
-  guestFilledAtom,
-  guestsAtom,
-} from "@/lib/atoms";
-import { Elements, PaymentElement } from "@stripe/react-stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-// import {} from '@stripe/react-stripe-js';
-
-import { Disclosure } from "@headlessui/react";
-import { LockClosedIcon } from "@heroicons/react/20/solid";
-import { useRouter, usePathname } from "next/navigation";
+import {} from "@stripe/react-stripe-js";
+import PaymentForm from "./payment-form";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -42,22 +31,13 @@ export default function PaymentDetails({
   session: any;
 }) {
   const [clientSecret, setClientSecret] = useState<any>();
-  const [total, setTotal] = useState<any>([]);
-  const [count, setCount] = useAtom(ticketsAtom);
-  const [step, setStep] = useAtom(checkoutStepAtom);
-  const [isFilled] = useAtom(guestFilledAtom);
-  const [guests, setGuests] = useAtom(guestsAtom);
 
-  //   const router = useRouter();
-  //   const pathname = usePathname();
   useEffect(() => {
     async function paymentIntent() {
       try {
         const intent = await axios.get(
           `${process.env.NEXT_PUBLIC_APIURL}/stripe/paymentIntent`
         );
-        // const {client_secret: clientSecret} = await response.json();
-        console.log(intent.data.data.client_secret);
         setClientSecret(intent.data.data.client_secret);
       } catch (error) {
         console.log(error);
@@ -70,24 +50,7 @@ export default function PaymentDetails({
     // passing the client secret obtained in step 3
     clientSecret: clientSecret,
     // Fully customizable with appearance API.
-    appearance: { theme: "stripe" },
   };
-  //   useEffect(() => {
-  //     async function getData(eventId: any) {
-  //       try {
-  //         const tickets = await axios.get(
-  //           `${
-  //             process.env.NEXT_PUBLIC_APIURL
-  //           }/tickets/all?eventId=${eventId}&pageNo=${1}`
-  //         );
-
-  //         setTickets(tickets.data.data);
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-  //     }
-  //     getData(id);
-  //   }, []);
 
   return (
     <section
@@ -97,47 +60,8 @@ export default function PaymentDetails({
       {clientSecret && (
         <div className="mx-auto bg-white shadow sm:rounded-lg p-6">
           <Elements stripe={stripePromise} options={options}>
-            <form>
-              <PaymentElement
-                options={{
-                  layout: {
-                    type: "accordion",
-                    defaultCollapsed: false,
-                    radios: false,
-                    spacedAccordionItems: false,
-                  },
-                }}
-              />
-              {/* <button>Submit</button> */}
-            </form>
+            <PaymentForm />
           </Elements>
-          <div className="pt-5">
-            <div className="flex justify-end">
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setStep(1);
-                }}
-                className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                disabled={!isFilled}
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (isFilled) {
-                    setStep(3);
-                  }
-                }}
-                className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-              >
-                Continue
-              </button>
-            </div>
-          </div>
         </div>
       )}
 
