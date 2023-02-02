@@ -180,7 +180,7 @@ export default function NewTicket() {
       description,
       category,
       type,
-      address,
+      address: address?.address,
       country,
       city,
       state,
@@ -195,12 +195,15 @@ export default function NewTicket() {
       website,
       twitter,
       instagram,
+      lat: address?.lat,
+      lng: address?.lng,
     };
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_APIURL!}/events`,
         data
       );
+      console.log(response.data.data);
       return response.data.data;
     } catch (error) {
       console.error(error);
@@ -1528,16 +1531,16 @@ export default function NewTicket() {
               </section>
             )}
 
-            {tickets.length !== 0 && (
+            {tickets.length !== 0 && !newTicket && (
               <section className="mt-4 sm:mt-4">
-                <div className="m-4 mx-auto mt-8 w-full max-w-xl items-end justify-end">
+                <div className="w-full items-end justify-end">
                   <button
                     type="submit"
                     onClick={(e) => {
                       e.preventDefault();
                       setNewTicket(true);
                     }}
-                    className="group mt-4 flex rounded-md bg-purple-600 px-8 py-3 text-white transition focus:outline-none focus:ring focus:ring-yellow-400 sm:mt-0 sm:w-auto"
+                    className="group mt-4 flex justify-self-end rounded-md bg-purple-600 px-8 py-3 text-white transition focus:outline-none focus:ring focus:ring-yellow-400 sm:mt-0 sm:w-auto"
                   >
                     <span className="text-sm font-medium">Add ticket</span>
 

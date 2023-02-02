@@ -55,7 +55,7 @@ export default function TicketsDetails({ id }: { id: any }) {
           width={500}
           priority
           height={500}
-          className="h-96 w-full object-cover rounded-t-lg"
+          className="h-96 w-full rounded-t-lg object-cover"
         />
         <div className="px-4 py-5 sm:px-6">
           <h2
