@@ -6,12 +6,11 @@ export default async function handler(req: any, res: any) {
   } else {
     url = req.query.url;
   }
+  // console.log(url);
   const response = await fetch(url, {
     method: "POST",
     body: req.body,
   });
-
-  //  = await file.generateSignedPostPolicyV4(options);
-  console.log(response);
+  // console.log(response);
   res.status(200).json(response);
 }

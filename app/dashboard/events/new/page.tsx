@@ -86,15 +86,35 @@ export default function NewTicket() {
         formData.append(key, value);
       }
     );
-    if (url) {
-      const upload = await fetch(`/api/upload-file?url=${url}`, {
-        method: "POST",
-        body: formData,
-      });
-      if (upload) {
-        setImage(`${url}${filename}`);
-      }
+
+    let surl: string;
+    if (process.env.NODE_ENV === "development") {
+      surl = "https://cors-anywhere.herokuapp.com/" + url;
+    } else {
+      surl = url;
     }
+
+    const upload = await fetch(`${surl}`, {
+      method: "POST",
+      body: formData,
+    });
+
+    // const response = await upload.json();
+    // console.log(upload);
+    if (upload) {
+      setImage(`${url}${filename}`);
+    }
+    // if (url) {
+    //   const upload = await fetch(`/api/upload-file?url=${url}`, {
+    //     method: "POST",
+    //     body: formData,
+    //   });
+    //   const response = await upload.json();
+    //   console.log(response);
+    //   if (response) {
+    //     setImage(`${url}${filename}`);
+    //   }
+    // }
     // console.log(upload);
   };
 
