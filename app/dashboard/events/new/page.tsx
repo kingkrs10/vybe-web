@@ -97,6 +97,10 @@ export default function NewTicket() {
     const upload = await fetch(`${surl}`, {
       method: "POST",
       body: formData,
+      mode: "no-cors",
+      headers: {
+        accept: "application/json",
+      },
     });
 
     // const response = await upload.json();

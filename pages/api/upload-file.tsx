@@ -11,6 +11,9 @@ export default async function handler(req: any, res: any) {
     method: "POST",
     body: req.body,
     mode: "no-cors",
+    headers: {
+      accept: "application/json",
+    },
   });
   // console.log(response);
   res.status(200).json(response);
