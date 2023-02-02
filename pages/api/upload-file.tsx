@@ -10,6 +10,7 @@ export default async function handler(req: any, res: any) {
   const response = await fetch(url, {
     method: "POST",
     body: req.body,
+    mode: "no-cors",
   });
   // console.log(response);
   res.status(200).json(response);
