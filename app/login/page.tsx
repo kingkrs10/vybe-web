@@ -1,4 +1,5 @@
 "use client";
+import Logo from "@/components/layout/logo";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -15,9 +16,6 @@ const loaderProp = ({ src }) => {
 };
 
 export default function Example(props: Props) {
-  // const url = new URL(window.location.href);
-  // const router = useRouter();
-  // const { redirect } = router.query;
   return (
     <>
       <div className="flex min-h-full">
@@ -31,14 +29,7 @@ export default function Example(props: Props) {
         <div className="flex flex-1 flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
           <div className="mx-auto w-full max-w-sm lg:w-96">
             <div>
-              <Image
-                className="h-12 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                alt="Your Company"
-                width={100}
-                height={100}
-                loader={loaderProp}
-              />
+              <Logo />
               <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">
                 Sign in to your account
               </h2>
@@ -46,7 +37,7 @@ export default function Example(props: Props) {
                 Or{" "}
                 <a
                   href="#"
-                  className="font-medium text-indigo-600 hover:text-indigo-500"
+                  className="font-medium text-purple-600 hover:text-purple-500"
                 >
                   start your 14-day free trial
                 </a>
@@ -161,7 +152,7 @@ export default function Example(props: Props) {
                         type="email"
                         autoComplete="email"
                         required
-                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
                       />
                     </div>
                   </div>
@@ -180,7 +171,7 @@ export default function Example(props: Props) {
                         type="password"
                         autoComplete="current-password"
                         required
-                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
                       />
                     </div>
                   </div>
@@ -191,7 +182,7 @@ export default function Example(props: Props) {
                         id="remember-me"
                         name="remember-me"
                         type="checkbox"
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                        className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                       />
                       <label
                         htmlFor="remember-me"
@@ -204,7 +195,7 @@ export default function Example(props: Props) {
                     <div className="text-sm">
                       <a
                         href="#"
-                        className="font-medium text-indigo-600 hover:text-indigo-500"
+                        className="font-medium text-purple-600 hover:text-purple-500"
                       >
                         Forgot your password?
                       </a>
@@ -214,7 +205,7 @@ export default function Example(props: Props) {
                   <div>
                     <button
                       type="submit"
-                      className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      className="flex w-full justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                     >
                       Sign in
                     </button>

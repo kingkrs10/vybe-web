@@ -122,7 +122,7 @@ export default function LandingNav() {
             <Logo />
           </div>
           <div className="-my-2 -mr-2 md:hidden">
-            <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+            <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500">
               <span className="sr-only">Open menu</span>
               <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </Popover.Button>
@@ -166,7 +166,7 @@ export default function LandingNav() {
                               className="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50"
                             >
                               <item.icon
-                                className="h-6 w-6 flex-shrink-0 text-indigo-600"
+                                className="h-6 w-6 flex-shrink-0 text-purple-600"
                                 aria-hidden="true"
                               />
                               <div className="ml-4">
@@ -254,7 +254,7 @@ export default function LandingNav() {
                               className="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50"
                             >
                               <item.icon
-                                className="h-6 w-6 flex-shrink-0 text-indigo-600"
+                                className="h-6 w-6 flex-shrink-0 text-purple-600"
                                 aria-hidden="true"
                               />
                               <div className="ml-4">
@@ -292,7 +292,7 @@ export default function LandingNav() {
                           <div className="mt-5 text-sm">
                             <a
                               href="#"
-                              className="font-medium text-indigo-600 hover:text-indigo-500"
+                              className="font-medium text-purple-600 hover:text-purple-500"
                             >
                               View all posts
                               <span aria-hidden="true"> &rarr;</span>
@@ -323,7 +323,7 @@ export default function LandingNav() {
               <>
                 <Menu as="div" className="relative ml-6 mr-4">
                   <div>
-                    <Menu.Button className="flex max-w-xs items-center rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    <Menu.Button className="flex max-w-xs items-center rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
                       <span className="sr-only">Open user menu</span>
                       {session?.user?.image && (
                         <Image
@@ -387,7 +387,7 @@ export default function LandingNav() {
             {session == undefined && (
               <a
                 href="/login"
-                className="ml-6 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                className="ml-6 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-purple-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-purple-700"
               >
                 Sign in
               </a>
@@ -412,17 +412,11 @@ export default function LandingNav() {
           <div className="divide-y-2 divide-gray-50 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
             <div className="px-5 pt-5 pb-6">
               <div className="flex items-center justify-between">
-                <div>
-                  <Image
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                    alt="Your Company"
-                    width={500}
-                    height={500}
-                  />
+                <div className="z-20">
+                  <Logo />
                 </div>
                 <div className="-mr-2">
-                  <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                  <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500">
                     <span className="sr-only">Close menu</span>
                     <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                   </Popover.Button>
@@ -437,7 +431,7 @@ export default function LandingNav() {
                       className="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50"
                     >
                       <item.icon
-                        className="h-6 w-6 flex-shrink-0 text-indigo-600"
+                        className="h-6 w-6 flex-shrink-0 text-purple-600"
                         aria-hidden="true"
                       />
                       <span className="ml-3 text-base font-medium text-gray-900">
@@ -477,7 +471,7 @@ export default function LandingNav() {
                 {session == undefined && (
                   <a
                     href="/login"
-                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-purple-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-purple-700"
                   >
                     Sign in
                   </a>
@@ -487,7 +481,7 @@ export default function LandingNav() {
                    Existing customer?{" "} 
                   <a
                     href="/login"
-                    className="text-indigo-600 hover:text-indigo-500"
+                    className="text-purple-600 hover:text-purple-500"
                   >
                     Sign in
                   </a>

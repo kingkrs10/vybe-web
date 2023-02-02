@@ -150,7 +150,7 @@ export default function GuestFields({ item }: { item: any }) {
             <>
               {/* <div>{it.details.name}</div> */}
               <div className="relative" key={item.ticket + "/" + index}>
-                <div className="absolute bg-gray-200 px-2 rounded-b-md">
+                <div className="absolute rounded-b-md bg-gray-200 px-2">
                   {index + 1}
                 </div>
                 <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
@@ -169,7 +169,7 @@ export default function GuestFields({ item }: { item: any }) {
                         fields(e, index + 1);
                       }}
                       autoComplete="given-name"
-                      className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                     />
                   </div>
                 </div>
@@ -189,7 +189,7 @@ export default function GuestFields({ item }: { item: any }) {
                         fields(e, index + 1);
                       }}
                       autoComplete="email"
-                      className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                     />
                   </div>
                 </div>

@@ -14,7 +14,6 @@ function MyMapComponent({
   useEffect(() => {
     const google = (window as any).google;
     if (ref.current) {
-      // setMap(new window.google.maps.Map(ref.current, {defaultProps.center, defaultProps.zoom}));
       new google.maps.Map(ref.current, {
         center: center,
         zoom: zoom,
@@ -32,15 +31,9 @@ function MyMapComponent({
 
 export default function Map({ lat, lng }: { lat: any; lng: any }) {
   return (
-    <div
-      // style={{ display: "flex", height: "50vh" }}
-      className="mt-4 h-96"
-    >
+    <div className="mt-4 h-96">
       {lat && lng && (
-        <Wrapper
-          apiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY}
-          // render={render}
-        >
+        <Wrapper apiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY}>
           <MyMapComponent
             center={{
               lat: parseFloat(lat),

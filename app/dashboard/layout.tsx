@@ -1,28 +1,22 @@
-import Image from "next/image";
-import Providers from "../providers";
 import Menu from "../../components/layout/menu";
 import Sidebar from "../../components/layout/sidebar";
-import GoogleButton from "../../components/buttons/google-button";
-// import LoginImg from "../public/login.jpeg";
-// import { unstable_getServerSession } from "next-auth/next";
-import { getSession } from "@/lib/session";
+import { getSession, getCurrentUser } from "@/lib/session";
 import { redirect } from "next/navigation";
-
-// import "../../styles/dist.css";
+import { useRouter, usePathname } from "next/navigation";
 
 export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // console.log(params);
   const session = await getSession();
+  // const path = usePathname();
+  if (session == null /*&& path == "/dashboard/events/new"*/) {
+    redirect("/login?redirect=/dashboard/events/");
+  }
   return (
     <>
-      {/* {!session && {
-        redirect("/login");
-      }} */}
-      {session && (
+      {session != null && (
         <div>
           <Sidebar />
           <div className="md:pl-64">

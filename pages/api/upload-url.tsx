@@ -17,6 +17,6 @@ export default async function handler(req: any, res: any) {
   };
 
   const [response] = await file.generateSignedPostPolicyV4(options);
-  //   console.log(response);
+  console.log(response);
   res.status(200).json(response);
 }

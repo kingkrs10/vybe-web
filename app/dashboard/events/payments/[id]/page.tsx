@@ -1,6 +1,3 @@
-import Image from "next/image";
-// import styles from "./page.module.css";
-
 export default function Tickets() {
   return (
     <div className="">
@@ -12,7 +9,7 @@ export default function Tickets() {
             <p className="text-2xl font-medium text-gray-900">$240.94</p>
           </div>
 
-          <span className="rounded-full bg-blue-100 p-3 text-blue-600">
+          <span className="rounded-full bg-purple-100 p-3 text-blue-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-8 w-8"

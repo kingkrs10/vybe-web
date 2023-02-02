@@ -32,7 +32,7 @@ export default function NewTicket() {
   const [endDate, setEndDate] = useState("");
   const [endTime, setEndTime] = useState("");
   const [endVisible, setEndVisible] = useState(true);
-  const [mapVisible, setMapVisible] = useState(true);
+  const [mapVisible, setMapVisible] = useState(false);
   const [image, setImage] = useState("");
   const [website, setWebsite] = useState("");
   const [twitter, setTwitter] = useState("");
@@ -86,13 +86,16 @@ export default function NewTicket() {
         formData.append(key, value);
       }
     );
-
-    const upload = await fetch(`https://cors-anywhere.herokuapp.com/${url}`, {
-      method: "POST",
-      body: formData,
-    });
-
-    setImage(`${url}${filename}`);
+    if (url) {
+      const upload = await fetch(`/api/upload-file?url=${url}`, {
+        method: "POST",
+        body: formData,
+      });
+      if (upload) {
+        setImage(`${url}${filename}`);
+      }
+    }
+    // console.log(upload);
   };
 
   function statusDetail(startDate: any, endDate: any) {
@@ -230,7 +233,7 @@ export default function NewTicket() {
       libraries={["places"]}
     >
       <div className="">
-        <section className="bg-gray-900 text-white rounded-lg">
+        <section className="rounded-lg bg-gray-900 text-white">
           <div className="max-w-screen-xl px-4 py-4 sm:px-6 lg:px-8">
             {/* <p>{JSON.stringify(session)}</p> */}
             {/* <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 md:grid-cols-2 md:gap-12 lg:grid-cols-3"> */}
@@ -242,7 +245,7 @@ export default function NewTicket() {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-6 h-6"
+                  className="h-6 w-6"
                 >
                   <path
                     strokeLinecap="round"
@@ -267,12 +270,12 @@ export default function NewTicket() {
                     <ol className="relative z-10 flex justify-between text-sm font-medium text-gray-500">
                       <li
                         onClick={() => setStep(1)}
-                        className="flex items-center p-2 bg-gray-900"
+                        className="flex items-center bg-gray-900 p-2"
                       >
                         <span
                           className={
                             step == 1
-                              ? "h-6 w-6 rounded-full bg-blue-600 text-white text-center text-[10px] font-bold leading-6"
+                              ? "h-6 w-6 rounded-full bg-purple-600 text-center text-[10px] font-bold leading-6 text-white"
                               : "h-6 w-6 rounded-full bg-gray-100 text-center text-[10px] font-bold leading-6"
                           }
                         >
@@ -286,12 +289,12 @@ export default function NewTicket() {
 
                       <li
                         onClick={() => setStep(2)}
-                        className="flex items-center p-2 bg-gray-900"
+                        className="flex items-center bg-gray-900 p-2"
                       >
                         <span
                           className={
                             step == 2
-                              ? "h-6 w-6 rounded-full bg-blue-600 text-white text-center text-[10px] font-bold leading-6"
+                              ? "h-6 w-6 rounded-full bg-purple-600 text-center text-[10px] font-bold leading-6 text-white"
                               : "h-6 w-6 rounded-full bg-gray-100 text-center text-[10px] font-bold leading-6"
                           }
                         >
@@ -302,12 +305,12 @@ export default function NewTicket() {
 
                       <li
                         onClick={() => setStep(3)}
-                        className="flex items-center p-2 bg-gray-900"
+                        className="flex items-center bg-gray-900 p-2"
                       >
                         <span
                           className={
                             step == 3
-                              ? "h-6 w-6 rounded-full bg-blue-600 text-white text-center text-[10px] font-bold leading-6"
+                              ? "h-6 w-6 rounded-full bg-purple-600 text-center text-[10px] font-bold leading-6 text-white"
                               : "h-6 w-6 rounded-full bg-gray-100 text-center text-[10px] font-bold leading-6"
                           }
                         >
@@ -327,7 +330,7 @@ export default function NewTicket() {
         {step === 1 && (
           <>
             <div>
-              <div className="md:grid md:grid-cols-3 md:gap-6 mt-4">
+              <div className="mt-4 md:grid md:grid-cols-3 md:gap-6">
                 <div className="md:col-span-1">
                   <div className="px-4 sm:px-0">
                     <h3 className="text-lg font-medium leading-6 text-gray-900">
@@ -358,7 +361,7 @@ export default function NewTicket() {
                               onChange={(text) => setName(text.target.value)}
                               name="name"
                               id="name"
-                              className="block w-full flex-1 rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                              className="block w-full flex-1 rounded-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                               placeholder="Event name"
                               value={name}
                             />
@@ -380,7 +383,7 @@ export default function NewTicket() {
                                 setDescription(text.target.value)
                               }
                               rows={3}
-                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                               placeholder="Tell everyone about your event."
                               value={description}
                               // defaultValue={""}
@@ -404,7 +407,7 @@ export default function NewTicket() {
                             value={category}
                             onChange={(text) => setCategory(text.target.value)}
                             autoComplete="category"
-                            className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                            className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
                           >
                             {Object.keys(categoryList)
                               .sort()
@@ -421,7 +424,7 @@ export default function NewTicket() {
                       {/* <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                   <button
                     type="submit"
-                    className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="inline-flex justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                   >
                     Save
                   </button>
@@ -465,7 +468,7 @@ export default function NewTicket() {
                                   value=""
                                   name="list-radio"
                                   checked
-                                  className="w-4 h-4 ml-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                                  className="w-4 h-4 ml-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                                 />
                                 <label
                                   htmlFor="horizontal-list-radio-license"
@@ -482,7 +485,7 @@ export default function NewTicket() {
                                   type="radio"
                                   value=""
                                   name="list-radio"
-                                  className="w-4 h-4 ml-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                                  className="w-4 h-4 ml-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                                 />
                                 <label
                                   htmlFor="horizontal-list-radio-id"
@@ -505,7 +508,7 @@ export default function NewTicket() {
                               />
                               <label
                                 htmlFor="hosting-small"
-                                className="inline-flex justify-between items-center p-5 w-full text-gray-500 bg-white rounded-lg border border-gray-200 cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
+                                className="inline-flex justify-between items-center p-5 w-full text-gray-500 bg-white rounded-lg border border-gray-200 cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-purple-500 peer-checked:border-purple-600 peer-checked:text-purple-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
                               >
                                 <div className="block">
                                   <div className="w-full text-lg font-semibold">
@@ -540,7 +543,7 @@ export default function NewTicket() {
                               />
                               <label
                                 htmlFor="hosting-big"
-                                className="inline-flex justify-between items-center p-5 w-full text-gray-500 bg-white rounded-lg border border-gray-200 cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
+                                className="inline-flex justify-between items-center p-5 w-full text-gray-500 bg-white rounded-lg border border-gray-200 cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-purple-500 peer-checked:border-purple-600 peer-checked:text-purple-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
                               >
                                 <div className="block">
                                   <div className="w-full text-lg font-semibold">
@@ -584,12 +587,12 @@ export default function NewTicket() {
 
                                 <label
                                   htmlFor="live"
-                                  className="block cursor-pointer rounded-lg border border-gray-100 p-4 text-sm font-medium shadow-sm hover:border-gray-200 peer-checked:border-blue-500 peer-checked:ring-1 peer-checked:ring-blue-500"
+                                  className="block cursor-pointer rounded-lg border border-gray-100 p-4 text-sm font-medium shadow-sm hover:border-gray-200 peer-checked:border-purple-500 peer-checked:ring-1 peer-checked:ring-purple-500"
                                 >
                                   <div className="flex items-center justify-between">
                                     <p className="text-gray-700">Live event</p>
                                     <svg
-                                      className="hidden h-5 w-5 text-blue-600"
+                                      className="hidden h-5 w-5 text-purple-600"
                                       xmlns="http://www.w3.org/2000/svg"
                                       viewBox="0 0 20 20"
                                       fill="currentColor"
@@ -620,14 +623,14 @@ export default function NewTicket() {
 
                                 <label
                                   htmlFor="virtual"
-                                  className="block cursor-pointer rounded-lg border border-gray-100 p-4 text-sm font-medium shadow-sm hover:border-gray-200 peer-checked:border-blue-500 peer-checked:ring-1 peer-checked:ring-blue-500"
+                                  className="block cursor-pointer rounded-lg border border-gray-100 p-4 text-sm font-medium shadow-sm hover:border-gray-200 peer-checked:border-purple-500 peer-checked:ring-1 peer-checked:ring-purple-500"
                                 >
                                   <div className="flex items-center justify-between">
                                     <p className="text-gray-700">
                                       Virtual event
                                     </p>
                                     <svg
-                                      className="hidden h-5 w-5 text-blue-600"
+                                      className="hidden h-5 w-5 text-purple-600"
                                       xmlns="http://www.w3.org/2000/svg"
                                       viewBox="0 0 20 20"
                                       fill="currentColor"
@@ -661,7 +664,7 @@ export default function NewTicket() {
                                       viewBox="0 0 24 24"
                                       strokeWidth={1.5}
                                       stroke="currentColor"
-                                      className="w-6 h-6"
+                                      className="h-6 w-6"
                                     >
                                       <path
                                         strokeLinecap="round"
@@ -678,11 +681,11 @@ export default function NewTicket() {
                                     onChange={(text) =>
                                       setVirtualUrl(text.target.value)
                                     }
-                                    className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                    className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                     placeholder="Vitual address"
                                   />
                                 </div>
-                                <p className="text-gray-500 mx-1 mt-2 text-sm">
+                                <p className="mx-1 mt-2 text-sm text-gray-500">
                                   Virtual event links will be made provided to
                                   guests upon ticket purchase.
                                 </p>
@@ -694,7 +697,7 @@ export default function NewTicket() {
                                   className="block text-sm font-medium text-gray-700"
                                 >
                                   Password{" "}
-                                  <span className="text-gray-500 text-sm">
+                                  <span className="text-sm text-gray-500">
                                     (optional)
                                   </span>
                                 </label>
@@ -706,7 +709,7 @@ export default function NewTicket() {
                                       viewBox="0 0 24 24"
                                       strokeWidth={1.5}
                                       stroke="currentColor"
-                                      className="w-6 h-6"
+                                      className="h-6 w-6"
                                     >
                                       <path
                                         strokeLinecap="round"
@@ -723,7 +726,7 @@ export default function NewTicket() {
                                     onChange={(text) =>
                                       setPassword(text.target.value)
                                     }
-                                    className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                    className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                     placeholder="Password"
                                   />
                                 </div>
@@ -770,7 +773,7 @@ export default function NewTicket() {
                                     // onChange={(text) =>
                                     //   setAddress(text.target.value)
                                     // }
-                                    className="block w-full form-control flex-1 rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                    className="form-control block w-full flex-1 rounded-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                     placeholder="Your address"
                                   />
                                 </StandaloneSearchBox>
@@ -789,7 +792,7 @@ export default function NewTicket() {
                                       onChange={(text) =>
                                         setManual(text.target.checked)
                                       }
-                                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                      className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                                     />
                                   </div>
                                   <div className="ml-3 text-sm">
@@ -823,7 +826,7 @@ export default function NewTicket() {
                                         setCountry(text.target.value)
                                       }
                                       autoComplete="country-name"
-                                      className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                      className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
                                     >
                                       {Object.keys(countryList)
                                         .sort()
@@ -853,7 +856,7 @@ export default function NewTicket() {
                                       //   setAddress(text.target.value)
                                       // }
                                       autoComplete="street-address"
-                                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                     />
                                   </div>
 
@@ -869,7 +872,7 @@ export default function NewTicket() {
                         name="city"
                         id="city"
                         autoComplete="address-level2"
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                       /> */}
                                     <select
                                       id="city"
@@ -879,7 +882,7 @@ export default function NewTicket() {
                                         setCity(text.target.value)
                                       }
                                       autoComplete="country-name"
-                                      className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                      className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
                                     >
                                       {countryname?.sort().map((key, index) => {
                                         return (
@@ -907,7 +910,7 @@ export default function NewTicket() {
                                         setState(text.target.value)
                                       }
                                       autoComplete="address-level1"
-                                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                     />
                                   </div>
 
@@ -927,7 +930,7 @@ export default function NewTicket() {
                                         setPostalCode(text.target.value)
                                       }
                                       autoComplete="postal-code"
-                                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                     />
                                   </div>
                                 </>
@@ -949,7 +952,7 @@ export default function NewTicket() {
                                 onChange={(text) =>
                                   setMapVisible(text.target.checked)
                                 }
-                                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                               />
                             </div>
                             <div className="ml-3 text-sm">
@@ -968,7 +971,7 @@ export default function NewTicket() {
                         </div>
                         {/* <button
                     type="submit"
-                    className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="inline-flex justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                   >
                     Save
                   </button> */}
@@ -1017,7 +1020,7 @@ export default function NewTicket() {
                                 onChange={(text) =>
                                   setTimezone(text.target.value)
                                 }
-                                className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
                               >
                                 {timezones
                                   .sort((a: any, b: any) => a.name - b.name)
@@ -1047,7 +1050,7 @@ export default function NewTicket() {
                                       viewBox="0 0 24 24"
                                       strokeWidth={1.5}
                                       stroke="currentColor"
-                                      className="w-6 h-6"
+                                      className="h-6 w-6"
                                     >
                                       <path
                                         strokeLinecap="round"
@@ -1064,7 +1067,7 @@ export default function NewTicket() {
                                     onChange={(text) =>
                                       setStartDate(text.target.value)
                                     }
-                                    className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                    className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                     placeholder="01/01/2024"
                                   />
                                 </div>
@@ -1085,7 +1088,7 @@ export default function NewTicket() {
                                       viewBox="0 0 24 24"
                                       strokeWidth={1.5}
                                       stroke="currentColor"
-                                      className="w-6 h-6"
+                                      className="h-6 w-6"
                                     >
                                       <path
                                         strokeLinecap="round"
@@ -1102,7 +1105,7 @@ export default function NewTicket() {
                                     onChange={(text) =>
                                       setStartTime(text.target.value)
                                     }
-                                    className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                    className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                     placeholder="2:00 PM"
                                   />
                                 </div>
@@ -1125,7 +1128,7 @@ export default function NewTicket() {
                                       viewBox="0 0 24 24"
                                       strokeWidth={1.5}
                                       stroke="currentColor"
-                                      className="w-6 h-6"
+                                      className="h-6 w-6"
                                     >
                                       <path
                                         strokeLinecap="round"
@@ -1142,7 +1145,7 @@ export default function NewTicket() {
                                     onChange={(text) =>
                                       setEndDate(text.target.value)
                                     }
-                                    className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                    className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                     placeholder="01/01/2024"
                                   />
                                 </div>
@@ -1163,7 +1166,7 @@ export default function NewTicket() {
                                       viewBox="0 0 24 24"
                                       strokeWidth={1.5}
                                       stroke="currentColor"
-                                      className="w-6 h-6"
+                                      className="h-6 w-6"
                                     >
                                       <path
                                         strokeLinecap="round"
@@ -1180,7 +1183,7 @@ export default function NewTicket() {
                                     onChange={(text) =>
                                       setEndTime(text.target.value)
                                     }
-                                    className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                    className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                     placeholder="3:00 PM"
                                   />
                                 </div>
@@ -1197,7 +1200,7 @@ export default function NewTicket() {
                                   onChange={(text) =>
                                     setEndVisible(text.target.checked)
                                   }
-                                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                  className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                                 />
                               </div>
                               <div className="ml-3 text-sm">
@@ -1216,7 +1219,7 @@ export default function NewTicket() {
                         <button
                           type="submit"
                           onClick={() => setStep(2)}
-                          className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                          className="inline-flex justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                         >
                           Continue
                         </button>
@@ -1233,7 +1236,7 @@ export default function NewTicket() {
         {step === 2 && (
           <>
             <div>
-              <div className="md:grid md:grid-cols-3 md:gap-6 mt-4">
+              <div className="mt-4 md:grid md:grid-cols-3 md:gap-6">
                 <div className="md:col-span-1">
                   <div className="px-4 sm:px-0">
                     <h3 className="text-lg font-medium leading-6 text-gray-900">
@@ -1275,7 +1278,7 @@ export default function NewTicket() {
                                   <div className="flex text-sm text-gray-600">
                                     <label
                                       htmlFor="image"
-                                      className="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
+                                      className="relative cursor-pointer rounded-md bg-white font-medium text-purple-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-purple-500 focus-within:ring-offset-2 hover:text-purple-500"
                                     >
                                       <span>Upload a file</span>
                                       <input
@@ -1302,14 +1305,14 @@ export default function NewTicket() {
                           </div>
                         </div>
                       </div>
-                      <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
+                      {/* <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                         <button
                           type="submit"
-                          className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                          className="inline-flex justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                         >
                           Save
                         </button>
-                      </div>
+                      </div> */}
                     </div>
                   </form>
                 </div>
@@ -1353,7 +1356,7 @@ export default function NewTicket() {
                               value={website}
                               name="website"
                               id="website"
-                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                             />
                           </div>
                         </div>
@@ -1374,7 +1377,7 @@ export default function NewTicket() {
                               value={twitter}
                               name="twitter"
                               id="twitter"
-                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                             />
                           </div>
                         </div>
@@ -1397,7 +1400,7 @@ export default function NewTicket() {
                               value={facebook}
                               name="facebook"
                               id="facebook"
-                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                             />
                           </div>
                         </div>
@@ -1420,7 +1423,7 @@ export default function NewTicket() {
                               value={instagram}
                               name="instagram"
                               id="instagram"
-                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                             />
                           </div>
                         </div>
@@ -1435,7 +1438,7 @@ export default function NewTicket() {
                             setEventId(event.eventId);
                             if (event) setStep(3);
                           }}
-                          className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                          className="inline-flex justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                         >
                           Continue
                         </button>
@@ -1468,7 +1471,7 @@ export default function NewTicket() {
                   <div className="mx-auto mt-8 max-w-xl items-center justify-center">
                     <form
                       action="#"
-                      className="sm:flex sm:gap-4 items-center justify-center"
+                      className="items-center justify-center sm:flex sm:gap-4"
                     >
                       <button
                         type="submit"
@@ -1476,7 +1479,7 @@ export default function NewTicket() {
                           e.preventDefault();
                           setNewTicket(true);
                         }}
-                        className="group mt-4 flex  rounded-md bg-blue-600 px-8 py-3 text-white transition focus:outline-none focus:ring focus:ring-yellow-400 sm:mt-0 sm:w-auto"
+                        className="group mt-4 flex  rounded-md bg-purple-600 px-8 py-3 text-white transition focus:outline-none focus:ring focus:ring-yellow-400 sm:mt-0 sm:w-auto"
                       >
                         <span className="text-sm font-medium">Add ticket</span>
 
@@ -1503,14 +1506,14 @@ export default function NewTicket() {
 
             {tickets.length !== 0 && (
               <section className="mt-4 sm:mt-4">
-                <div className="mx-auto mt-8 m-4 max-w-xl w-full items-end justify-end">
+                <div className="m-4 mx-auto mt-8 w-full max-w-xl items-end justify-end">
                   <button
                     type="submit"
                     onClick={(e) => {
                       e.preventDefault();
                       setNewTicket(true);
                     }}
-                    className="group mt-4 flex rounded-md bg-blue-600 px-8 py-3 text-white transition focus:outline-none focus:ring focus:ring-yellow-400 sm:mt-0 sm:w-auto"
+                    className="group mt-4 flex rounded-md bg-purple-600 px-8 py-3 text-white transition focus:outline-none focus:ring focus:ring-yellow-400 sm:mt-0 sm:w-auto"
                   >
                     <span className="text-sm font-medium">Add ticket</span>
 
@@ -1530,7 +1533,7 @@ export default function NewTicket() {
                     </svg>
                   </button>
                 </div>
-                <div className="overflow-hidden overflow-x-auto rounded-lg border border-gray-200 mt-4">
+                <div className="mt-4 overflow-hidden overflow-x-auto rounded-lg border border-gray-200">
                   <table className="min-w-full divide-y divide-gray-200 text-sm">
                     <thead className="bg-gray-100">
                       <tr>
@@ -1632,7 +1635,7 @@ export default function NewTicket() {
                           <td className="whitespace-nowrap px-4 py-2">
                             <a
                               href="#"
-                              className="text-sm font-medium text-blue-600 hover:underline"
+                              className="text-sm font-medium text-purple-600 hover:underline"
                             >
                               View
                             </a>
@@ -1685,14 +1688,14 @@ export default function NewTicket() {
 
                                     <label
                                       htmlFor="live"
-                                      className="block cursor-pointer rounded-lg border border-gray-100 p-4 text-sm font-medium shadow-sm hover:border-gray-200 peer-checked:border-blue-500 peer-checked:ring-1 peer-checked:ring-blue-500"
+                                      className="block cursor-pointer rounded-lg border border-gray-100 p-4 text-sm font-medium shadow-sm hover:border-gray-200 peer-checked:border-purple-500 peer-checked:ring-1 peer-checked:ring-purple-500"
                                     >
                                       <div className="flex items-center justify-between">
                                         <p className="text-gray-700">
                                           Live event
                                         </p>
                                         <svg
-                                          className="hidden h-5 w-5 text-blue-600"
+                                          className="hidden h-5 w-5 text-purple-600"
                                           xmlns="http://www.w3.org/2000/svg"
                                           viewBox="0 0 20 20"
                                           fill="currentColor"
@@ -1723,14 +1726,14 @@ export default function NewTicket() {
 
                                     <label
                                       htmlFor="virtual"
-                                      className="block cursor-pointer rounded-lg border border-gray-100 p-4 text-sm font-medium shadow-sm hover:border-gray-200 peer-checked:border-blue-500 peer-checked:ring-1 peer-checked:ring-blue-500"
+                                      className="block cursor-pointer rounded-lg border border-gray-100 p-4 text-sm font-medium shadow-sm hover:border-gray-200 peer-checked:border-purple-500 peer-checked:ring-1 peer-checked:ring-purple-500"
                                     >
                                       <div className="flex items-center justify-between">
                                         <p className="text-gray-700">
                                           Virtual event
                                         </p>
                                         <svg
-                                          className="hidden h-5 w-5 text-blue-600"
+                                          className="hidden h-5 w-5 text-purple-600"
                                           xmlns="http://www.w3.org/2000/svg"
                                           viewBox="0 0 20 20"
                                           fill="currentColor"
@@ -1765,7 +1768,7 @@ export default function NewTicket() {
                                     }
                                     name="ticketName"
                                     id="ticketName"
-                                    className="block w-full flex-1 rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                    className="block w-full flex-1 rounded-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                     placeholder="Event name"
                                     value={ticketName}
                                   />
@@ -1787,7 +1790,7 @@ export default function NewTicket() {
                                   onChange={(text) =>
                                     setTicketQuantity(text.target.value)
                                   }
-                                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                 />
                               </div>
 
@@ -1806,7 +1809,7 @@ export default function NewTicket() {
                                   onChange={(text) =>
                                     setTicketPrice(text.target.value)
                                   }
-                                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                 />
                               </div>
 
@@ -1825,7 +1828,7 @@ export default function NewTicket() {
                                   onChange={(text) =>
                                     setTicketLimit(text.target.value)
                                   }
-                                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                 />
                               </div>
                             </div>
@@ -1833,7 +1836,7 @@ export default function NewTicket() {
                           {/* <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                           <button
                             type="submit"
-                            className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            className="inline-flex justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                           >
                             Save
                           </button>
@@ -1884,7 +1887,7 @@ export default function NewTicket() {
                                         setTicketDescription(text.target.value)
                                       }
                                       rows={3}
-                                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                       placeholder="Tell everyone about your event."
                                       value={ticketDescription}
                                       // defaultValue={""}
@@ -1911,7 +1914,7 @@ export default function NewTicket() {
                                           viewBox="0 0 24 24"
                                           strokeWidth={1.5}
                                           stroke="currentColor"
-                                          className="w-6 h-6"
+                                          className="h-6 w-6"
                                         >
                                           <path
                                             strokeLinecap="round"
@@ -1928,7 +1931,7 @@ export default function NewTicket() {
                                         onChange={(text) =>
                                           setTicketStartDate(text.target.value)
                                         }
-                                        className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                        className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                         placeholder="01/01/2024"
                                       />
                                     </div>
@@ -1949,7 +1952,7 @@ export default function NewTicket() {
                                           viewBox="0 0 24 24"
                                           strokeWidth={1.5}
                                           stroke="currentColor"
-                                          className="w-6 h-6"
+                                          className="h-6 w-6"
                                         >
                                           <path
                                             strokeLinecap="round"
@@ -1966,7 +1969,7 @@ export default function NewTicket() {
                                         onChange={(text) =>
                                           setTicketStartTime(text.target.value)
                                         }
-                                        className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                        className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                         placeholder="2:00 PM"
                                       />
                                     </div>
@@ -1989,7 +1992,7 @@ export default function NewTicket() {
                                           viewBox="0 0 24 24"
                                           strokeWidth={1.5}
                                           stroke="currentColor"
-                                          className="w-6 h-6"
+                                          className="h-6 w-6"
                                         >
                                           <path
                                             strokeLinecap="round"
@@ -2006,7 +2009,7 @@ export default function NewTicket() {
                                         onChange={(text) =>
                                           setTicketEndDate(text.target.value)
                                         }
-                                        className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                        className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                         placeholder="01/01/2024"
                                       />
                                     </div>
@@ -2027,7 +2030,7 @@ export default function NewTicket() {
                                           viewBox="0 0 24 24"
                                           strokeWidth={1.5}
                                           stroke="currentColor"
-                                          className="w-6 h-6"
+                                          className="h-6 w-6"
                                         >
                                           <path
                                             strokeLinecap="round"
@@ -2044,7 +2047,7 @@ export default function NewTicket() {
                                         onChange={(text) =>
                                           setTicketEndTime(text.target.value)
                                         }
-                                        className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                        className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                         placeholder="3:00 PM"
                                       />
                                     </div>
@@ -2064,7 +2067,7 @@ export default function NewTicket() {
                                           text.target.checked
                                         )
                                       }
-                                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                      className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                                     />
                                   </div>
                                   <div className="ml-3 text-sm">
@@ -2086,7 +2089,7 @@ export default function NewTicket() {
                                 e.preventDefault();
                                 setNewTicket(false);
                               }}
-                              className="inline-flex justify-center rounded border border-indigo-600 py-2 px-4 text-sm font-medium text-indigo-600 hover:bg-indigo-600 hover:text-white focus:outline-none focus:ring active:bg-indigo-500"
+                              className="inline-flex justify-center rounded border border-purple-600 py-2 px-4 text-sm font-medium text-purple-600 hover:bg-purple-600 hover:text-white focus:outline-none focus:ring active:bg-purple-500"
                             >
                               Cancel
                             </button>
@@ -2096,7 +2099,7 @@ export default function NewTicket() {
                                 e.preventDefault();
                                 createTicket();
                               }}
-                              className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 ml-4 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                              className="ml-4 inline-flex justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                             >
                               Save
                             </button>

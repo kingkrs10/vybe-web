@@ -285,7 +285,7 @@ export default function EventForm({ data }: { data: any }) {
                         <span
                           className={
                             step == 1
-                              ? "h-6 w-6 rounded-full bg-blue-600 text-white text-center text-[10px] font-bold leading-6"
+                              ? "h-6 w-6 rounded-full bg-purple-600 text-white text-center text-[10px] font-bold leading-6"
                               : "h-6 w-6 rounded-full bg-gray-100 text-center text-[10px] font-bold leading-6"
                           }
                         >
@@ -304,7 +304,7 @@ export default function EventForm({ data }: { data: any }) {
                         <span
                           className={
                             step == 2
-                              ? "h-6 w-6 rounded-full bg-blue-600 text-white text-center text-[10px] font-bold leading-6"
+                              ? "h-6 w-6 rounded-full bg-purple-600 text-white text-center text-[10px] font-bold leading-6"
                               : "h-6 w-6 rounded-full bg-gray-100 text-center text-[10px] font-bold leading-6"
                           }
                         >
@@ -320,7 +320,7 @@ export default function EventForm({ data }: { data: any }) {
                         <span
                           className={
                             step == 3
-                              ? "h-6 w-6 rounded-full bg-blue-600 text-white text-center text-[10px] font-bold leading-6"
+                              ? "h-6 w-6 rounded-full bg-purple-600 text-white text-center text-[10px] font-bold leading-6"
                               : "h-6 w-6 rounded-full bg-gray-100 text-center text-[10px] font-bold leading-6"
                           }
                         >
@@ -340,7 +340,7 @@ export default function EventForm({ data }: { data: any }) {
         {/* {step === 1 && ( */}
         <>
           <div>
-            <div className="md:grid md:grid-cols-3 md:gap-6 mt-4">
+            <div className="mt-4 md:grid md:grid-cols-3 md:gap-6">
               <div className="md:col-span-1">
                 <div className="px-4 sm:px-0">
                   <h3 className="text-lg font-medium leading-6 text-gray-900">
@@ -672,7 +672,7 @@ export default function EventForm({ data }: { data: any }) {
                                     viewBox="0 0 24 24"
                                     strokeWidth={1.5}
                                     stroke="currentColor"
-                                    className="w-6 h-6"
+                                    className="h-6 w-6"
                                   >
                                     <path
                                       strokeLinecap="round"
@@ -693,7 +693,7 @@ export default function EventForm({ data }: { data: any }) {
                                   placeholder="Vitual address"
                                 />
                               </div>
-                              <p className="text-gray-500 mx-1 mt-2 text-sm">
+                              <p className="mx-1 mt-2 text-sm text-gray-500">
                                 Virtual event links will be made provided to
                                 guests upon ticket purchase.
                               </p>
@@ -705,7 +705,7 @@ export default function EventForm({ data }: { data: any }) {
                                 className="block text-sm font-medium text-gray-700"
                               >
                                 Password{" "}
-                                <span className="text-gray-500 text-sm">
+                                <span className="text-sm text-gray-500">
                                   (optional)
                                 </span>
                               </label>
@@ -717,7 +717,7 @@ export default function EventForm({ data }: { data: any }) {
                                     viewBox="0 0 24 24"
                                     strokeWidth={1.5}
                                     stroke="currentColor"
-                                    className="w-6 h-6"
+                                    className="h-6 w-6"
                                   >
                                     <path
                                       strokeLinecap="round"
@@ -781,7 +781,7 @@ export default function EventForm({ data }: { data: any }) {
                                   // onChange={(text) =>
                                   //   setAddress(text.target.value)
                                   // }
-                                  className="block w-full form-control flex-1 rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                  className="form-control block w-full flex-1 rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                   placeholder="Your address"
                                 />
                               </StandaloneSearchBox>
@@ -1058,7 +1058,7 @@ export default function EventForm({ data }: { data: any }) {
                                     viewBox="0 0 24 24"
                                     strokeWidth={1.5}
                                     stroke="currentColor"
-                                    className="w-6 h-6"
+                                    className="h-6 w-6"
                                   >
                                     <path
                                       strokeLinecap="round"
@@ -1096,7 +1096,7 @@ export default function EventForm({ data }: { data: any }) {
                                     viewBox="0 0 24 24"
                                     strokeWidth={1.5}
                                     stroke="currentColor"
-                                    className="w-6 h-6"
+                                    className="h-6 w-6"
                                   >
                                     <path
                                       strokeLinecap="round"
@@ -1136,7 +1136,7 @@ export default function EventForm({ data }: { data: any }) {
                                     viewBox="0 0 24 24"
                                     strokeWidth={1.5}
                                     stroke="currentColor"
-                                    className="w-6 h-6"
+                                    className="h-6 w-6"
                                   >
                                     <path
                                       strokeLinecap="round"
@@ -1174,7 +1174,7 @@ export default function EventForm({ data }: { data: any }) {
                                     viewBox="0 0 24 24"
                                     strokeWidth={1.5}
                                     stroke="currentColor"
-                                    className="w-6 h-6"
+                                    className="h-6 w-6"
                                   >
                                     <path
                                       strokeLinecap="round"
@@ -1244,7 +1244,7 @@ export default function EventForm({ data }: { data: any }) {
         {/* {step === 2 && ( */}
         <>
           <div>
-            <div className="md:grid md:grid-cols-3 md:gap-6 mt-4">
+            <div className="mt-4 md:grid md:grid-cols-3 md:gap-6">
               <div className="md:col-span-1">
                 <div className="px-4 sm:px-0">
                   <h3 className="text-lg font-medium leading-6 text-gray-900">
@@ -1489,7 +1489,7 @@ export default function EventForm({ data }: { data: any }) {
                         e.preventDefault();
                         setNewTicket(true);
                       }}
-                      className="group mt-4 flex  rounded-md bg-blue-600 px-8 py-3 text-white transition focus:outline-none focus:ring focus:ring-yellow-400 sm:mt-0 sm:w-auto"
+                      className="group mt-4 flex  rounded-md bg-purple-600 px-8 py-3 text-white transition focus:outline-none focus:ring focus:ring-yellow-400 sm:mt-0 sm:w-auto"
                     >
                       <span className="text-sm font-medium">Add ticket</span>
 
@@ -1523,7 +1523,7 @@ export default function EventForm({ data }: { data: any }) {
                     e.preventDefault();
                     setNewTicket(true);
                   }}
-                  className="group mt-4 flex rounded-md bg-blue-600 px-8 py-3 text-white transition focus:outline-none focus:ring focus:ring-yellow-400 sm:mt-0 sm:w-auto"
+                  className="group mt-4 flex rounded-md bg-purple-600 px-8 py-3 text-white transition focus:outline-none focus:ring focus:ring-yellow-400 sm:mt-0 sm:w-auto"
                 >
                   <span className="text-sm font-medium">Add ticket</span>
 

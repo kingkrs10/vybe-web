@@ -90,7 +90,6 @@ export default function PaymentForm({}: {}) {
             radios: false,
             spacedAccordionItems: false,
           },
-          //   appearance: { theme: "stripe" },
         }}
       />
       {/* <button disabled={!stripe}>Submit</button> */}
@@ -104,7 +103,7 @@ export default function PaymentForm({}: {}) {
               e.preventDefault();
               setStep(2);
             }}
-            className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
           >
             Cancel
           </button>
@@ -114,7 +113,7 @@ export default function PaymentForm({}: {}) {
             onClick={(e) => {
               handleSubmit(e);
             }}
-            className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
           >
             Continue
           </button>
