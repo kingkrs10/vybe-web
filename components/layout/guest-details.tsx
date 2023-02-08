@@ -111,13 +111,13 @@ export default function GuestDetails({
               </div>
               {count
                 .filter((item: any) => {
-                  return item.event == id && item.details.count > 0;
+                  return item.event == id && item.quantity > 0;
                 })
                 .map((item: any, index: number) => {
                   return (
-                    <>
+                    <div key={index}>
                       <GuestFields item={item} />
-                    </>
+                    </div>
                   );
                 })}
             </div>

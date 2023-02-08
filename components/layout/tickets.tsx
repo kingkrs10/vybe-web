@@ -3,7 +3,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import moment from "moment";
 import { useAtom } from "jotai";
-import { ticketsAtom, checkoutStepAtom, guestFilledAtom } from "@/lib/atoms";
+import {
+  ticketsAtom,
+  checkoutStepAtom,
+  guestFilledAtom,
+  totalAtom,
+} from "@/lib/atoms";
 
 import {
   CheckIcon,
@@ -58,7 +63,8 @@ const formatter = new Intl.NumberFormat("en-US", {
 
 export default function Tickets({ id, session }: { id: any; session: any }) {
   const [tickets, setTickets] = useState<any>([]);
-  const [total, setTotal] = useState<any>([]);
+  // const [total, setTotal] = useState<any>([]);
+  const [total, setTotal] = useAtom(totalAtom);
   const [count, setCount] = useAtom(ticketsAtom);
   const [step, setStep] = useAtom(checkoutStepAtom);
   const [isFilled] = useAtom(guestFilledAtom);
@@ -74,7 +80,6 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
             process.env.NEXT_PUBLIC_APIURL
           }/tickets/all?eventId=${id}&pageNo=${1}`
         );
-
         setTickets(tickets.data.data);
       } catch (error) {
         console.log(error);
@@ -92,24 +97,24 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
       .reduce((accumulator, currentValue) => {
         return (
           accumulator +
-          parseFloat(currentValue.details.cost) * currentValue.details.count
+          parseFloat(currentValue.price) * parseInt(currentValue.quantity)
         );
       }, initialValue);
 
     let fee = subtotal * 0.07;
     let total = subtotal + fee;
     setTotal({
-      total: formatter.format(total.toFixed(2)),
-      subtotal: formatter.format(subtotal.toFixed(2)),
-      fee: formatter.format(+fee.toFixed(2)),
+      total: total.toFixed(2),
+      subtotal: subtotal.toFixed(2),
+      fee: fee.toFixed(2),
     });
   }, [count, id]);
 
   const getDefault = (ticket: any) => {
     let defaultValue = count.filter((i: any) => {
-      return i.details.ticket === ticket;
+      return i.ticket === ticket;
     });
-    return defaultValue[0] ? defaultValue[0].details.count : 0;
+    return defaultValue[0] ? defaultValue[0].quantity : 0;
   };
 
   function buttonStatus(session: any, step: number, isFilled: boolean) {
@@ -124,6 +129,8 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
       return ["Pay now", true];
     } else if (session != undefined && step == 3) {
       return ["Confirm payment", false];
+    } else if (session != undefined && step == 4) {
+      return ["Thank You", false];
     }
   }
 
@@ -161,16 +168,19 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
                       onChange={(e) => {
                         const data = {
                           event: item.eventId,
-                          details: {
-                            ticket: item.ticketId,
-                            count: e.target.value,
-                            cost: item.price,
-                            name: item.name,
-                          },
+                          ticket: item.ticketId,
+                          quantity: e.target.value,
+                          price: item.price,
+                          name: item.name,
+                          type: item.type,
+                          startDate: item.startDate,
+                          endDate: item.endDate,
+                          startTime: item.startTime,
+                          endTime: item.endTime,
                         };
                         const clean = (prev: any) => {
                           let cleared = prev.filter(function (item: any) {
-                            return item.details.ticket !== data.details.ticket;
+                            return item.ticket !== data.ticket;
                           });
                           return [...cleared, data];
                         };
@@ -198,7 +208,9 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
             <div className="flex items-center justify-between">
               <dt className="text-sm text-gray-600">Subtotal</dt>
               <dd className="text-sm font-medium text-gray-900">
-                {total.subtotal ? total.subtotal : 0}
+                {total.subtotal
+                  ? formatter.format(total.subtotal)
+                  : formatter.format(0)}
               </dd>
             </div>
             <div className="flex items-center justify-between border-t border-gray-200 pt-4">
@@ -218,7 +230,7 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
                 </a>
               </dt>
               <dd className="text-sm font-medium text-gray-900">
-                {total.fee ? total.fee : 0}
+                {total.fee ? formatter.format(total.fee) : formatter.format(0)}
               </dd>
             </div>
             <div className="flex items-center justify-between border-t border-gray-200 pt-4">
@@ -226,7 +238,9 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
                 Order total
               </dt>
               <dd className="text-base font-medium text-gray-900">
-                {total.total ? total.total : 0}
+                {total.total
+                  ? formatter.format(total.total)
+                  : formatter.format(0)}
               </dd>
             </div>
           </dl>

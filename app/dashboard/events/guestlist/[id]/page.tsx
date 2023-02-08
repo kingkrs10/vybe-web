@@ -1,10 +1,6 @@
+import axios from "axios";
 import Image from "next/image";
 // import styles from "./page.module.css";
-const stats = [
-  { name: "Total guests", stat: "543" },
-  // { name: "Total orders", stat: "420" },
-  // { name: "Tickets sold", stat: "560" },
-];
 
 const plans = [
   {
@@ -23,11 +19,31 @@ const plans = [
   },
 ];
 
+async function getData(id: any) {
+  const params = { pageNo: 1 };
+  const response = await axios.get(
+    `${process.env.NEXT_PUBLIC_APIURL}/guestlists/all?eventId=${id}&pageNo=${params.pageNo}`
+  );
+  return response.data.data;
+}
+
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Guestlists() {
+export default async function Guestlists({
+  params: { id },
+}: {
+  params: { id: any };
+}) {
+  console.log("id", id);
+  const data = await getData(id);
+
+  const stats = [
+    { name: "Total guests", stat: data.length },
+    // { name: "Total orders", stat: "420" },
+    // { name: "Tickets sold", stat: "560" },
+  ];
   return (
     <div className="">
       <article className="mb-4">
@@ -94,7 +110,7 @@ export default function Guestlists() {
               </tr>
             </thead>
             <tbody>
-              {plans.map((plan, planIdx) => (
+              {data.map((plan, planIdx) => (
                 <tr key={plan.id}>
                   <td
                     className={classNames(
@@ -102,24 +118,7 @@ export default function Guestlists() {
                       "relative py-4 pl-4 pr-3 text-sm sm:pl-6"
                     )}
                   >
-                    <div className="font-medium text-gray-900">
-                      {plan.name}
-                      {plan.isCurrent ? (
-                        <span className="ml-1 text-indigo-600">
-                          (Current Plan)
-                        </span>
-                      ) : null}
-                    </div>
-                    <div className="mt-1 flex flex-col text-gray-500 sm:block lg:hidden">
-                      <span>
-                        {plan.memory} / {plan.cpu}
-                      </span>
-                      <span className="hidden sm:inline">·</span>
-                      <span>{plan.storage}</span>
-                    </div>
-                    {planIdx !== 0 ? (
-                      <div className="absolute right-0 left-6 -top-px h-px bg-gray-200" />
-                    ) : null}
+                    <div className="font-medium text-gray-900">{plan.name}</div>
                   </td>
                   <td
                     className={classNames(
@@ -127,7 +126,7 @@ export default function Guestlists() {
                       "hidden px-3 py-3.5 text-right text-sm text-gray-500 lg:table-cell"
                     )}
                   >
-                    {plan.memory}
+                    {plan.type}
                   </td>
                   <td
                     className={classNames(
@@ -135,7 +134,7 @@ export default function Guestlists() {
                       "hidden px-3 py-3.5 text-right text-sm text-gray-500 lg:table-cell"
                     )}
                   >
-                    {plan.cpu}
+                    {plan.transactionId}
                   </td>
                   {/* <td
                     className={classNames(

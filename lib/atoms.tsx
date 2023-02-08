@@ -7,8 +7,11 @@ const selectedMenuAtom = atomWithStorage("menu", "");
 const ticketsAtom = atomWithStorage("tickets", []);
 const guestsAtom = atomWithStorage("guests", []);
 const sessionAtom = atomWithStorage("session", []);
+const totalAtom = atomWithStorage("total", {});
 const checkoutStepAtom = atomWithStorage("checkout", 1);
+const clientSecretAtom = atomWithStorage("clientSecret", "");
 const guestFilledAtom = atom(false);
+const completedPurchaseAtom = atom(false);
 
 export {
   menuAtom,
@@ -18,4 +21,7 @@ export {
   guestFilledAtom,
   sessionAtom,
   guestsAtom,
+  totalAtom,
+  completedPurchaseAtom,
+  clientSecretAtom,
 };

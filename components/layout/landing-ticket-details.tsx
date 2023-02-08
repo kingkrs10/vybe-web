@@ -5,9 +5,25 @@ import axios from "axios";
 import moment from "moment";
 import Map from "@/components/layout/map";
 
+// let data: any = [];
+// async function getData(id: any) {
+//   try {
+//     const event = await axios.get(
+//       `${process.env.NEXT_PUBLIC_APIURL}/events/${id}`
+//     );
+//     data = event.data.data;
+//     // return event.data.data;
+//     // setData(event.data.data);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+
 export default function TicketsDetails({ id }: { id: any }) {
   const [data, setData] = useState<any>([]);
-
+  // const data = getData(id);
+  // console.log(data);
+  // getData(id);
   useEffect(() => {
     async function getData() {
       try {
@@ -23,40 +39,21 @@ export default function TicketsDetails({ id }: { id: any }) {
     getData();
   }, [id]);
 
-  //   useEffect(() => {
-  //     const initialValue = 0;
-  //     let subtotal = count
-  //       .filter((item: any) => {
-  //         return item.event === id;
-  //       })
-  //       .reduce((accumulator, currentValue) => {
-  //         return (
-  //           accumulator +
-  //           parseFloat(currentValue.details.cost) * currentValue.details.count
-  //         );
-  //       }, initialValue);
-
-  //     let fee = subtotal * 0.07;
-  //     let total = subtotal + fee;
-  //     setTotal({
-  //       total: formatter.format(total.toFixed(2)),
-  //       subtotal: formatter.format(subtotal.toFixed(2)),
-  //       fee: formatter.format(+fee.toFixed(2)),
-  //     });
-  //   }, [count]);
-
   //   const data = await getData(id);
   return (
     <section aria-labelledby="applicant-information-title">
       <div className="bg-white shadow sm:rounded-lg">
-        <Image
-          alt="Party"
-          src={data.image ? data.image : "/login.jpeg"}
-          width={500}
-          priority
-          height={500}
-          className="h-96 w-full rounded-t-lg object-cover"
-        />
+        {data.image && (
+          <Image
+            alt="Party"
+            src={data.image ? data.image : "/login.jpeg"}
+            width={500}
+            priority
+            height={500}
+            className="h-96 w-full rounded-t-lg object-cover"
+          />
+        )}
+
         <div className="px-4 py-5 sm:px-6">
           <h2
             id="applicant-information-title"

@@ -17,7 +17,7 @@ export const authOptions = {
         const user = await axios.get(
           `${process.env.NEXT_PUBLIC_APIURL}/users/getAuthToken/${profile.email}`
         );
-        account.userData = user.data.data;
+        // account.userData = user.data.data;
 
         if (user.data.data.length === 0) {
           const newUser = await axios.post(
@@ -28,6 +28,18 @@ export const authOptions = {
               lastName: profile.family_name,
             }
           );
+          // console.log(newUser.data.data);
+          if (newUser.data.data.length !== 0) {
+            const stripe = await axios.post(
+              `${process.env.NEXT_PUBLIC_APIURL}/stripe/createCustomer`,
+              {
+                name: profile.name,
+                email: profile.email,
+                uid: newUser.data.data.userId,
+              }
+            );
+            // console.log(stripe.data.data);
+          }
         }
       }
       return true;

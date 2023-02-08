@@ -5,6 +5,8 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import {} from "@stripe/react-stripe-js";
 import PaymentForm from "./payment-form";
+import { useAtom } from "jotai";
+import { totalAtom, clientSecretAtom } from "@/lib/atoms";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -30,20 +32,30 @@ export default function PaymentDetails({
   id: any;
   session: any;
 }) {
-  const [clientSecret, setClientSecret] = useState<any>();
+  // const [clientSecret, setClientSecret] = useState("");
+  const [total, setTotal] = useAtom(totalAtom);
+  const [clientSecret, setClientSecret] = useAtom(clientSecretAtom);
+  // console.log(total);
+  // const [total, setTotal] = useState<any>([]);
+  // console.log(session.userData, total.total);
+  async function paymentIntent() {
+    try {
+      const intent = await axios.get(
+        `${process.env.NEXT_PUBLIC_APIURL}/stripe/paymentIntent?customer=${
+          session.userData.stripeCustomerId
+        }&amount=${total.total * 100}&currency=usd`
+      );
+      // console.log(intent.data.data);
+      setClientSecret(intent.data.data.client_secret);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
-    async function paymentIntent() {
-      try {
-        const intent = await axios.get(
-          `${process.env.NEXT_PUBLIC_APIURL}/stripe/paymentIntent`
-        );
-        setClientSecret(intent.data.data.client_secret);
-      } catch (error) {
-        console.log(error);
-      }
+    if (clientSecret === "") {
+      paymentIntent();
     }
-    paymentIntent();
   }, []);
 
   const options = {
@@ -69,7 +81,7 @@ export default function PaymentDetails({
       {clientSecret && (
         <div className="mx-auto bg-white p-6 shadow sm:rounded-lg">
           <Elements stripe={stripePromise} options={options}>
-            <PaymentForm />
+            <PaymentForm id={id} session={session} />
           </Elements>
         </div>
       )}

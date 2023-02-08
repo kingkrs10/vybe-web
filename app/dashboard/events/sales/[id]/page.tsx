@@ -1,7 +1,44 @@
+import axios from "axios";
 import Image from "next/image";
 // import styles from "./page.module.css";
 
-export default function Tickets() {
+async function getGuestlist(id: any) {
+  // const params = { pageNo: 1 };
+  const response = await axios.get(
+    `${process.env.NEXT_PUBLIC_APIURL}/guestlists/all?eventId=${id}&pageNo=${1}`
+  );
+  return response.data.data;
+}
+
+async function getTickets(id: any) {
+  try {
+    const tickets = await axios.get(
+      `${process.env.NEXT_PUBLIC_APIURL}/tickets/all?eventId=${id}&pageNo=${1}`
+    );
+    return tickets.data.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function getTransactions(id: any) {
+  try {
+    const transactions = await axios.get(
+      `${
+        process.env.NEXT_PUBLIC_APIURL
+      }/transactions/all?eventId=${id}&pageNo=${1}`
+    );
+    return transactions.data.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export default async function Tickets({
+  params: { id },
+}: {
+  params: { id: any };
+}) {
   const stats = [
     { name: "Total revenue", stat: "$71,897" },
     { name: "Total orders", stat: "420" },
@@ -31,6 +68,34 @@ export default function Tickets() {
   function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
   }
+
+  const tickets = await getTickets(id);
+  const guestlist = await getGuestlist(id);
+  const transactions = await getTransactions(id);
+  let ticketsDetails = [];
+
+  console.log(guestlist);
+
+  tickets.map((ticket: any, index: any) => {
+    console.log(ticket);
+
+    const ticketTransactions = guestlist
+      .filter((guest: any) => guest.ticketId === ticket.ticketId)
+      .reduce((acc: any, guest: any) => acc + parseFloat(guest.price), 0);
+    // const ticketSales = ticketTransactions.reduce(
+    //   (acc: any, transaction: any) => acc + +transaction.quantity,
+    //   0
+    // );
+    // const ticketRevenue = ticketTransactions;
+    // console.log("transaction filtered: " + ticketTransactions);
+    // console.log(ticket);
+    ticket.revenue = ticketTransactions;
+    ticket.sales = transactions.length;
+    ticket.index = index;
+    // ticket.revenue = ticketRevenue;
+    // ticketsDetails.push(ticket);
+  });
+  // console.log(JSON.stringify(ticketsDetails));
   return (
     <div className="">
       <article className="mb-4">
@@ -97,7 +162,7 @@ export default function Tickets() {
               </tr>
             </thead>
             <tbody>
-              {plans.map((plan, planIdx) => (
+              {tickets.map((plan, planIdx) => (
                 <tr key={plan.id}>
                   <td
                     className={classNames(
@@ -105,21 +170,7 @@ export default function Tickets() {
                       "relative py-4 pl-4 pr-3 text-sm sm:pl-6"
                     )}
                   >
-                    <div className="font-medium text-gray-900">
-                      {plan.name}
-                      {plan.isCurrent ? (
-                        <span className="ml-1 text-indigo-600">
-                          (Current Plan)
-                        </span>
-                      ) : null}
-                    </div>
-                    <div className="mt-1 flex flex-col text-gray-500 sm:block lg:hidden">
-                      <span>
-                        {plan.memory} / {plan.cpu}
-                      </span>
-                      <span className="hidden sm:inline">·</span>
-                      <span>{plan.storage}</span>
-                    </div>
+                    <div className="font-medium text-gray-900">{plan.name}</div>
                     {planIdx !== 0 ? (
                       <div className="absolute right-0 left-6 -top-px h-px bg-gray-200" />
                     ) : null}
@@ -130,7 +181,8 @@ export default function Tickets() {
                       "hidden px-3 py-3.5 text-right text-sm text-gray-500 lg:table-cell"
                     )}
                   >
-                    {plan.memory}
+                    {/* {ticketsDetails[planIdx].sales} */}
+                    {plan.quantity}
                   </td>
                   <td
                     className={classNames(
@@ -138,7 +190,7 @@ export default function Tickets() {
                       "hidden px-3 py-3.5 text-right text-sm text-gray-500 lg:table-cell"
                     )}
                   >
-                    {plan.cpu}
+                    {plan.price}
                   </td>
                   <td
                     className={classNames(
@@ -155,7 +207,9 @@ export default function Tickets() {
                     )}
                   >
                     <div className="sm:hidden">{plan.price}</div>
-                    <div className="hidden sm:block">{plan.price}</div>
+                    <div className="hidden sm:block">
+                      {/* {ticketsDetails[planIdx].revenue} */}
+                    </div>
                   </td>
                   {/* <td
                       className={classNames(

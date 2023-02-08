@@ -8,6 +8,9 @@ import {
   checkoutStepAtom,
   guestFilledAtom,
   guestsAtom,
+  totalAtom,
+  completedPurchaseAtom,
+  clientSecretAtom,
 } from "@/lib/atoms";
 import {
   PaymentElement,
@@ -17,14 +20,23 @@ import {
 import {} from "@stripe/react-stripe-js";
 import { XCircleIcon } from "@heroicons/react/20/solid";
 
-export default function PaymentForm({}: {}) {
-  const [clientSecret, setClientSecret] = useState<any>();
-  const [total, setTotal] = useState<any>([]);
-  const [count, setCount] = useAtom(ticketsAtom);
+export default function PaymentForm({
+  id,
+  session,
+}: {
+  id: string;
+  session: any;
+}) {
+  //   console.log("session", session);
+  //   const [total, setTotal] = useState<any>([]);
+  const [total, setTotal] = useAtom(totalAtom);
+  const [tickets, setTickets] = useAtom(ticketsAtom);
   const [step, setStep] = useAtom(checkoutStepAtom);
+  const [purchase, setPurchase] = useAtom(completedPurchaseAtom);
   const [isFilled] = useAtom(guestFilledAtom);
   const [guests, setGuests] = useAtom(guestsAtom);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [clientSecret, setClientSecret] = useAtom(clientSecretAtom);
 
   const stripe = useStripe();
   const elements = useElements();
@@ -44,8 +56,9 @@ export default function PaymentForm({}: {}) {
       //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
-        return_url: "https://example.com/order/123/complete",
+        return_url: "",
       },
+      redirect: "if_required",
     });
 
     if (error) {
@@ -57,7 +70,29 @@ export default function PaymentForm({}: {}) {
       // Your customer will be redirected to your `return_url`. For some payment
       // methods like iDEAL, your customer will be redirected to an intermediate
       // site first to authorize the payment, then redirected to the `return_url`.
-      setStep(4);
+
+      try {
+        const transaction = await axios.post(
+          `${process.env.NEXT_PUBLIC_APIURL}/transactions`,
+          {
+            guests: guests,
+            total: total,
+            eventId: id,
+            userId: session.userData.userId,
+            customerId: session.userData.stripeCustomerId,
+          }
+        );
+        // console.log(intent.data.data);
+        //   setClientSecret(intent.data.data.client_secret);
+      } catch (error) {
+        console.log(error);
+      }
+      setGuests([]);
+      setTotal({});
+      setTickets([]);
+      setClientSecret("");
+      setStep(1);
+      setPurchase(true);
     }
   };
   //   const router = useRouter();
