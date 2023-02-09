@@ -1,6 +1,13 @@
+"use client";
 import axios from "axios";
 import Image from "next/image";
+import { root } from "postcss";
+import { useEffect, useState, useRef } from "react";
+import ReactDOM from "react-dom";
+import { QrReader } from "react-qr-reader";
 // import styles from "./page.module.css";
+
+// const reader = document.getElementById("qr-reader");
 
 const plans = [
   {
@@ -19,25 +26,30 @@ const plans = [
   },
 ];
 
-async function getData(id: any) {
-  const params = { pageNo: 1 };
-  const response = await axios.get(
-    `${process.env.NEXT_PUBLIC_APIURL}/guestlists/all?eventId=${id}&pageNo=${params.pageNo}`
-  );
-  return response.data.data;
-}
-
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default async function Guestlists({
+export default function Guestlists({
   params: { id },
 }: {
   params: { id: any };
 }) {
-  console.log("id", id);
-  const data = await getData(id);
+  // const data = await getData(id);
+  const [scan, setScan] = useState(false);
+  const [data, setData] = useState([]);
+  const [camera, setCamera] = useState([]);
+  // const reader = useRef(null);
+
+  useEffect(() => {
+    (async function getData(id: any) {
+      const params = { pageNo: 1 };
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_APIURL}/guestlists/all?eventId=${id}&pageNo=${params.pageNo}`
+      );
+      setData(response.data.data);
+    })(id);
+  }, []);
 
   const stats = [
     { name: "Total guests", stat: data.length },
@@ -45,54 +57,112 @@ export default async function Guestlists({
     // { name: "Tickets sold", stat: "560" },
   ];
   return (
-    <div className="">
-      <article className="mb-4">
-        <div>
-          {/* <h3 className="text-lg font-medium leading-6 text-gray-900">
+    <>
+      {scan && (
+        <>
+          <div className="w-full items-end text-right">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setScan(false);
+                setCamera([]);
+                // QrReader.remove();
+              }}
+              className="rounded-md bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-purple-800"
+            >
+              Close Scanner
+            </button>
+          </div>
+          <div id="reader" className="h-full w-full">
+            <QrReader
+              scanDelay={1000}
+              constraints={{
+                facingMode: "environment",
+              }}
+              onResult={(result, error) => {
+                if (!!result) {
+                  setCamera(result?.text);
+                }
+                if (!!error) {
+                  console.info(error);
+                }
+              }}
+              // style={{ width: "100%", height: "100%" }}
+              className="h-full w-full"
+              videoContainerStyle={{ width: "100%", height: "100%" }}
+            />
+            <p>{camera}</p>
+          </div>
+        </>
+      )}
+
+      {!scan && (
+        <div className="">
+          <article className="mb-4">
+            <div className="w-full items-end text-right">
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setScan(true);
+                  setCamera([]);
+                }}
+                className="rounded-md bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-purple-800"
+              >
+                Scan Ticket
+              </button>
+            </div>
+            <div>
+              {/* <h3 className="text-lg font-medium leading-6 text-gray-900">
             Last 30 days
           </h3> */}
-          <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
-            {stats.map((item) => (
-              <div
-                key={item.name}
-                className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6"
-              >
-                <dt className="truncate text-sm font-medium text-gray-500">
-                  {item.name}
-                </dt>
-                <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-                  {item.stat}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </article>
+              <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
+                {stats.map((item) => (
+                  <div
+                    key={item.name}
+                    className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6"
+                  >
+                    <dt className="truncate text-sm font-medium text-gray-500">
+                      {item.name}
+                    </dt>
+                    <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
+                      {item.stat}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </article>
 
-      <section className="">
-        <div className="-mx-4 mt-4 ring-1 ring-gray-100 sm:-mx-6 md:mx-0 md:rounded-lg">
-          <table className="min-w-full divide-y divide-gray-100">
-            <thead>
-              <tr>
-                <th
-                  scope="col"
-                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-500 sm:pl-6"
-                >
-                  Guest name
-                </th>
-                <th
-                  scope="col"
-                  className="hidden px-3 py-3.5 text-right text-sm font-semibold text-gray-500 lg:table-cell"
-                >
-                  Ticket name
-                </th>
-                <th
-                  scope="col"
-                  className="hidden px-3 py-3.5 text-right text-sm font-semibold text-gray-500 lg:table-cell"
-                >
-                  Order ID
-                </th>
-                {/* <th
+          <section className="">
+            <div className="-mx-4 mt-4 ring-1 ring-gray-100 sm:-mx-6 md:mx-0 md:rounded-lg">
+              <table className="min-w-full divide-y divide-gray-100">
+                <thead>
+                  <tr>
+                    <th
+                      scope="col"
+                      className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-500 sm:pl-6"
+                    >
+                      Guest name
+                    </th>
+                    <th
+                      scope="col"
+                      className="hidden px-3 py-3.5 text-right text-sm font-semibold text-gray-500 lg:table-cell"
+                    >
+                      Ticket name
+                    </th>
+                    <th
+                      scope="col"
+                      className="hidden px-3 py-3.5 text-right text-sm font-semibold text-gray-500 lg:table-cell"
+                    >
+                      Email
+                    </th>
+                    <th
+                      scope="col"
+                      className="hidden px-3 py-3.5 text-right text-sm font-semibold text-gray-500 lg:table-cell"
+                    >
+                      Order ID
+                    </th>
+                    {/* <th
                   scope="col"
                   className="hidden px-3 py-3.5 text-right text-sm font-semibold text-gray-500 lg:table-cell"
                 >
@@ -104,39 +174,49 @@ export default async function Guestlists({
                 >
                   Ticket revenue
                 </th> */}
-                {/* <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                    {/* <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
                     <span className="sr-only">Select</span>
                   </th> */}
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((plan, planIdx) => (
-                <tr key={plan.id}>
-                  <td
-                    className={classNames(
-                      planIdx === 0 ? "" : "border-t border-transparent",
-                      "relative py-4 pl-4 pr-3 text-sm sm:pl-6"
-                    )}
-                  >
-                    <div className="font-medium text-gray-900">{plan.name}</div>
-                  </td>
-                  <td
-                    className={classNames(
-                      planIdx === 0 ? "" : "border-t border-gray-200",
-                      "hidden px-3 py-3.5 text-right text-sm text-gray-500 lg:table-cell"
-                    )}
-                  >
-                    {plan.type}
-                  </td>
-                  <td
-                    className={classNames(
-                      planIdx === 0 ? "" : "border-t border-gray-200",
-                      "hidden px-3 py-3.5 text-right text-sm text-gray-500 lg:table-cell"
-                    )}
-                  >
-                    {plan.transactionId}
-                  </td>
-                  {/* <td
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.map((plan, planIdx) => (
+                    <tr key={plan.ticketId}>
+                      <td
+                        className={classNames(
+                          planIdx === 0 ? "" : "border-t border-transparent",
+                          "relative py-4 pl-4 pr-3 text-sm sm:pl-6"
+                        )}
+                      >
+                        <div className="font-medium text-gray-900">
+                          {plan.name}
+                        </div>
+                      </td>
+                      <td
+                        className={classNames(
+                          planIdx === 0 ? "" : "border-t border-gray-200",
+                          "hidden px-3 py-3.5 text-right text-sm text-gray-500 lg:table-cell"
+                        )}
+                      >
+                        {plan.type}
+                      </td>
+                      <td
+                        className={classNames(
+                          planIdx === 0 ? "" : "border-t border-gray-200",
+                          "hidden px-3 py-3.5 text-right text-sm text-gray-500 lg:table-cell"
+                        )}
+                      >
+                        {plan.email}
+                      </td>
+                      <td
+                        className={classNames(
+                          planIdx === 0 ? "" : "border-t border-gray-200",
+                          "hidden px-3 py-3.5 text-right text-sm text-gray-500 lg:table-cell"
+                        )}
+                      >
+                        {plan.transactionId}
+                      </td>
+                      {/* <td
                     className={classNames(
                       planIdx === 0 ? "" : "border-t border-gray-200",
                       "hidden px-3 py-3.5 text-right text-sm text-gray-500 lg:table-cell"
@@ -153,7 +233,7 @@ export default async function Guestlists({
                     <div className="sm:hidden">{plan.price}</div>
                     <div className="hidden sm:block">{plan.price}</div>
                   </td> */}
-                  {/* <td
+                      {/* <td
                       className={classNames(
                         planIdx === 0 ? "" : "border-t border-transparent",
                         "relative py-3.5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
@@ -170,12 +250,14 @@ export default async function Guestlists({
                         <div className="absolute right-6 left-0 -top-px h-px bg-gray-200" />
                       ) : null}
                     </td> */}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
         </div>
-      </section>
-    </div>
+      )}
+    </>
   );
 }
