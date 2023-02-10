@@ -39,10 +39,57 @@ export default async function Tickets({
 }: {
   params: { id: any };
 }) {
+  function classNames(...classes: string[]) {
+    return classes.filter(Boolean).join(" ");
+  }
+
+  const tickets = await getTickets(id);
+  const guestlist = await getGuestlist(id);
+  const transactions = await getTransactions(id);
+  let ticketsDetails = [];
+
+  console.log(guestlist, transactions, tickets);
+
+  const ticketSales = transactions
+    // .filter((transaction: any) => transaction.ticketId === ticket.ticketId)
+    .reduce(
+      (acc: any, guest: any) =>
+        // acc.price += parseFloat(guest.price);
+        acc + parseInt(guest.ticketsSold),
+      0
+    );
+
+  tickets.map((ticket: any, index: any) => {
+    // console.log(ticket);
+
+    const ticketCount = guestlist
+      .filter((guest: any) => guest.ticketId === ticket.ticketId)
+      .reduce(
+        (acc: any, guest: any) => acc + 1,
+        // acc.orders += parseInt(guest.ticketsSold);
+        0
+      );
+
+    ticket.count = ticketCount;
+    // ticket.sales = ticketSales;
+    // ticket.index = index;
+    // ticket.revenue = ticketRevenue;
+    ticketsDetails.push(ticket);
+  });
+  // console.log(JSON.stringify(ticketsDetails));
+  const totalRevenue = ticketsDetails
+    // .filter((transaction: any) => transaction.ticketId === ticket.ticketId)
+    .reduce(
+      (acc: any, guest: any) =>
+        // acc.price += parseFloat(guest.price);
+        acc + parseInt(guest.price),
+      0
+    );
+
   const stats = [
-    { name: "Total revenue", stat: "$71,897" },
-    { name: "Total orders", stat: "420" },
-    { name: "Tickets sold", stat: "560" },
+    { name: "Total revenue", stat: `$${totalRevenue}` },
+    { name: "Total orders", stat: transactions.length },
+    { name: "Tickets sold", stat: guestlist.length },
   ];
   const plans = [
     {
@@ -65,37 +112,18 @@ export default async function Tickets({
     },
   ];
 
-  function classNames(...classes: string[]) {
-    return classes.filter(Boolean).join(" ");
+  function filterItems(arr: any[], query: any) {
+    return arr.filter((el: any) => el.ticketId === query);
   }
 
-  const tickets = await getTickets(id);
-  const guestlist = await getGuestlist(id);
-  const transactions = await getTransactions(id);
-  let ticketsDetails = [];
-
-  console.log(guestlist);
-
-  tickets.map((ticket: any, index: any) => {
-    console.log(ticket);
-
-    const ticketTransactions = guestlist
-      .filter((guest: any) => guest.ticketId === ticket.ticketId)
-      .reduce((acc: any, guest: any) => acc + parseFloat(guest.price), 0);
-    // const ticketSales = ticketTransactions.reduce(
-    //   (acc: any, transaction: any) => acc + +transaction.quantity,
-    //   0
-    // );
-    // const ticketRevenue = ticketTransactions;
-    // console.log("transaction filtered: " + ticketTransactions);
-    // console.log(ticket);
-    ticket.revenue = ticketTransactions;
-    ticket.sales = transactions.length;
-    ticket.index = index;
-    // ticket.revenue = ticketRevenue;
-    // ticketsDetails.push(ticket);
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    // These options are needed to round to whole numbers if that's what you want.
+    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
   });
-  // console.log(JSON.stringify(ticketsDetails));
+
   return (
     <div className="">
       <article className="mb-4">
@@ -181,7 +209,7 @@ export default async function Tickets({
                       "hidden px-3 py-3.5 text-right text-sm text-gray-500 lg:table-cell"
                     )}
                   >
-                    {/* {ticketsDetails[planIdx].sales} */}
+                    {filterItems(ticketsDetails, plan.ticketId).length}/
                     {plan.quantity}
                   </td>
                   <td
@@ -190,7 +218,7 @@ export default async function Tickets({
                       "hidden px-3 py-3.5 text-right text-sm text-gray-500 lg:table-cell"
                     )}
                   >
-                    {plan.price}
+                    {formatter.format(plan.price)}
                   </td>
                   <td
                     className={classNames(
@@ -198,7 +226,11 @@ export default async function Tickets({
                       "hidden px-3 py-3.5 text-right text-sm text-gray-500 lg:table-cell"
                     )}
                   >
-                    {plan.storage}
+                    {formatter.format(
+                      filterItems(ticketsDetails, plan.ticketId).length *
+                        plan.price *
+                        0.07
+                    )}
                   </td>
                   <td
                     className={classNames(
@@ -206,10 +238,10 @@ export default async function Tickets({
                       "px-3 py-3.5 text-right text-sm text-gray-500"
                     )}
                   >
-                    <div className="sm:hidden">{plan.price}</div>
-                    <div className="hidden sm:block">
-                      {/* {ticketsDetails[planIdx].revenue} */}
-                    </div>
+                    {formatter.format(
+                      filterItems(ticketsDetails, plan.ticketId).length *
+                        plan.price
+                    )}
                   </td>
                   {/* <td
                       className={classNames(
