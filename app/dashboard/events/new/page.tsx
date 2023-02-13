@@ -4,7 +4,6 @@ import categoryList from "@/resources/categories.json";
 import countryList from "@/resources/countries-cities.json";
 import timezones from "@/resources/timezones.json";
 import axios from "axios";
-import { useSession } from "next-auth/react";
 import { getSession } from "next-auth/react";
 import moment from "moment";
 import {
@@ -12,6 +11,8 @@ import {
   LoadScript,
   useLoadScript,
 } from "@react-google-maps/api";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function NewTicket() {
   const [name, setName] = useState("");
@@ -27,9 +28,9 @@ export default function NewTicket() {
   const [virtualUrl, setVirtualUrl] = useState("");
   const [password, setPassword] = useState("");
   const [timezone, setTimezone] = useState("");
-  const [startDate, setStartDate] = useState("");
+  const [startDate, setStartDate] = useState();
   const [startTime, setStartTime] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [endDate, setEndDate] = useState();
   const [endTime, setEndTime] = useState("");
   const [endVisible, setEndVisible] = useState(true);
   const [mapVisible, setMapVisible] = useState(false);
@@ -167,6 +168,7 @@ export default function NewTicket() {
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_APIURL}/tickets/all?eventId=${params.eventId}&pageNo=${params.pageNo}`
     );
+    console.log("response", response.data.data);
     setTickets(response.data.data);
     // return response.data.data;
   }
@@ -186,10 +188,8 @@ export default function NewTicket() {
       state,
       postalCode,
       timezone,
-      startDate,
-      startTime,
-      endDate,
-      endTime,
+      startDate: new Date(startDate),
+      endDate: new Date(endDate),
       endVisible,
       image,
       website,
@@ -198,12 +198,13 @@ export default function NewTicket() {
       lat: address?.lat,
       lng: address?.lng,
     };
+    // console.log(data);
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_APIURL!}/events`,
         data
       );
-      console.log(response.data.data);
+      // console.log(response.data.data);
       return response.data.data;
     } catch (error) {
       console.error(error);
@@ -216,13 +217,13 @@ export default function NewTicket() {
       name: ticketName,
       description: ticketDescription,
       type: ticketType,
-      price: ticketPrice,
+      price: parseFloat(ticketPrice),
       quantity: ticketQuantity,
       limit: ticketLimit,
-      startDate: ticketStartDate,
-      startTime: ticketStartTime,
-      endDate: ticketEndDate,
-      endTime: ticketEndTime,
+      startDate: new Date(ticketStartDate),
+      // startTime: new Date(ticketStartTime),
+      endDate: new Date(ticketEndDate),
+      // endTime: ticketEndTime,
       invitationOnly: ticketInvitationOnly,
     };
     try {
@@ -230,9 +231,12 @@ export default function NewTicket() {
         `${process.env.NEXT_PUBLIC_APIURL!}/tickets`,
         data
       );
-      getTickets(response.data.data.eventId);
-      // return response.data.data;
-      setNewTicket(false);
+      // console.log(response.data);
+      if (response.data.data.eventId) {
+        getTickets(response.data.data.eventId);
+        // return response.data.data;
+        setNewTicket(false);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -248,9 +252,6 @@ export default function NewTicket() {
         lat: +place.geometry.location.lat(),
         lng: +place.geometry.location.lng(),
       });
-      // console.log(place.formatted_address);
-      // console.log(place.geometry.location.lat());
-      // console.log(place.geometry.location.lng());
     }
   };
 
@@ -1050,11 +1051,11 @@ export default function NewTicket() {
                                 className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
                               >
                                 {timezones
-                                  .sort((a: any, b: any) => a.name - b.name)
+                                  .sort((a: any, b: any) => a.text - b.text)
                                   .map((key, index) => {
                                     return (
-                                      <option key={index} value={key.name}>
-                                        {key.name}
+                                      <option key={index} value={key.text}>
+                                        {key.text}
                                       </option>
                                     );
                                   })}
@@ -1086,7 +1087,7 @@ export default function NewTicket() {
                                       />
                                     </svg>
                                   </span>
-                                  <input
+                                  {/* <input
                                     type="text"
                                     name="start-date"
                                     id="start-date"
@@ -1096,11 +1097,69 @@ export default function NewTicket() {
                                     }
                                     className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                     placeholder="01/01/2024"
+                                  /> */}
+                                  <DatePicker
+                                    name="start-date"
+                                    id="start-date"
+                                    selected={startDate}
+                                    onChange={(date) => setStartDate(date)}
+                                    timeInputLabel="Time:"
+                                    dateFormat="MM/dd/yyyy h:mm aa"
+                                    showTimeInput
+                                    className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                   />
                                 </div>
                               </div>
 
                               <div className="col-span-6 sm:col-span-3">
+                                <label
+                                  htmlFor="end-date"
+                                  className="block text-sm font-medium text-gray-700"
+                                >
+                                  End date
+                                </label>
+                                <div className="mt-1 flex rounded-md shadow-sm">
+                                  <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      strokeWidth={1.5}
+                                      stroke="currentColor"
+                                      className="h-6 w-6"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z"
+                                      />
+                                    </svg>
+                                  </span>
+                                  <DatePicker
+                                    name="end-date"
+                                    id="end-date"
+                                    selected={endDate}
+                                    onChange={(date) => setEndDate(date)}
+                                    timeInputLabel="Time:"
+                                    dateFormat="MM/dd/yyyy h:mm aa"
+                                    showTimeInput
+                                    className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
+                                  />
+                                  {/* <input
+                                    type="text"
+                                    name="end-date"
+                                    id="end-date"
+                                    value={endDate}
+                                    onChange={(text) =>
+                                      setEndDate(text.target.value)
+                                    }
+                                    className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
+                                    placeholder="01/01/2024"
+                                  /> */}
+                                </div>
+                              </div>
+
+                              {/* <div className="col-span-6 sm:col-span-3">
                                 <label
                                   htmlFor="start-time"
                                   className="block text-sm font-medium text-gray-700"
@@ -1136,10 +1195,10 @@ export default function NewTicket() {
                                     placeholder="2:00 PM"
                                   />
                                 </div>
-                              </div>
+                              </div> */}
                             </div>
 
-                            <div className="grid grid-cols-6 gap-6">
+                            {/* <div className="grid grid-cols-6 gap-6">
                               <div className="col-span-6 sm:col-span-3">
                                 <label
                                   htmlFor="end-date"
@@ -1215,7 +1274,7 @@ export default function NewTicket() {
                                   />
                                 </div>
                               </div>
-                            </div>
+                            </div> */}
 
                             <div className="flex items-start">
                               <div className="flex h-5 items-center">
@@ -1463,7 +1522,7 @@ export default function NewTicket() {
                             const event = await createEvent();
                             // console.log(event);
                             setEventId(event.eventId);
-                            if (event) setStep(3);
+                            if (event.eventId) setStep(3);
                           }}
                           className="inline-flex justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                         >
@@ -1501,7 +1560,7 @@ export default function NewTicket() {
                       className="items-center justify-center sm:flex sm:gap-4"
                     >
                       <button
-                        type="submit"
+                        // type="submit"
                         onClick={(e) => {
                           e.preventDefault();
                           setNewTicket(true);
@@ -1694,33 +1753,35 @@ export default function NewTicket() {
                       <form action="#" method="POST">
                         <div className="overflow-hidden shadow sm:rounded-md">
                           <div className="bg-white px-4 py-5 sm:p-6">
-                            <div className="grid grid-cols-6 gap-6">
+                            <label
+                              htmlFor="name"
+                              className="block text-sm font-medium text-gray-700"
+                            >
+                              Ticket type
+                            </label>
+                            <div className="mt-1 grid grid-cols-6 gap-6">
                               <div className="col-span-6">
                                 <fieldset className="grid grid-cols-2 gap-4">
-                                  <legend className="sr-only">Delivery</legend>
-
                                   <div className="">
                                     <input
                                       type="radio"
-                                      name="type"
-                                      value={ticketType}
-                                      id="live"
+                                      name="ticketType"
+                                      value="free"
+                                      id="free"
                                       className="peer hidden [&:checked_+_label_svg]:block"
-                                      // checked={type === "live"}
-                                      checked
+                                      checked={ticketType === "free"}
+                                      // checked
                                       onChange={(text) =>
                                         setTicketType(text.target.value)
                                       }
                                     />
 
                                     <label
-                                      htmlFor="live"
+                                      htmlFor="free"
                                       className="block cursor-pointer rounded-lg border border-gray-100 p-4 text-sm font-medium shadow-sm hover:border-gray-200 peer-checked:border-purple-500 peer-checked:ring-1 peer-checked:ring-purple-500"
                                     >
                                       <div className="flex items-center justify-between">
-                                        <p className="text-gray-700">
-                                          Live event
-                                        </p>
+                                        <p className="text-gray-700">Free</p>
                                         <svg
                                           className="hidden h-5 w-5 text-purple-600"
                                           xmlns="http://www.w3.org/2000/svg"
@@ -1740,11 +1801,11 @@ export default function NewTicket() {
                                   <div className="">
                                     <input
                                       type="radio"
-                                      name="type"
-                                      value={ticketType}
-                                      id="virtual"
-                                      // checked={type === "virtual"}
-                                      checked
+                                      name="ticketType"
+                                      value="paid"
+                                      id="paid"
+                                      checked={ticketType === "paid"}
+                                      // checked
                                       onChange={(text) =>
                                         setTicketType(text.target.value)
                                       }
@@ -1752,13 +1813,11 @@ export default function NewTicket() {
                                     />
 
                                     <label
-                                      htmlFor="virtual"
+                                      htmlFor="paid"
                                       className="block cursor-pointer rounded-lg border border-gray-100 p-4 text-sm font-medium shadow-sm hover:border-gray-200 peer-checked:border-purple-500 peer-checked:ring-1 peer-checked:ring-purple-500"
                                     >
                                       <div className="flex items-center justify-between">
-                                        <p className="text-gray-700">
-                                          Virtual event
-                                        </p>
+                                        <p className="text-gray-700">Paid</p>
                                         <svg
                                           className="hidden h-5 w-5 text-purple-600"
                                           xmlns="http://www.w3.org/2000/svg"
@@ -1821,24 +1880,26 @@ export default function NewTicket() {
                                 />
                               </div>
 
-                              <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                                <label
-                                  htmlFor="region"
-                                  className="block text-sm font-medium text-gray-700"
-                                >
-                                  Price
-                                </label>
-                                <input
-                                  type="text"
-                                  name="ticketPrice"
-                                  id="ticketPrice"
-                                  value={ticketPrice}
-                                  onChange={(text) =>
-                                    setTicketPrice(text.target.value)
-                                  }
-                                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
-                                />
-                              </div>
+                              {ticketType === "paid" && (
+                                <div className="col-span-6 sm:col-span-3 lg:col-span-2">
+                                  <label
+                                    htmlFor="region"
+                                    className="block text-sm font-medium text-gray-700"
+                                  >
+                                    Price
+                                  </label>
+                                  <input
+                                    type="text"
+                                    name="ticketPrice"
+                                    id="ticketPrice"
+                                    value={ticketPrice}
+                                    onChange={(text) =>
+                                      setTicketPrice(text.target.value)
+                                    }
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
+                                  />
+                                </div>
+                              )}
 
                               <div className="col-span-6 sm:col-span-3 lg:col-span-2">
                                 <label
@@ -1950,7 +2011,7 @@ export default function NewTicket() {
                                           />
                                         </svg>
                                       </span>
-                                      <input
+                                      {/* <input
                                         type="text"
                                         name="start-date"
                                         id="start-date"
@@ -1960,11 +2021,73 @@ export default function NewTicket() {
                                         }
                                         className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                         placeholder="01/01/2024"
+                                      /> */}
+                                      <DatePicker
+                                        name="start-date"
+                                        id="start-date"
+                                        selected={ticketStartDate}
+                                        onChange={(date) =>
+                                          setTicketStartDate(date)
+                                        }
+                                        timeInputLabel="Time:"
+                                        dateFormat="MM/dd/yyyy h:mm aa"
+                                        showTimeInput
+                                        className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                       />
                                     </div>
                                   </div>
 
                                   <div className="col-span-6 sm:col-span-3">
+                                    <label
+                                      htmlFor="end-date"
+                                      className="block text-sm font-medium text-gray-700"
+                                    >
+                                      End date
+                                    </label>
+                                    <div className="mt-1 flex rounded-md shadow-sm">
+                                      <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
+                                        <svg
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          fill="none"
+                                          viewBox="0 0 24 24"
+                                          strokeWidth={1.5}
+                                          stroke="currentColor"
+                                          className="h-6 w-6"
+                                        >
+                                          <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z"
+                                          />
+                                        </svg>
+                                      </span>
+                                      {/* <input
+                                        type="text"
+                                        name="end-date"
+                                        id="end-date"
+                                        value={ticketEndDate}
+                                        onChange={(text) =>
+                                          setTicketEndDate(text.target.value)
+                                        }
+                                        className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
+                                        placeholder="01/01/2024"
+                                      /> */}
+                                      <DatePicker
+                                        name="end-date"
+                                        id="end-date"
+                                        selected={ticketEndDate}
+                                        onChange={(date) =>
+                                          setTicketEndDate(date)
+                                        }
+                                        timeInputLabel="Time:"
+                                        dateFormat="MM/dd/yyyy h:mm aa"
+                                        showTimeInput
+                                        className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
+                                      />
+                                    </div>
+                                  </div>
+
+                                  {/* <div className="col-span-6 sm:col-span-3">
                                     <label
                                       htmlFor="start-time"
                                       className="block text-sm font-medium text-gray-700"
@@ -2000,47 +2123,11 @@ export default function NewTicket() {
                                         placeholder="2:00 PM"
                                       />
                                     </div>
-                                  </div>
+                                  </div> */}
                                 </div>
 
-                                <div className="grid grid-cols-6 gap-6">
-                                  <div className="col-span-6 sm:col-span-3">
-                                    <label
-                                      htmlFor="end-date"
-                                      className="block text-sm font-medium text-gray-700"
-                                    >
-                                      End date
-                                    </label>
-                                    <div className="mt-1 flex rounded-md shadow-sm">
-                                      <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
-                                        <svg
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          fill="none"
-                                          viewBox="0 0 24 24"
-                                          strokeWidth={1.5}
-                                          stroke="currentColor"
-                                          className="h-6 w-6"
-                                        >
-                                          <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z"
-                                          />
-                                        </svg>
-                                      </span>
-                                      <input
-                                        type="text"
-                                        name="end-date"
-                                        id="end-date"
-                                        value={ticketEndDate}
-                                        onChange={(text) =>
-                                          setTicketEndDate(text.target.value)
-                                        }
-                                        className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
-                                        placeholder="01/01/2024"
-                                      />
-                                    </div>
-                                  </div>
+                                {/* <div className="grid grid-cols-6 gap-6">
+                                  
 
                                   <div className="col-span-6 sm:col-span-3">
                                     <label
@@ -2079,7 +2166,7 @@ export default function NewTicket() {
                                       />
                                     </div>
                                   </div>
-                                </div>
+                                </div> */}
 
                                 <div className="flex items-start">
                                   <div className="flex h-5 items-center">

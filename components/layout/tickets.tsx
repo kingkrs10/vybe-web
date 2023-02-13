@@ -158,7 +158,7 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
                     <p className="text-xs text-gray-500">{item.description}</p>
                   </div>
                   <div className="grow justify-items-end text-right">
-                    <p>${item.price}</p>
+                    {item.type == "free" ? <p>Free</p> : <p>${item.price}</p>}
                     <select
                       id="count"
                       name="count"
@@ -170,7 +170,7 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
                           event: item.eventId,
                           ticket: item.ticketId,
                           quantity: e.target.value,
-                          price: item.price,
+                          price: item.type == "free" ? 0 : item.price,
                           name: item.name,
                           type: item.type,
                           startDate: item.startDate,

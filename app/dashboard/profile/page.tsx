@@ -1,94 +1,351 @@
-import Image from "next/image";
-// import styles from "./page.module.css";
+"use client";
+import { Fragment, useState } from "react";
+import { Dialog, Switch, Transition } from "@headlessui/react";
+import {
+  ArrowLeftOnRectangleIcon,
+  Bars3BottomLeftIcon,
+  BellIcon,
+  BriefcaseIcon,
+  ChatBubbleOvalLeftEllipsisIcon,
+  CogIcon,
+  DocumentMagnifyingGlassIcon,
+  HomeIcon,
+  QuestionMarkCircleIcon,
+  UsersIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 
-export default function Dashboard() {
+const navigation = [
+  { name: "Home", href: "#", icon: HomeIcon, current: false },
+  { name: "Jobs", href: "#", icon: BriefcaseIcon, current: false },
+  {
+    name: "Applications",
+    href: "#",
+    icon: DocumentMagnifyingGlassIcon,
+    current: false,
+  },
+  {
+    name: "Messages",
+    href: "#",
+    icon: ChatBubbleOvalLeftEllipsisIcon,
+    current: false,
+  },
+  { name: "Team", href: "#", icon: UsersIcon, current: false },
+  { name: "Settings", href: "#", icon: CogIcon, current: true },
+];
+const secondaryNavigation = [
+  { name: "Help", href: "#", icon: QuestionMarkCircleIcon },
+  { name: "Logout", href: "#", icon: ArrowLeftOnRectangleIcon },
+];
+const tabs = [
+  { name: "General", href: "#", current: true },
+  { name: "Password", href: "#", current: false },
+  // { name: "Notifications", href: "#", current: false },
+  // { name: "Plan", href: "#", current: false },
+  // { name: "Billing", href: "#", current: false },
+  // { name: "Team Members", href: "#", current: false },
+];
+
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(" ");
+}
+
+export default function Settings() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [automaticTimezoneEnabled, setAutomaticTimezoneEnabled] =
+    useState(true);
+  const [autoUpdateApplicantDataEnabled, setAutoUpdateApplicantDataEnabled] =
+    useState(false);
+
   return (
-    <div className="">
-      <section className="bg-gray-900 text-white rounded-lg">
-        <div className="max-w-screen-xl px-4 py-4 sm:px-6 lg:px-8">
-          {/* <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 md:grid-cols-2 md:gap-12 lg:grid-cols-3"> */}
-          <div className="flex items-start">
-            <span className="flex-shrink-0 rounded-lg bg-gray-800 p-4">
-              <svg
-                className="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
-                ></path>
-              </svg>
-            </span>
+    <>
+      {/* Content area */}
+      <div className="">
+        <div className="mx-auto flex max-w-4xl flex-col md:px-8 xl:px-0">
+          <main className="flex-1">
+            <div className="relative mx-auto max-w-4xl md:px-8 xl:px-0">
+              <div className="pt-10 pb-16">
+                <div className="px-4 sm:px-6 md:px-0">
+                  <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+                    Profile
+                  </h1>
+                </div>
+                <div className="px-4 sm:px-6 md:px-0">
+                  <div className="py-6">
+                    {/* Tabs */}
+                    <div className="lg:hidden">
+                      <label htmlFor="selected-tab" className="sr-only">
+                        Select a tab
+                      </label>
+                      <select
+                        id="selected-tab"
+                        name="selected-tab"
+                        className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
+                        defaultValue={tabs.find((tab) => tab.current)?.name}
+                      >
+                        {tabs.map((tab) => (
+                          <option key={tab.name}>{tab.name}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="hidden lg:block">
+                      <div className="border-b border-gray-200">
+                        <nav className="-mb-px flex space-x-8">
+                          {tabs.map((tab) => (
+                            <a
+                              key={tab.name}
+                              href={tab.href}
+                              className={classNames(
+                                tab.current
+                                  ? "border-purple-500 text-purple-600"
+                                  : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
+                                "whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium"
+                              )}
+                            >
+                              {tab.name}
+                            </a>
+                          ))}
+                        </nav>
+                      </div>
+                    </div>
 
-            <div className="ml-4">
-              <h2 className="text-lg font-bold">Lorem, ipsum dolor.</h2>
+                    {/* Description list with inline editing */}
+                    <div className="mt-10 divide-y divide-gray-200">
+                      <div className="space-y-1">
+                        <h3 className="text-lg font-medium leading-6 text-gray-900">
+                          Profile
+                        </h3>
+                        <p className="max-w-2xl text-sm text-gray-500">
+                          This information will be displayed publicly so be
+                          careful what you share.
+                        </p>
+                      </div>
+                      <div className="mt-6">
+                        <dl className="divide-y divide-gray-200">
+                          <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5">
+                            <dt className="text-sm font-medium text-gray-500">
+                              Name
+                            </dt>
+                            <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                              <span className="flex-grow">Chelsea Hagon</span>
+                              <span className="ml-4 flex-shrink-0">
+                                <button
+                                  type="button"
+                                  className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                                >
+                                  Update
+                                </button>
+                              </span>
+                            </dd>
+                          </div>
+                          <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:pt-5">
+                            <dt className="text-sm font-medium text-gray-500">
+                              Photo
+                            </dt>
+                            <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                              <span className="flex-grow">
+                                <img
+                                  className="h-8 w-8 rounded-full"
+                                  src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                  alt=""
+                                />
+                              </span>
+                              <span className="ml-4 flex flex-shrink-0 items-start space-x-4">
+                                <button
+                                  type="button"
+                                  className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                                >
+                                  Update
+                                </button>
+                                <span
+                                  className="text-gray-300"
+                                  aria-hidden="true"
+                                >
+                                  |
+                                </span>
+                                <button
+                                  type="button"
+                                  className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                                >
+                                  Remove
+                                </button>
+                              </span>
+                            </dd>
+                          </div>
+                          <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:pt-5">
+                            <dt className="text-sm font-medium text-gray-500">
+                              Email
+                            </dt>
+                            <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                              <span className="flex-grow">
+                                chelsea.hagon@example.com
+                              </span>
+                              <span className="ml-4 flex-shrink-0">
+                                <button
+                                  type="button"
+                                  className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                                >
+                                  Update
+                                </button>
+                              </span>
+                            </dd>
+                          </div>
+                          <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-b sm:border-gray-200 sm:py-5">
+                            <dt className="text-sm font-medium text-gray-500">
+                              Job title
+                            </dt>
+                            <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                              <span className="flex-grow">
+                                Human Resources Manager
+                              </span>
+                              <span className="ml-4 flex-shrink-0">
+                                <button
+                                  type="button"
+                                  className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                                >
+                                  Update
+                                </button>
+                              </span>
+                            </dd>
+                          </div>
+                        </dl>
+                      </div>
+                    </div>
 
-              <p className="mt-1 text-sm text-gray-300">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Error
-                cumque tempore est ab possimus quisquam reiciendis tempora
-                animi! Quaerat, saepe?
-              </p>
+                    <div className="mt-10 divide-y divide-gray-200">
+                      <div className="space-y-1">
+                        <h3 className="text-lg font-medium leading-6 text-gray-900">
+                          Account
+                        </h3>
+                        <p className="max-w-2xl text-sm text-gray-500">
+                          Manage how information is displayed on your account.
+                        </p>
+                      </div>
+                      <div className="mt-6">
+                        <dl className="divide-y divide-gray-200">
+                          <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5">
+                            <dt className="text-sm font-medium text-gray-500">
+                              Language
+                            </dt>
+                            <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                              <span className="flex-grow">English</span>
+                              <span className="ml-4 flex-shrink-0">
+                                <button
+                                  type="button"
+                                  className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                                >
+                                  Update
+                                </button>
+                              </span>
+                            </dd>
+                          </div>
+                          <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:pt-5">
+                            <dt className="text-sm font-medium text-gray-500">
+                              Date format
+                            </dt>
+                            <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                              <span className="flex-grow">DD-MM-YYYY</span>
+                              <span className="ml-4 flex flex-shrink-0 items-start space-x-4">
+                                <button
+                                  type="button"
+                                  className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                                >
+                                  Update
+                                </button>
+                                <span
+                                  className="text-gray-300"
+                                  aria-hidden="true"
+                                >
+                                  |
+                                </span>
+                                <button
+                                  type="button"
+                                  className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                                >
+                                  Remove
+                                </button>
+                              </span>
+                            </dd>
+                          </div>
+                          <Switch.Group
+                            as="div"
+                            className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:pt-5"
+                          >
+                            <Switch.Label
+                              as="dt"
+                              className="text-sm font-medium text-gray-500"
+                              passive
+                            >
+                              Automatic timezone
+                            </Switch.Label>
+                            <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                              <Switch
+                                checked={automaticTimezoneEnabled}
+                                onChange={setAutomaticTimezoneEnabled}
+                                className={classNames(
+                                  automaticTimezoneEnabled
+                                    ? "bg-purple-600"
+                                    : "bg-gray-200",
+                                  "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 sm:ml-auto"
+                                )}
+                              >
+                                <span
+                                  aria-hidden="true"
+                                  className={classNames(
+                                    automaticTimezoneEnabled
+                                      ? "translate-x-5"
+                                      : "translate-x-0",
+                                    "inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+                                  )}
+                                />
+                              </Switch>
+                            </dd>
+                          </Switch.Group>
+                          <Switch.Group
+                            as="div"
+                            className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-b sm:border-gray-200 sm:py-5"
+                          >
+                            <Switch.Label
+                              as="dt"
+                              className="text-sm font-medium text-gray-500"
+                              passive
+                            >
+                              Auto-update applicant data
+                            </Switch.Label>
+                            <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                              <Switch
+                                checked={autoUpdateApplicantDataEnabled}
+                                onChange={setAutoUpdateApplicantDataEnabled}
+                                className={classNames(
+                                  autoUpdateApplicantDataEnabled
+                                    ? "bg-purple-600"
+                                    : "bg-gray-200",
+                                  "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 sm:ml-auto"
+                                )}
+                              >
+                                <span
+                                  aria-hidden="true"
+                                  className={classNames(
+                                    autoUpdateApplicantDataEnabled
+                                      ? "translate-x-5"
+                                      : "translate-x-0",
+                                    "inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+                                  )}
+                                />
+                              </Switch>
+                            </dd>
+                          </Switch.Group>
+                        </dl>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          {/* </div> */}
+          </main>
         </div>
-      </section>
-
-      <section className="bg-white border-2 border-gray-100 rounded-lg mt-4">
-        <div className="mx-auto max-w-screen-xl py-4 px-4">
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-16">
-            <div className="relative h-64 overflow-hidden rounded-lg sm:h-80 lg:h-full">
-              <img
-                alt="Party"
-                src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-                className="absolute inset-0 h-full w-full object-cover"
-              />
-            </div>
-
-            <div className="lg:py-24">
-              <h2 className="text-3xl font-bold sm:text-4xl">
-                Grow your audience
-              </h2>
-
-              <p className="mt-4 text-gray-600">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aut
-                qui hic atque tenetur quis eius quos ea neque sunt, accusantium
-                soluta minus veniam tempora deserunt? Molestiae eius quidem quam
-                repellat.
-              </p>
-
-              <a
-                href="#"
-                className="mt-8 inline-flex items-center rounded border border-indigo-600 bg-indigo-600 px-8 py-3 text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
-              >
-                <span className="text-sm font-medium"> Get Started </span>
-
-                <svg
-                  className="ml-3 h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
+      </div>
+    </>
   );
 }

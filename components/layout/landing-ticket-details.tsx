@@ -73,8 +73,8 @@ export default function TicketsDetails({ id }: { id: any }) {
                 Date and time
               </dt>
               <dd className="mt-1 text-sm text-gray-900">
-                {moment(data.startDate).format("MMMM, Do YYYY")} &mdash;{" "}
-                {moment(data.startTime, "HH:mm:ss").format("h:mm A")}
+                {moment(data.startDate).format("MMMM, Do YYYY — h:mm A")}
+                {/* {moment(data.startTime, "HH:mm:ss").format("h:mm A")} */}
               </dd>
             </div>
             <div className="sm:col-span-1">

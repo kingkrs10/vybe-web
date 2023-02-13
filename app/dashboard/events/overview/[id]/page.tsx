@@ -13,9 +13,8 @@ export default async function Overview({ params }: { params: any }) {
   const data = await getData(params.id);
   return (
     <div className="">
-      <section className="bg-gray-900 text-white rounded-lg">
+      {/* <section className="bg-gray-900 text-white rounded-lg">
         <div className="max-w-screen-xl px-4 py-4 sm:px-6 lg:px-8">
-          {/* <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 md:grid-cols-2 md:gap-12 lg:grid-cols-3"> */}
           <div className="flex items-start">
             <span className="flex-shrink-0 rounded-lg bg-gray-800 p-4">
               <svg
@@ -46,11 +45,10 @@ export default async function Overview({ params }: { params: any }) {
               </p>
             </div>
           </div>
-          {/* </div> */}
         </div>
-      </section>
+      </section> */}
 
-      <section className="bg-white border-2 border-gray-100 rounded-lg mt-4">
+      <section className="mt-4 rounded-lg border-2 border-gray-100 bg-white">
         <div className="mx-auto max-w-screen-xl py-4 px-4">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-16">
             <div className="relative h-64 overflow-hidden rounded-lg sm:h-80 lg:h-full">

@@ -48,7 +48,7 @@ export default async function Tickets({
   const transactions = await getTransactions(id);
   let ticketsDetails = [];
 
-  console.log(guestlist, transactions, tickets);
+  // console.log(guestlist, transactions, tickets);
 
   const ticketSales = transactions
     // .filter((transaction: any) => transaction.ticketId === ticket.ticketId)
@@ -76,9 +76,27 @@ export default async function Tickets({
     // ticket.revenue = ticketRevenue;
     ticketsDetails.push(ticket);
   });
+
+  // transactions.map((ticket: any, index: any) => {
+  //   // console.log(ticket);
+
+  //   const ticketCount = guestlist
+  //     .filter((guest: any) => guest.ticketId === ticket.ticketId)
+  //     .reduce(
+  //       (acc: any, guest: any) => acc + 1,
+  //       // acc.orders += parseInt(guest.ticketsSold);
+  //       0
+  //     );
+
+  //   ticket.count = ticketCount;
+  //   // ticket.sales = ticketSales;
+  //   // ticket.index = index;
+  //   // ticket.revenue = ticketRevenue;
+  //   ticketsDetails.push(ticket);
+  // });
   // console.log(JSON.stringify(ticketsDetails));
-  const totalRevenue = ticketsDetails
-    // .filter((transaction: any) => transaction.ticketId === ticket.ticketId)
+  const totalRevenue = guestlist
+    .filter((transaction: any) => transaction.ticketId === transaction.ticketId)
     .reduce(
       (acc: any, guest: any) =>
         // acc.price += parseFloat(guest.price);
@@ -113,7 +131,10 @@ export default async function Tickets({
   ];
 
   function filterItems(arr: any[], query: any) {
-    return arr.filter((el: any) => el.ticketId === query);
+    const result = arr.filter((el: any) => el.ticketId === query);
+    // arr.filter((el: any) => el.ticketId === query);
+    // console.log(result);
+    return result;
   }
 
   const formatter = new Intl.NumberFormat("en-US", {
@@ -209,7 +230,7 @@ export default async function Tickets({
                       "hidden px-3 py-3.5 text-right text-sm text-gray-500 lg:table-cell"
                     )}
                   >
-                    {filterItems(ticketsDetails, plan.ticketId).length}/
+                    {filterItems(ticketsDetails, plan.ticketId)[0].count}/
                     {plan.quantity}
                   </td>
                   <td
@@ -227,7 +248,7 @@ export default async function Tickets({
                     )}
                   >
                     {formatter.format(
-                      filterItems(ticketsDetails, plan.ticketId).length *
+                      filterItems(ticketsDetails, plan.ticketId)[0].count *
                         plan.price *
                         0.07
                     )}
@@ -239,7 +260,7 @@ export default async function Tickets({
                     )}
                   >
                     {formatter.format(
-                      filterItems(ticketsDetails, plan.ticketId).length *
+                      filterItems(ticketsDetails, plan.ticketId)[0].count *
                         plan.price
                     )}
                   </td>

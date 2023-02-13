@@ -22,7 +22,7 @@ export default function Example(props: Props) {
         <div className="relative hidden w-0 flex-1 lg:block">
           <img
             className="absolute inset-0 h-full w-full object-cover"
-            src="https://images.unsplash.com/photo-1505904267569-f02eaeb45a4c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
+            src="https://images.unsplash.com/photo-1549451371-64aa98a6f660?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2970&q=80"
             alt=""
           />
         </div>
@@ -47,16 +47,16 @@ export default function Example(props: Props) {
             <div className="mt-8">
               <div>
                 <div>
-                  <p className="text-sm font-medium text-gray-700">
+                  {/* <p className="text-sm font-medium text-gray-700">
                     Sign in with
-                  </p>
+                  </p> */}
                   {/* <p>
                     {process.env.NEXT_PUBLIC_NEXTAUTH_URL +
                       searchParams.redirect}
                   </p> */}
 
-                  <div className="mt-1 grid grid-cols-3 gap-3">
-                    <div>
+                  <div className="mt-1 grid grid-cols-1 gap-3">
+                    {/* <div>
                       <a
                         href="#"
                         className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
@@ -75,9 +75,9 @@ export default function Example(props: Props) {
                           />
                         </svg>
                       </a>
-                    </div>
+                    </div> */}
 
-                    <div>
+                    {/* <div>
                       <a
                         href="#"
                         className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
@@ -92,7 +92,7 @@ export default function Example(props: Props) {
                           <path d="M6.29 18.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0020 3.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.073 4.073 0 01.8 7.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 010 16.407a11.616 11.616 0 006.29 1.84" />
                         </svg>
                       </a>
-                    </div>
+                    </div> */}
 
                     <div>
                       <a
@@ -105,7 +105,7 @@ export default function Example(props: Props) {
                               : `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/dashboard/events`,
                           });
                         }}
-                        className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
+                        className="inline-flex w-full cursor-pointer justify-center rounded-md border border-gray-300 bg-white py-2 px-4 align-middle text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
                       >
                         <span className="sr-only">Sign in with Google</span>
                         <svg
@@ -116,12 +116,13 @@ export default function Example(props: Props) {
                         >
                           <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z" />
                         </svg>
+                        Sign in with Google
                       </a>
                     </div>
                   </div>
                 </div>
 
-                <div className="relative mt-6">
+                {/* <div className="relative mt-6">
                   <div
                     className="absolute inset-0 flex items-center"
                     aria-hidden="true"
@@ -133,11 +134,11 @@ export default function Example(props: Props) {
                       Or continue with
                     </span>
                   </div>
-                </div>
+                </div> */}
               </div>
 
               <div className="mt-6">
-                <form action="#" method="POST" className="space-y-6">
+                {/* <form action="#" method="POST" className="space-y-6">
                   <div>
                     <label
                       htmlFor="email"
@@ -210,7 +211,7 @@ export default function Example(props: Props) {
                       Sign in
                     </button>
                   </div>
-                </form>
+                </form> */}
               </div>
             </div>
           </div>

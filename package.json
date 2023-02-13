@@ -34,6 +34,7 @@
     "nouislider": "^15.6.1",
     "postcss": "^8.4.20",
     "react": "18.2.0",
+    "react-datepicker": "^4.10.0",
     "react-dom": "18.2.0",
     "react-qr-reader": "^3.0.0-beta-1",
     "sharp": "^0.31.3",
