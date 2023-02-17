@@ -80,6 +80,8 @@ export default function PaymentForm({
             eventId: id,
             userId: session.userData.userId,
             customerId: session.userData.stripeCustomerId,
+            name: session.name,
+            email: session.email,
           }
         );
         // console.log(intent.data.data);

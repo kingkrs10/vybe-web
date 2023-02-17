@@ -23,7 +23,7 @@ export default async function EventsHome() {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
             {data.map((item: any, index: any) => (
               <a key={index} href={`/${item.eventId}`} className="group">
-                <article className="w-full border overflow-hidden rounded-lg bg-gray-200">
+                <article className="w-full overflow-hidden rounded-lg border bg-gray-200">
                   <Image
                     alt="Office"
                     src={item.image ? item.image : "/login.jpeg"}
@@ -33,8 +33,8 @@ export default async function EventsHome() {
                   />
                   <div className="bg-white p-3 sm:p-4">
                     <p className="text-xs">
-                      {moment(item.startDate).format("MMMM, Do YYYY")} &mdash;{" "}
-                      {moment(item.startTime, "HH:mm:ss").format("h:mm A")}
+                      {moment(item.startDate).format("MMMM, Do YYYY — h:mm A")}
+                      {/* {moment(item.startTime, "HH:mm:ss").format("h:mm A")} */}
                     </p>
 
                     <h3 className="mt-0.5 text-lg text-gray-900">

@@ -277,7 +277,7 @@ export default function Settings() {
                               className="text-sm font-medium text-gray-500"
                               passive
                             >
-                              Automatic timezone
+                              Email Opt-in
                             </Switch.Label>
                             <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                               <Switch

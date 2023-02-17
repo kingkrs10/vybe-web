@@ -170,21 +170,21 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
                           event: item.eventId,
                           ticket: item.ticketId,
                           quantity: e.target.value,
-                          price: item.type == "free" ? 0 : item.price,
+                          price: parseFloat(item.price),
                           name: item.name,
                           type: item.type,
                           startDate: item.startDate,
                           endDate: item.endDate,
-                          startTime: item.startTime,
-                          endTime: item.endTime,
+                          // startTime: item.startTime,
+                          // endTime: item.endTime,
                         };
                         const clean = (prev: any) => {
                           let cleared = prev.filter(function (item: any) {
-                            return item.ticket !== data.ticket;
+                            return item.ticket != data.ticket;
                           });
                           return [...cleared, data];
                         };
-                        setCount((prev: any) => (prev ? clean(prev) : [data]));
+                        setCount((prev: any) => clean(prev));
                       }}
                     >
                       {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i, n) => (
@@ -208,9 +208,10 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
             <div className="flex items-center justify-between">
               <dt className="text-sm text-gray-600">Subtotal</dt>
               <dd className="text-sm font-medium text-gray-900">
-                {total.subtotal
+                {/* {total.subtotal
                   ? formatter.format(total.subtotal)
-                  : formatter.format(0)}
+                  : formatter.format(0)} */}
+                {formatter.format(total.subtotal)}
               </dd>
             </div>
             <div className="flex items-center justify-between border-t border-gray-200 pt-4">
@@ -230,7 +231,8 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
                 </a>
               </dt>
               <dd className="text-sm font-medium text-gray-900">
-                {total.fee ? formatter.format(total.fee) : formatter.format(0)}
+                {/* {total.fee ? formatter.format(total.fee) : formatter.format(0)} */}
+                {formatter.format(total.fee)}
               </dd>
             </div>
             <div className="flex items-center justify-between border-t border-gray-200 pt-4">
@@ -238,9 +240,10 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
                 Order total
               </dt>
               <dd className="text-base font-medium text-gray-900">
-                {total.total
+                {/* {total.total
                   ? formatter.format(total.total)
-                  : formatter.format(0)}
+                  : formatter.format(0)} */}
+                {formatter.format(total.total)}
               </dd>
             </div>
           </dl>
