@@ -1,5 +1,5 @@
 "use client";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Switch, Transition } from "@headlessui/react";
 import {
   ArrowLeftOnRectangleIcon,
@@ -15,6 +15,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import { getCurrentUser } from "@/lib/session";
 
 const navigation = [
   { name: "Home", href: "#", icon: HomeIcon, current: false },
@@ -57,6 +58,14 @@ export default function Settings() {
     useState(true);
   const [autoUpdateApplicantDataEnabled, setAutoUpdateApplicantDataEnabled] =
     useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    async () => {
+      // console.log(await getCurrentUser());
+      // setUser(await getCurrentUser());
+    };
+  }, []);
 
   return (
     <>
@@ -128,7 +137,7 @@ export default function Settings() {
                               Name
                             </dt>
                             <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                              <span className="flex-grow">Chelsea Hagon</span>
+                              {/* <span className="flex-grow">{user.name}</span> */}
                               <span className="ml-4 flex-shrink-0">
                                 <button
                                   type="button"

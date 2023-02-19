@@ -121,8 +121,8 @@ export default function GuestFields({ item }: { item: any }) {
         price: item.price,
         startDate: item.startDate,
         endDate: item.endDate,
-        startTime: item.startTime,
-        endTime: item.endTime,
+        // startTime: item.startTime,
+        // endTime: item.endTime,
       };
       const clean = (prev: any) => {
         let cleared = prev.filter(function (item: any) {

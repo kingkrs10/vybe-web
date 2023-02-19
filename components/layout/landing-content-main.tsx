@@ -7,6 +7,7 @@ import { useAtom } from "jotai";
 import { checkoutStepAtom, completedPurchaseAtom } from "@/lib/atoms";
 import dynamic from "next/dynamic";
 import { CheckCircleIcon, XMarkIcon } from "@heroicons/react/20/solid";
+import { useEffect } from "react";
 
 const TicketDetails = dynamic(
   () => import("@/components/layout/landing-ticket-details"),
@@ -40,6 +41,9 @@ export default function LandingContent({
 }) {
   const [step] = useAtom(checkoutStepAtom);
   const [purchase, setPurchase] = useAtom(completedPurchaseAtom);
+
+  useEffect(() => {}, [step]);
+
   return (
     <main className="py-6">
       {purchase && (
