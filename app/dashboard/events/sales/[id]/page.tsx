@@ -109,6 +109,7 @@ export default async function Tickets({
     { name: "Total orders", stat: transactions.length },
     { name: "Tickets sold", stat: guestlist.length },
   ];
+
   const plans = [
     {
       id: 1,

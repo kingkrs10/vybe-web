@@ -9,14 +9,14 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getSession();
+  const session = await getCurrentUser();
   // const path = usePathname();
-  if (session == null /*&& path == "/dashboard/events/new"*/) {
-    redirect("/login?redirect=/dashboard/events/");
+  if (session === null /*&& path == "/dashboard/events/new"*/) {
+    redirect("/login?redirect=/dashboard/events");
   }
   return (
     <>
-      {session != null && (
+      {session !== null && (
         <div>
           <Sidebar />
           <div className="md:pl-64">

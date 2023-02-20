@@ -2,8 +2,8 @@
 import Image from "next/image";
 import axios from "axios";
 import moment from "moment";
-import LandingNav from "../components/header/landing-header";
-import LandingFooter from "../components/footer/landing-footer";
+import LandingNav from "@/components/header/landing-header";
+import LandingFooter from "@/components/footer/landing-footer";
 
 async function getData() {
   const params = { pageNo: 1 };

@@ -181,7 +181,7 @@ export default function Guestlists({
                 </thead>
                 <tbody>
                   {data.map((plan, planIdx) => (
-                    <tr key={plan.ticketId}>
+                    <tr key={planIdx}>
                       <td
                         className={classNames(
                           planIdx === 0 ? "" : "border-t border-transparent",

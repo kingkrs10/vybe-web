@@ -3,15 +3,16 @@ import axios from "axios";
 import moment from "moment";
 // import styles from "./page.module.css";
 import { getServerSession } from "next-auth/next";
+import { getCurrentUser } from "@/lib/session";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { PlusIcon } from "@heroicons/react/20/solid";
 
 async function getData() {
   // console.log("test");
-  const session = await getServerSession(authOptions);
+  const session = await getCurrentUser();
   // console.log(session);
 
-  const params = { uid: session?.user.userData?.userId, pageNo: 1 };
+  const params = { uid: session?.userData?.userId, pageNo: 1 };
   const response = await axios.get(
     `${process.env.NEXT_PUBLIC_APIURL}/events/all?uid=${params.uid}&pageNo=${params.pageNo}`
   );
@@ -24,7 +25,7 @@ export default async function Events() {
   return (
     <div className="">
       <section className="mt-4 rounded-lg rounded-b-none border-2 border-gray-100 bg-white">
-        <nav className="flex border-b border-gray-100 text-sm font-medium">
+        {/* <nav className="flex border-b border-gray-100 text-sm font-medium">
           <a
             href=""
             className="-mb-px border-b border-current p-4 text-purple-500"
@@ -52,7 +53,7 @@ export default async function Events() {
           >
             Ended
           </a>
-        </nav>
+        </nav> */}
         {data.length === 0 && (
           <div className="h-96 content-center pt-16 text-center align-middle">
             <svg
@@ -176,7 +177,7 @@ export default async function Events() {
                   >
                     <div className="absolute top-2 left-2">
                       <span className="inline-flex items-center justify-center rounded-full bg-emerald-100 px-2.5 py-0.5 text-emerald-700">
-                        <svg
+                        {/* <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
@@ -189,9 +190,11 @@ export default async function Events() {
                             strokeLinejoin="round"
                             d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                           />
-                        </svg>
+                        </svg> */}
 
-                        <p className="whitespace-nowrap text-sm">Draft</p>
+                        <p className="whitespace-nowrap text-sm">
+                          {item.isActive ? "Published" : "Draft"}
+                        </p>
                       </span>
                     </div>
                     <img
@@ -232,9 +235,9 @@ export default async function Events() {
                         />
                       </svg> */}
                         <p className="text-xs">
-                          {moment(item.startDate).format("MMMM, Do YYYY")}{" "}
-                          &mdash;{" "}
-                          {moment(item.startTime, "HH:mm:ss").format("h:mm A")}
+                          {moment(item.startDate).format(
+                            "MMMM, Do YYYY — h:mm A"
+                          )}
                         </p>
                       </div>
 

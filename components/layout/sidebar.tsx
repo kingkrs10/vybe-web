@@ -15,7 +15,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { useAtom } from "jotai";
-import { menuAtom } from "../../lib/atoms";
+import { menuAtom } from "@/lib/atoms";
 import Logo from "./logo";
 
 const navigation = [

@@ -13,6 +13,7 @@ import {
 } from "@react-google-maps/api";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { redirect } from "next/navigation";
 
 export default function NewTicket() {
   const [name, setName] = useState("");
@@ -60,8 +61,6 @@ export default function NewTicket() {
 
   const [session, setSession] = useState<any>({});
 
-  // const [libraries] = useState();
-
   useEffect(() => {
     async function fetchSession() {
       const session = await getSession();
@@ -69,11 +68,10 @@ export default function NewTicket() {
     }
     fetchSession();
   }, []);
-  // console.log(session);
 
   let key = country;
   let countryname = countryList[key as keyof typeof countryList];
-  const lib = ["places"];
+  // const lib = ["places"];
 
   const uploadPhoto = async (e: any) => {
     const file = e.target.files[0];
@@ -123,7 +121,7 @@ export default function NewTicket() {
     // console.log(upload);
   };
 
-  function statusDetail(startDate: any, endDate: any) {
+  const statusDetail = (startDate: any, endDate: any) => {
     const date = Date.now();
     const today = new Date(date).toISOString();
     // console.log(startDate, endDate, today);
@@ -161,21 +159,17 @@ export default function NewTicket() {
         </>
       );
     }
-  }
+  };
 
-  async function getTickets(eventId: any) {
+  const getTickets = async (eventId: any) => {
     const params = { eventId: eventId, pageNo: 1 };
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_APIURL}/tickets/all?eventId=${params.eventId}&pageNo=${params.pageNo}`
     );
-    console.log("response", response.data.data);
     setTickets(response.data.data);
-    // return response.data.data;
-  }
+  };
 
   const createEvent = async () => {
-    // const session = await getSession();
-    // setSession(session?.user?.userData?.userId);
     const data = {
       userId: session?.user?.userData?.userId,
       name,
@@ -198,13 +192,11 @@ export default function NewTicket() {
       lat: address?.lat,
       lng: address?.lng,
     };
-    // console.log(data);
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_APIURL!}/events`,
         data
       );
-      // console.log(response.data.data);
       return response.data.data;
     } catch (error) {
       console.error(error);
@@ -221,9 +213,7 @@ export default function NewTicket() {
       quantity: ticketQuantity,
       limit: ticketLimit,
       startDate: new Date(ticketStartDate),
-      // startTime: new Date(ticketStartTime),
       endDate: new Date(ticketEndDate),
-      // endTime: ticketEndTime,
       invitationOnly: ticketInvitationOnly,
     };
     try {
@@ -231,10 +221,8 @@ export default function NewTicket() {
         `${process.env.NEXT_PUBLIC_APIURL!}/tickets`,
         data
       );
-      // console.log(response.data);
       if (response.data.data.eventId) {
         getTickets(response.data.data.eventId);
-        // return response.data.data;
         setNewTicket(false);
       }
     } catch (error) {
@@ -255,6 +243,23 @@ export default function NewTicket() {
     }
   };
 
+  const publishEvent = async () => {
+    const data = {
+      isActive: true,
+    };
+    try {
+      const response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_APIURL!}/events/${eventId}`,
+        data
+      );
+      if (response.data.data.eventId) {
+        redirect("/dashboard/events");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <LoadScript
       googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY}
@@ -263,8 +268,6 @@ export default function NewTicket() {
       <div className="">
         <section className="rounded-lg bg-gray-900 text-white">
           <div className="max-w-screen-xl px-4 py-4 sm:px-6 lg:px-8">
-            {/* <p>{JSON.stringify(session)}</p> */}
-            {/* <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 md:grid-cols-2 md:gap-12 lg:grid-cols-3"> */}
             <div className="flex items-start">
               <span className="flex-shrink-0 rounded-lg bg-gray-800 p-4">
                 <svg
@@ -381,9 +384,6 @@ export default function NewTicket() {
                             Event name
                           </label>
                           <div className="mt-1 flex rounded-md shadow-sm">
-                            {/* <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
-                          http://
-                        </span> */}
                             <input
                               type="text"
                               onChange={(text) => setName(text.target.value)}
@@ -414,12 +414,8 @@ export default function NewTicket() {
                               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                               placeholder="Tell everyone about your event."
                               value={description}
-                              // defaultValue={""}
                             />
                           </div>
-                          {/* <p className="mt-2 text-sm text-gray-500">
-                      Brief description for your profile. URLs are hyperlinked.
-                    </p> */}
                         </div>
 
                         <div className="col-span-6 sm:col-span-3">
@@ -449,14 +445,6 @@ export default function NewTicket() {
                           </select>
                         </div>
                       </div>
-                      {/* <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
-                  <button
-                    type="submit"
-                    className="inline-flex justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-                  >
-                    Save
-                  </button>
-                </div> */}
                     </div>
                   </form>
                 </div>
@@ -487,116 +475,6 @@ export default function NewTicket() {
                       <div className="bg-white px-4 py-5 sm:p-6">
                         <div className="grid grid-cols-6 gap-6">
                           <div className="col-span-6">
-                            {/* <ul className="items-center w-full text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <li className="w-full border-b border-gray-400 sm:border-b-0 border-r sm:border-r dark:border-gray-600">
-                              <div className="flex items-center pl-3">
-                                <input
-                                  id="horizontal-list-radio-license"
-                                  type="radio"
-                                  value=""
-                                  name="list-radio"
-                                  checked
-                                  className="w-4 h-4 ml-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                                />
-                                <label
-                                  htmlFor="horizontal-list-radio-license"
-                                  className="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300"
-                                >
-                                  Live
-                                </label>
-                              </div>
-                            </li>
-                            <li className="w-full border-b border-gray-400 sm:border-b-0 border-r sm:border-r dark:border-gray-600">
-                              <div className="flex items-center pl-3">
-                                <input
-                                  id="horizontal-list-radio-id"
-                                  type="radio"
-                                  value=""
-                                  name="list-radio"
-                                  className="w-4 h-4 ml-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                                />
-                                <label
-                                  htmlFor="horizontal-list-radio-id"
-                                  className="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300"
-                                >
-                                  Virtual
-                                </label>
-                              </div>
-                            </li>
-                          </ul> */}
-                            {/* <ul className="grid gap-6 w-full md:grid-cols-2">
-                            <li>
-                              <input
-                                type="radio"
-                                id="hosting-small"
-                                name="hosting"
-                                value="hosting-small"
-                                className="hidden peer"
-                                required
-                              />
-                              <label
-                                htmlFor="hosting-small"
-                                className="inline-flex justify-between items-center p-5 w-full text-gray-500 bg-white rounded-lg border border-gray-200 cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-purple-500 peer-checked:border-purple-600 peer-checked:text-purple-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
-                              >
-                                <div className="block">
-                                  <div className="w-full text-lg font-semibold">
-                                    0-50 MB
-                                  </div>
-                                  <div className="w-full">
-                                    Good for small websites
-                                  </div>
-                                </div>
-                                <svg
-                                  aria-hidden="true"
-                                  className="ml-3 w-6 h-6"
-                                  fill="currentColor"
-                                  viewBox="0 0 20 20"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-                                    clipRule="evenodd"
-                                  ></path>
-                                </svg>
-                              </label>
-                            </li>
-                            <li>
-                              <input
-                                type="radio"
-                                id="hosting-big"
-                                name="hosting"
-                                value="hosting-big"
-                                className="hidden peer"
-                              />
-                              <label
-                                htmlFor="hosting-big"
-                                className="inline-flex justify-between items-center p-5 w-full text-gray-500 bg-white rounded-lg border border-gray-200 cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-purple-500 peer-checked:border-purple-600 peer-checked:text-purple-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
-                              >
-                                <div className="block">
-                                  <div className="w-full text-lg font-semibold">
-                                    500-1000 MB
-                                  </div>
-                                  <div className="w-full">
-                                    Good for large websites
-                                  </div>
-                                </div>
-                                <svg
-                                  aria-hidden="true"
-                                  className="ml-3 w-6 h-6"
-                                  fill="currentColor"
-                                  viewBox="0 0 20 20"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-                                    clipRule="evenodd"
-                                  ></path>
-                                </svg>
-                              </label>
-                            </li>
-                          </ul> */}
                             <fieldset className="grid grid-cols-2 gap-4">
                               <legend className="sr-only">Delivery</legend>
 
@@ -771,24 +649,6 @@ export default function NewTicket() {
                                 >
                                   Search for location
                                 </label>
-                                {/* <div className="mt-1 flex rounded-md shadow-sm"> */}
-                                {/* <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  strokeWidth={1.5}
-                                  stroke="currentColor"
-                                  className="w-6 h-6"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                                  />
-                                </svg>
-                              </span> */}
-
                                 <StandaloneSearchBox
                                   onLoad={(ref) => (inputRef.current = ref)}
                                   onPlacesChanged={handlePlaceChanged}
@@ -797,16 +657,10 @@ export default function NewTicket() {
                                     type="text"
                                     name="address"
                                     id="address"
-                                    // value={address.address}
-                                    // onChange={(text) =>
-                                    //   setAddress(text.target.value)
-                                    // }
                                     className="form-control block w-full flex-1 rounded-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                     placeholder="Your address"
                                   />
                                 </StandaloneSearchBox>
-                                {/* </LoadScript> */}
-                                {/* </div> */}
                               </div>
 
                               <div className="col-span-6">
@@ -879,10 +733,6 @@ export default function NewTicket() {
                                       type="text"
                                       name="address"
                                       id="address"
-                                      // defaultValue={address?.address}
-                                      // onChange={(text) =>
-                                      //   setAddress(text.target.value)
-                                      // }
                                       autoComplete="street-address"
                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                     />
@@ -895,13 +745,6 @@ export default function NewTicket() {
                                     >
                                       City
                                     </label>
-                                    {/* <input
-                        type="text"
-                        name="city"
-                        id="city"
-                        autoComplete="address-level2"
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
-                      /> */}
                                     <select
                                       id="city"
                                       name="city"
@@ -997,12 +840,6 @@ export default function NewTicket() {
                             </div>
                           </div>
                         </div>
-                        {/* <button
-                    type="submit"
-                    className="inline-flex justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-                  >
-                    Save
-                  </button> */}
                       </div>
                     </div>
                   </form>
@@ -1087,17 +924,6 @@ export default function NewTicket() {
                                       />
                                     </svg>
                                   </span>
-                                  {/* <input
-                                    type="text"
-                                    name="start-date"
-                                    id="start-date"
-                                    value={startDate}
-                                    onChange={(text) =>
-                                      setStartDate(text.target.value)
-                                    }
-                                    className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
-                                    placeholder="01/01/2024"
-                                  /> */}
                                   <DatePicker
                                     name="start-date"
                                     id="start-date"
@@ -1145,136 +971,9 @@ export default function NewTicket() {
                                     showTimeInput
                                     className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                   />
-                                  {/* <input
-                                    type="text"
-                                    name="end-date"
-                                    id="end-date"
-                                    value={endDate}
-                                    onChange={(text) =>
-                                      setEndDate(text.target.value)
-                                    }
-                                    className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
-                                    placeholder="01/01/2024"
-                                  /> */}
                                 </div>
                               </div>
-
-                              {/* <div className="col-span-6 sm:col-span-3">
-                                <label
-                                  htmlFor="start-time"
-                                  className="block text-sm font-medium text-gray-700"
-                                >
-                                  Start time
-                                </label>
-                                <div className="mt-1 flex rounded-md shadow-sm">
-                                  <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      fill="none"
-                                      viewBox="0 0 24 24"
-                                      strokeWidth={1.5}
-                                      stroke="currentColor"
-                                      className="h-6 w-6"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                                      />
-                                    </svg>
-                                  </span>
-                                  <input
-                                    type="text"
-                                    name="start-time"
-                                    id="start-time"
-                                    value={startTime}
-                                    onChange={(text) =>
-                                      setStartTime(text.target.value)
-                                    }
-                                    className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
-                                    placeholder="2:00 PM"
-                                  />
-                                </div>
-                              </div> */}
                             </div>
-
-                            {/* <div className="grid grid-cols-6 gap-6">
-                              <div className="col-span-6 sm:col-span-3">
-                                <label
-                                  htmlFor="end-date"
-                                  className="block text-sm font-medium text-gray-700"
-                                >
-                                  End date
-                                </label>
-                                <div className="mt-1 flex rounded-md shadow-sm">
-                                  <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      fill="none"
-                                      viewBox="0 0 24 24"
-                                      strokeWidth={1.5}
-                                      stroke="currentColor"
-                                      className="h-6 w-6"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z"
-                                      />
-                                    </svg>
-                                  </span>
-                                  <input
-                                    type="text"
-                                    name="end-date"
-                                    id="end-date"
-                                    value={endDate}
-                                    onChange={(text) =>
-                                      setEndDate(text.target.value)
-                                    }
-                                    className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
-                                    placeholder="01/01/2024"
-                                  />
-                                </div>
-                              </div>
-
-                              <div className="col-span-6 sm:col-span-3">
-                                <label
-                                  htmlFor="end-time"
-                                  className="block text-sm font-medium text-gray-700"
-                                >
-                                  End time
-                                </label>
-                                <div className="mt-1 flex rounded-md shadow-sm">
-                                  <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      fill="none"
-                                      viewBox="0 0 24 24"
-                                      strokeWidth={1.5}
-                                      stroke="currentColor"
-                                      className="h-6 w-6"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                                      />
-                                    </svg>
-                                  </span>
-                                  <input
-                                    type="text"
-                                    name="end-time"
-                                    id="end-time"
-                                    value={endTime}
-                                    onChange={(text) =>
-                                      setEndTime(text.target.value)
-                                    }
-                                    className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
-                                    placeholder="3:00 PM"
-                                  />
-                                </div>
-                              </div>
-                            </div> */}
 
                             <div className="flex items-start">
                               <div className="flex h-5 items-center">
@@ -1559,13 +1258,21 @@ export default function NewTicket() {
                       action="#"
                       className="items-center justify-center sm:flex sm:gap-4"
                     >
+                      <a
+                        href="/dashboard/events"
+                        className="group mt-4 flex rounded-md border border-purple-600 px-8 py-3 text-black transition focus:outline-none focus:ring sm:mt-0 sm:w-auto"
+                      >
+                        <span className="text-sm font-medium">
+                          Back to events
+                        </span>
+                      </a>
                       <button
                         // type="submit"
                         onClick={(e) => {
                           e.preventDefault();
                           setNewTicket(true);
                         }}
-                        className="group mt-4 flex  rounded-md bg-purple-600 px-8 py-3 text-white transition focus:outline-none focus:ring focus:ring-yellow-400 sm:mt-0 sm:w-auto"
+                        className="group mt-4 flex rounded-md bg-purple-600 px-8 py-3 text-white transition focus:outline-none focus:ring focus:ring-yellow-400 sm:mt-0 sm:w-auto"
                       >
                         <span className="text-sm font-medium">Add ticket</span>
 
@@ -1592,16 +1299,51 @@ export default function NewTicket() {
 
             {tickets.length !== 0 && !newTicket && (
               <section className="mt-4 sm:mt-4">
-                <div className="w-full items-end justify-end">
+                <div className="flex w-full items-end justify-between">
+                  <div className="flex justify-between">
+                    <a
+                      href="/dashboard/events"
+                      className="group mt-4 flex rounded-md border border-purple-600 px-8 py-3 text-black transition focus:outline-none focus:ring sm:mt-0 sm:w-auto"
+                    >
+                      <span className="text-sm font-medium">
+                        Back to events
+                      </span>
+                    </a>
+                    <button
+                      type="submit"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setNewTicket(true);
+                      }}
+                      className="group mt-4 ml-4 flex justify-self-end rounded-md bg-purple-600 px-8 py-3 text-white transition focus:outline-none focus:ring focus:ring-yellow-400 sm:mt-0 sm:w-auto"
+                    >
+                      <span className="text-sm font-medium">Add ticket</span>
+
+                      {/* <svg
+                        className="ml-3 h-5 w-5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M17 8l4 4m0 0l-4 4m4-4H3"
+                        />
+                      </svg> */}
+                    </button>
+                  </div>
                   <button
                     type="submit"
                     onClick={(e) => {
                       e.preventDefault();
-                      setNewTicket(true);
+                      publishEvent();
                     }}
                     className="group mt-4 flex justify-self-end rounded-md bg-purple-600 px-8 py-3 text-white transition focus:outline-none focus:ring focus:ring-yellow-400 sm:mt-0 sm:w-auto"
                   >
-                    <span className="text-sm font-medium">Add ticket</span>
+                    <span className="text-sm font-medium">Publish event</span>
 
                     <svg
                       className="ml-3 h-5 w-5"
@@ -1619,22 +1361,14 @@ export default function NewTicket() {
                     </svg>
                   </button>
                 </div>
-                <div className="mt-4 overflow-hidden overflow-x-auto rounded-lg border border-gray-200">
-                  <table className="min-w-full divide-y divide-gray-200 text-sm">
-                    <thead className="bg-gray-100">
+                <div className="-mx-4 mt-4 ring-1 ring-gray-100 sm:-mx-6 md:mx-0 md:rounded-lg">
+                  <table className="min-w-full divide-y divide-gray-100">
+                    <thead className="">
                       <tr>
-                        <th className="sticky inset-y-0 left-0 bg-gray-100 px-4 py-2 text-left">
-                          <label className="sr-only" htmlFor="SelectAll">
-                            Select All
-                          </label>
-
-                          <input
-                            className="h-5 w-5 rounded border-gray-200"
-                            type="checkbox"
-                            id="SelectAll"
-                          />
-                        </th>
-                        <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                        <th
+                          scope="col"
+                          className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-500 sm:pl-6"
+                        >
                           <div className="flex items-center gap-2">
                             Name
                             <svg
@@ -1651,7 +1385,10 @@ export default function NewTicket() {
                             </svg>
                           </div>
                         </th>
-                        <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                        <th
+                          scope="col"
+                          className="hidden px-3 py-3.5 text-right text-sm font-semibold text-gray-500 lg:table-cell"
+                        >
                           <div className="flex items-center gap-2">
                             Quantity
                             <svg
@@ -1668,7 +1405,10 @@ export default function NewTicket() {
                             </svg>
                           </div>
                         </th>
-                        <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                        <th
+                          scope="col"
+                          className="hidden px-3 py-3.5 text-right text-sm font-semibold text-gray-500 lg:table-cell"
+                        >
                           <div className="flex items-center gap-2">
                             Price
                             <svg
@@ -1685,17 +1425,20 @@ export default function NewTicket() {
                             </svg>
                           </div>
                         </th>
-                        <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                        <th
+                          scope="col"
+                          className="px-3 py-3.5 text-right text-sm font-semibold text-gray-500"
+                        >
                           Status
                         </th>
                         <th className="px-4 py-2"></th>
                       </tr>
                     </thead>
 
-                    <tbody className="divide-y divide-gray-200">
+                    <tbody className="divide-y">
                       {tickets.map((item: any) => (
                         <tr>
-                          <td className="sticky inset-y-0 left-0 bg-white px-4 py-2">
+                          {/* <td className="sticky inset-y-0 left-0 bg-white px-4 py-2">
                             <label className="sr-only" htmlFor="Row1">
                               Row 1
                             </label>
@@ -1705,7 +1448,7 @@ export default function NewTicket() {
                               type="checkbox"
                               id="Row1"
                             />
-                          </td>
+                          </td> */}
                           <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                             {item.name}
                           </td>
