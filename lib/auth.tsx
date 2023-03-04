@@ -1,8 +1,6 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import axios from "axios";
-// import { useAtom } from "jotai";
-// import { sessionAtom } from "@/lib/atoms";
 
 export const authOptions = {
   // Configure one or more authentication providers
@@ -19,7 +17,8 @@ export const authOptions = {
         const user = await axios.get(
           `${process.env.NEXT_PUBLIC_APIURL}/users/getAuthToken/${profile.email}`
         );
-        // account.userData = user.data.data;
+
+        account.data = user.data.data;
 
         if (user.data.data.length === 0) {
           const newUser = await axios.post(
@@ -44,7 +43,15 @@ export const authOptions = {
       profile?: any;
     }) {
       if (account) {
-        token.accessToken = account.access_token;
+        const tokenDetails = await axios.get(
+          `${process.env.NEXT_PUBLIC_APIURL}/users/getAuthToken/${account.email}`
+        );
+        // if (getuser.data.data.length > 0) {
+        // console.log(`user`, user);
+        token.email = account.email;
+        // token.userData = account.data;
+        token.accessToken = tokenDetails.data.data.authToken;
+        // }
       }
       return token;
     },
@@ -57,11 +64,12 @@ export const authOptions = {
       token: any;
       user: any;
     }) {
-      const userData = await axios.get(
-        `${process.env.NEXT_PUBLIC_APIURL}/users/${token.email}`
+      const getuser = await axios.get(
+        `${process.env.NEXT_PUBLIC_APIURL}/users/getAuthToken/${token.email}`
       );
+      session.user.token = getuser.data.data.authToken;
+      session.user.data = getuser.data.data;
       session.accessToken = token.accessToken;
-      session.user.userData = userData.data.data;
 
       return session;
     },

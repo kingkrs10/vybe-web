@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import moment from "moment";
 import Map from "@/components/layout/map";
+import ApiClient from "@/lib/axios";
+import { useSession } from "next-auth/react";
 
 // let data: any = [];
 // async function getData(id: any) {
@@ -19,18 +21,24 @@ import Map from "@/components/layout/map";
 //   }
 // }
 
-export default function TicketsDetails({ id }: { id: any }) {
+export default function TicketsDetails({
+  id,
+  session,
+}: {
+  id: any;
+  session: any;
+}) {
   const [data, setData] = useState<any>([]);
   // const data = getData(id);
   // console.log(data);
   // getData(id);
   useEffect(() => {
     async function getData() {
+      // const { data: session } = useSession();
       try {
-        const event = await axios.get(
-          `${process.env.NEXT_PUBLIC_APIURL}/events/${id}`
+        const event = await ApiClient(session?.user?.token).get(
+          `/events/${id}`
         );
-
         setData(event.data.data);
       } catch (error) {
         console.log(error);

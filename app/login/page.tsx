@@ -96,7 +96,7 @@ export default function Example(props: Props) {
 
                     <div>
                       <a
-                        onClick={(e) => {
+                        onClick={async (e) => {
                           e.preventDefault();
                           signIn("google", {
                             callbackUrl: props.searchParams?.redirect
@@ -104,6 +104,23 @@ export default function Example(props: Props) {
                                 props.searchParams?.redirect
                               : `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/dashboard/events`,
                           });
+                          // .then((result) => {
+                          //   if (result.error) {
+                          //   console.log('Failed to sign in:', result.error);
+                          // } else {
+                          //   // 2. Get the user's authentication data from the result object
+                          //   const { error, status, ok, url} = result;
+
+                          //   // 3. Save the authentication data to localStorage
+                          //   const authData = {
+                          //     accessToken,
+                          //     refreshToken,
+                          //     idToken,
+                          //     expiresIn,
+                          //   };
+                          //   localStorage.setItem('userAuthData', JSON.stringify(authData));
+                          // }
+                          //  });
                         }}
                         className="inline-flex w-full cursor-pointer justify-center rounded-md border border-gray-300 bg-white py-2 px-4 align-middle text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
                       >

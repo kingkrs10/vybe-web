@@ -15,6 +15,7 @@ import {
 } from "@react-google-maps/api";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import ApiClient from "@/lib/axios";
 
 export default function EventForm({ data }: { data: any }) {
   // console.log(data);
@@ -135,8 +136,9 @@ export default function EventForm({ data }: { data: any }) {
       lng: address?.lng,
     };
     try {
-      const response = await axios.patch(
-        `${process.env.NEXT_PUBLIC_APIURL!}/events/${eventId}}`,
+      const { data: session } = useSession();
+      const response = await ApiClient(session?.token).patch(
+        `/events/${eventId}}`,
         data
       );
       return response.data.data;

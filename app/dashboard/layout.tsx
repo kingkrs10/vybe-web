@@ -1,15 +1,22 @@
-import Menu from "../../components/layout/menu";
-import Sidebar from "../../components/layout/sidebar";
+import Menu from "@/components/layout/menu";
+import Sidebar from "@/components/layout/sidebar";
 import { getSession, getCurrentUser } from "@/lib/session";
 import { redirect } from "next/navigation";
 import { useRouter, usePathname } from "next/navigation";
 
 export default async function DashboardLayout({
   children,
+  session,
 }: {
   children: React.ReactNode;
+  session: any;
 }) {
-  const session = await getCurrentUser();
+  // if (localStorage.getItem("session") === undefined) {
+  // const session = await getCurrentUser();
+  // localStorage.setItem("session", JSON.stringify(session));
+  // }
+  // const session = localStorage.getItem("session");
+  // console.log(session);
   // const path = usePathname();
   if (session === null /*&& path == "/dashboard/events/new"*/) {
     redirect("/login?redirect=/dashboard/events");

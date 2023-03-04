@@ -1,27 +1,20 @@
 import Image from "next/image";
-import axios from "axios";
+import AxiosClient from "@/lib/axios";
 import moment from "moment";
-// import styles from "./page.module.css";
-import { getServerSession } from "next-auth/next";
-import { getCurrentUser } from "@/lib/session";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { getCurrentUser, getSession } from "@/lib/session";
 import { PlusIcon } from "@heroicons/react/20/solid";
 
 async function getData() {
-  // console.log("test");
   const session = await getCurrentUser();
-  // console.log(session);
-
-  const params = { uid: session?.userData?.userId, pageNo: 1 };
-  const response = await axios.get(
-    `${process.env.NEXT_PUBLIC_APIURL}/events/all?uid=${params.uid}&pageNo=${params.pageNo}`
+  const params = { uid: session?.data?.userId, pageNo: 1 };
+  const response = await AxiosClient(session?.token).get(
+    `/events/all?uid=${params.uid}&pageNo=${params.pageNo}`
   );
   return response.data.data;
 }
 
 export default async function Events() {
   const data = await getData();
-  // console.log(data);
   return (
     <div className="">
       <section className="mt-4 rounded-lg rounded-b-none border-2 border-gray-100 bg-white">

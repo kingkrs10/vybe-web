@@ -1,13 +1,11 @@
-import axios from "axios";
-import Image from "next/image";
-// import styles from "./page.module.css";
+import ApiClient from "@/lib/axios";
+import { getCurrentUser } from "@/lib/session";
 
 async function getTransactions(id: any) {
   try {
-    const transactions = await axios.get(
-      `${
-        process.env.NEXT_PUBLIC_APIURL
-      }/transactions/all?eventId=${id}&pageNo=${1}`
+    const session = await getCurrentUser();
+    const transactions = await ApiClient(session?.token).get(
+      `/transactions/all?eventId=${id}&pageNo=${1}`
     );
     return transactions.data.data;
   } catch (error) {

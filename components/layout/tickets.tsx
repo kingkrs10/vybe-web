@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import ApiClient from "@/lib/axios";
 import moment from "moment";
 import { useAtom } from "jotai";
 import {
@@ -18,6 +18,7 @@ import {
 } from "@heroicons/react/20/solid";
 import { redirect } from "next/navigation";
 import { useRouter, usePathname } from "next/navigation";
+import { getSession, useSession } from "next-auth/react";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -71,14 +72,13 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
 
   const router = useRouter();
   const pathname = usePathname();
+  // const { data: session } = useSession();
 
   useEffect(() => {
     async function getData() {
       try {
-        const tickets = await axios.get(
-          `${
-            process.env.NEXT_PUBLIC_APIURL
-          }/tickets/all?eventId=${id}&pageNo=${1}`
+        const tickets = await ApiClient().get(
+          `/tickets/all?eventId=${id}&pageNo=${1}`
         );
         setTickets(tickets.data.data);
       } catch (error) {

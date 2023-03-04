@@ -1,19 +1,25 @@
-import axios from "axios";
+import ApiClient from "@/lib/axios";
+import { getCurrentUser } from "@/lib/session";
 import Image from "next/image";
-// import styles from "./page.module.css";
 
 async function getGuestlist(id: any) {
   // const params = { pageNo: 1 };
-  const response = await axios.get(
-    `${process.env.NEXT_PUBLIC_APIURL}/guestlists/all?eventId=${id}&pageNo=${1}`
-  );
-  return response.data.data;
+  try {
+    const session = await getCurrentUser();
+    const response = await ApiClient(session?.token).get(
+      `/guestlists/all?eventId=${id}&pageNo=${1}`
+    );
+    return response.data.data;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function getTickets(id: any) {
   try {
-    const tickets = await axios.get(
-      `${process.env.NEXT_PUBLIC_APIURL}/tickets/all?eventId=${id}&pageNo=${1}`
+    const session = await getCurrentUser();
+    const tickets = await ApiClient(session?.token).get(
+      `/tickets/all?eventId=${id}&pageNo=${1}`
     );
     return tickets.data.data;
   } catch (error) {
@@ -23,10 +29,9 @@ async function getTickets(id: any) {
 
 async function getTransactions(id: any) {
   try {
-    const transactions = await axios.get(
-      `${
-        process.env.NEXT_PUBLIC_APIURL
-      }/transactions/all?eventId=${id}&pageNo=${1}`
+    const session = await getCurrentUser();
+    const transactions = await ApiClient(session?.token).get(
+      `/transactions/all?eventId=${id}&pageNo=${1}`
     );
     return transactions.data.data;
   } catch (error) {

@@ -42,7 +42,7 @@ export default function PaymentDetails({
     try {
       const intent = await axios.get(
         `${process.env.NEXT_PUBLIC_APIURL}/stripe/paymentIntent?customer=${
-          session.userData.stripeCustomerId
+          session.data.stripeCustomerId
         }&amount=${total.total * 100}&currency=usd`
       );
       // console.log(intent.data.data);

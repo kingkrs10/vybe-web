@@ -1,58 +1,49 @@
 "use client";
-import axios from "axios";
-import Image from "next/image";
-import { root } from "postcss";
+import ApiClient from "@/lib/axios";
+import { getCurrentUser } from "@/lib/session";
+import { useSession, getSession } from "next-auth/react";
 import { useEffect, useState, useRef } from "react";
-import ReactDOM from "react-dom";
 import { QrReader } from "react-qr-reader";
-// import styles from "./page.module.css";
-
-// const reader = document.getElementById("qr-reader");
-
-const plans = [
-  {
-    id: 1,
-    name: "Kenroy George",
-    memory: "VIP",
-    cpu: "345345-343",
-    isCurrent: false,
-  },
-  {
-    id: 2,
-    name: "Henry Jordan",
-    memory: "General",
-    cpu: "345345-343",
-    isCurrent: false,
-  },
-];
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
+// export async function generateStaticParams() {
+//   const session = await getCurrentUser();
+//   return session.map((post: any) => ({
+//     session: post.data,
+//   }));
+// }
+
 export default function Guestlists({
   params: { id },
+  session,
 }: {
   params: { id: any };
+  session: any;
 }) {
-  // const data = await getData(id);
   const [scan, setScan] = useState(false);
-  const [data, setData] = useState([]);
+  const [gueslist, setData] = useState([]);
   const [camera, setCamera] = useState([]);
-  // const reader = useRef(null);
+  // const { data: session, status } = useSession();
 
   useEffect(() => {
-    (async function getData(id: any) {
+    (async function getData() {
+      // const session = await getSession();
+      const session = await fetch(`/api/session`);
+      const user = await session.json();
+      // console.log(user);
       const params = { pageNo: 1 };
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_APIURL}/guestlists/all?eventId=${id}&pageNo=${params.pageNo}`
+      const response = await ApiClient(user.token).get(
+        `/guestlists/all?eventId=${id}&pageNo=${params.pageNo}`
       );
       setData(response.data.data);
-    })(id);
+    })();
   }, []);
 
   const stats = [
-    { name: "Total guests", stat: data.length },
+    { name: "Total guests", stat: gueslist.length },
     // { name: "Total orders", stat: "420" },
     // { name: "Tickets sold", stat: "560" },
   ];
@@ -180,7 +171,7 @@ export default function Guestlists({
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map((plan, planIdx) => (
+                  {gueslist.map((plan, planIdx) => (
                     <tr key={planIdx}>
                       <td
                         className={classNames(
