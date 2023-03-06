@@ -1,25 +1,10 @@
 "use client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import moment from "moment";
 import Map from "@/components/layout/map";
 import ApiClient from "@/lib/axios";
-import { useSession } from "next-auth/react";
-
-// let data: any = [];
-// async function getData(id: any) {
-//   try {
-//     const event = await axios.get(
-//       `${process.env.NEXT_PUBLIC_APIURL}/events/${id}`
-//     );
-//     data = event.data.data;
-//     // return event.data.data;
-//     // setData(event.data.data);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
+import axios from "axios";
 
 export default function TicketsDetails({
   id,
@@ -29,25 +14,20 @@ export default function TicketsDetails({
   session: any;
 }) {
   const [data, setData] = useState<any>([]);
-  // const data = getData(id);
-  // console.log(data);
-  // getData(id);
+
   useEffect(() => {
-    async function getData() {
-      // const { data: session } = useSession();
+    (async () => {
       try {
-        const event = await ApiClient(session?.user?.token).get(
-          `/events/${id}`
-        );
+        // const session = await fetch(`/api/session`);
+        // let user = await session.json();
+        const event = await ApiClient(null).get(`/events/${id}`);
         setData(event.data.data);
       } catch (error) {
         console.log(error);
       }
-    }
-    getData();
+    })();
   }, [id]);
 
-  //   const data = await getData(id);
   return (
     <section aria-labelledby="applicant-information-title">
       <div className="bg-white shadow sm:rounded-lg">

@@ -16,8 +16,6 @@ export default function GuestDetails({
   id: any;
   session: any;
 }) {
-  //   const [tickets, setTickets] = useState<any>([]);
-  //   const [total, setTotal] = useState<any>([]);
   const [count, setCount] = useAtom(ticketsAtom);
   const [step, setStep] = useAtom(checkoutStepAtom);
   const [isFilled, setFilled] = useAtom(guestFilledAtom);

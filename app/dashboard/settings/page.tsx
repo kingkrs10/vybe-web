@@ -4,7 +4,7 @@ import Image from "next/image";
 export default function Dashboard() {
   return (
     <div className="">
-      <section className="bg-gray-900 text-white rounded-lg">
+      <section className="rounded-lg bg-gray-900 text-white">
         <div className="max-w-screen-xl px-4 py-4 sm:px-6 lg:px-8">
           {/* <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 md:grid-cols-2 md:gap-12 lg:grid-cols-3"> */}
           <div className="flex items-start">
@@ -41,14 +41,16 @@ export default function Dashboard() {
         </div>
       </section>
 
-      <section className="bg-white border-2 border-gray-100 rounded-lg mt-4">
+      <section className="mt-4 rounded-lg border-2 border-gray-100 bg-white">
         <div className="mx-auto max-w-screen-xl py-4 px-4">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-16">
             <div className="relative h-64 overflow-hidden rounded-lg sm:h-80 lg:h-full">
-              <img
+              <Image
                 alt="Party"
                 src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
                 className="absolute inset-0 h-full w-full object-cover"
+                width={200}
+                height={200}
               />
             </div>
 

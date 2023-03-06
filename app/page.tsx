@@ -1,18 +1,15 @@
-// "use client";
 import Image from "next/image";
 import ApiClient from "@/lib/axios";
 import moment from "moment";
 import LandingNav from "@/components/header/landing-header";
 import LandingFooter from "@/components/footer/landing-footer";
-import { getCurrentUser, getSession } from "@/lib/session";
+export const dynamic = "force-dynamic";
 
 async function getData() {
-  // const session = await getCurrentUser();
   const params = { pageNo: 1 };
   const response = await ApiClient().get(
     `/events/allevents?pageNo=${params.pageNo}`
   );
-  // console.log(response.data.data);
   return response.data.data;
 }
 

@@ -20,10 +20,12 @@ export default function Example(props: Props) {
     <>
       <div className="flex min-h-full">
         <div className="relative hidden w-0 flex-1 lg:block">
-          <img
+          <Image
             className="absolute inset-0 h-full w-full object-cover"
             src="https://images.unsplash.com/photo-1549451371-64aa98a6f660?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2970&q=80"
             alt=""
+            width={500}
+            height={500}
           />
         </div>
         <div className="flex flex-1 flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">

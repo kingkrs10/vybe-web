@@ -16,9 +16,8 @@ import {
   QuestionMarkCircleIcon,
   XMarkIcon as XMarkIconMini,
 } from "@heroicons/react/20/solid";
-import { redirect } from "next/navigation";
 import { useRouter, usePathname } from "next/navigation";
-import { getSession, useSession } from "next-auth/react";
+import axios from "axios";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -57,9 +56,6 @@ function statusDetail(startDate: any, endDate: any) {
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
-  // These options are needed to round to whole numbers if that's what you want.
-  //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-  //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 });
 
 export default function Tickets({ id, session }: { id: any; session: any }) {
@@ -72,20 +68,20 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
 
   const router = useRouter();
   const pathname = usePathname();
-  // const { data: session } = useSession();
 
   useEffect(() => {
-    async function getData() {
+    (async () => {
       try {
-        const tickets = await ApiClient().get(
+        // const session = await fetch(`/api/session`);
+        // let user = await session.json();
+        const tickets = await ApiClient(null).get(
           `/tickets/all?eventId=${id}&pageNo=${1}`
         );
         setTickets(tickets.data.data);
       } catch (error) {
         console.log(error);
       }
-    }
-    getData();
+    })();
   }, [id]);
 
   useEffect(() => {
@@ -108,7 +104,7 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
       subtotal: subtotal.toFixed(2),
       fee: fee.toFixed(2),
     });
-  }, [count, id]);
+  }, [count, id, setTickets, setTotal]);
 
   const getDefault = (ticket: any) => {
     let defaultValue = count.filter((i: any) => {
@@ -170,7 +166,7 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
                           event: item.eventId,
                           ticket: item.ticketId,
                           quantity: e.target.value,
-                          price: parseFloat(item.price),
+                          price: parseFloat(item.price) || 0,
                           name: item.name,
                           type: item.type,
                           startDate: item.startDate,

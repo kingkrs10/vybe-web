@@ -1,5 +1,5 @@
-// "user client";
 import axios from "axios";
+import { getCurrentUser } from "./session";
 
 const ApiClient = (token?: any) => {
   const instance = axios.create({
@@ -9,11 +9,16 @@ const ApiClient = (token?: any) => {
     },
   });
   instance.interceptors.request.use(async (request) => {
-    // console.log(`session`, session);
-    if (token) {
+    if (token !== null && token !== undefined) {
       request.headers["Authorization"] = `Bearer ${token}`;
+      // request.headers["Authorization"] = ``;
+    } else if (token === null) {
+      // const session = await getCurrentUser();
+      // request.headers["Authorization"] = `Bearer ${token}`;
+    } else {
+      const session = await getCurrentUser();
+      request.headers["Authorization"] = `Bearer ${session?.token}`;
     }
-    // console.log(`request`, request.headers);
     return request;
   });
 

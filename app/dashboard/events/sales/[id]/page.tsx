@@ -1,43 +1,38 @@
 import ApiClient from "@/lib/axios";
-import { getCurrentUser } from "@/lib/session";
-import Image from "next/image";
+// export const dynamic = "force-dynamic";
 
-async function getGuestlist(id: any) {
-  // const params = { pageNo: 1 };
+const getGuestlist = async (id: any) => {
   try {
-    const session = await getCurrentUser();
-    const response = await ApiClient(session?.token).get(
+    const response = await ApiClient().get(
       `/guestlists/all?eventId=${id}&pageNo=${1}`
     );
     return response.data.data;
   } catch (error) {
     console.log(error);
   }
-}
+};
 
-async function getTickets(id: any) {
+const getTickets = async (id: any) => {
   try {
-    const session = await getCurrentUser();
-    const tickets = await ApiClient(session?.token).get(
+    const tickets = await ApiClient().get(
       `/tickets/all?eventId=${id}&pageNo=${1}`
     );
     return tickets.data.data;
   } catch (error) {
     console.log(error);
   }
-}
+};
 
-async function getTransactions(id: any) {
+const getTransactions = async (id: any) => {
   try {
-    const session = await getCurrentUser();
-    const transactions = await ApiClient(session?.token).get(
+    const transactions = await ApiClient().get(
       `/transactions/all?eventId=${id}&pageNo=${1}`
     );
     return transactions.data.data;
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 export default async function Tickets({
   params: { id },
@@ -51,7 +46,7 @@ export default async function Tickets({
   const tickets = await getTickets(id);
   const guestlist = await getGuestlist(id);
   const transactions = await getTransactions(id);
-  let ticketsDetails = [];
+  let ticketsDetails: any = [];
 
   // console.log(guestlist, transactions, tickets);
 
@@ -113,27 +108,6 @@ export default async function Tickets({
     { name: "Total revenue", stat: `$${totalRevenue}` },
     { name: "Total orders", stat: transactions.length },
     { name: "Tickets sold", stat: guestlist.length },
-  ];
-
-  const plans = [
-    {
-      id: 1,
-      name: "Batch One",
-      memory: "3/200",
-      cpu: "$232.57",
-      storage: "$3,3434.34",
-      price: "$543,344.34",
-      isCurrent: false,
-    },
-    {
-      id: 2,
-      name: "Batch Two",
-      memory: "86/200",
-      cpu: "$256.57",
-      storage: "$33,3434.34",
-      price: "$5,543,344.34",
-      isCurrent: false,
-    },
   ];
 
   function filterItems(arr: any[], query: any) {
@@ -218,7 +192,7 @@ export default async function Tickets({
             </thead>
             <tbody>
               {tickets.map((plan, planIdx) => (
-                <tr key={plan.id}>
+                <tr key={planIdx}>
                   <td
                     className={classNames(
                       planIdx === 0 ? "" : "border-t border-transparent",

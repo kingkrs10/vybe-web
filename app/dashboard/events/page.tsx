@@ -7,7 +7,7 @@ import { PlusIcon } from "@heroicons/react/20/solid";
 async function getData() {
   const session = await getCurrentUser();
   const params = { uid: session?.data?.userId, pageNo: 1 };
-  const response = await AxiosClient(session?.token).get(
+  const response = await AxiosClient().get(
     `/events/all?uid=${params.uid}&pageNo=${params.pageNo}`
   );
   return response.data.data;
@@ -190,10 +190,12 @@ export default async function Events() {
                         </p>
                       </span>
                     </div>
-                    <img
+                    <Image
                       alt="Speaker"
                       src={item.image ? item.image : "/login.jpeg"}
                       className="h-24 w-48 rounded-lg object-cover"
+                      width={192}
+                      height={108}
                     />
                   </a>
 

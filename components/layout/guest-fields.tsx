@@ -9,105 +9,6 @@ export default function GuestFields({ item }: { item: any }) {
   const [index, setIndex] = useState();
   const [guests, setGuests] = useAtom(guestsAtom);
 
-  //   console.log(guests);
-  //   const router = useRouter();
-  //   const pathname = usePathname();
-  //   console.log(item);
-
-  //   useEffect(() => {
-  //     //   console.log(name, value, index, current);
-  //     //   let email: any, newname: any;
-  //     //   if (name === "fullname") {
-  //     //     newname = value;
-  //     //   } else if (name === "email") {
-  //     //     email = value;
-  //     //   }
-  //     const data = {
-  //       id: item.details.ticket + "-" + index,
-  //       ticket: item.details.ticket,
-  //       number: index,
-  //       name: name,
-  //       email: email,
-  //     };
-  //     const clean = (prev: any) => {
-  //       let cleared = prev.filter(function (item: any) {
-  //         return item.id != data.id;
-  //       });
-  //       console.log([...cleared, data]);
-  //       return [...cleared, data];
-  //     };
-  //     setGuests((prev: any) => (prev ? clean(prev) : [data]));
-  //   }, [email, name]);
-
-  //   useEffect(() => {
-  //     const initialValue = 0;
-  //     let subtotal = count
-  //       .filter((item: any) => {
-  //         return item.event === id;
-  //       })
-  //       .reduce((accumulator, currentValue) => {
-  //         return (
-  //           accumulator +
-  //           parseFloat(currentValue.details.cost) * currentValue.details.count
-  //         );
-  //       }, initialValue);
-
-  //     let fee = subtotal * 0.07;
-  //     let total = subtotal + fee;
-  //     setTotal({
-  //       total: formatter.format(total.toFixed(2)),
-  //       subtotal: formatter.format(subtotal.toFixed(2)),
-  //       fee: formatter.format(+fee.toFixed(2)),
-  //     });
-  //   }, [count]);
-
-  //   const getDefault = (ticket: any) => {
-  //     let defaultValue = count.filter((i: any) => {
-  //       return i.details.ticket === ticket;
-  //     });
-  //     return defaultValue[0] ? defaultValue[0].details.count : 0;
-  //   };
-
-  //   function buttonStatus(session: any, step: number, isFilled: boolean) {
-  //     if (session == undefined && step == 1) {
-  //       return ["Login to purchase now", true];
-  //     } else if (session != undefined && step == 1) {
-  //       return ["Purchase now", true];
-  //     } else if (session != undefined && step == 2 && !isFilled) {
-  //       return ["Please add guest(s)", false];
-  //     } else if (session != undefined && step == 2 && isFilled) {
-  //       return ["Pay now", true];
-  //     }
-  //   }
-  //   function createGuest(name: any, value: any, index: number, current: any) {
-  //     // console.log(name, value, index, current);
-  //     let email: any, newname: any;
-  //     if (name === "fullname") {
-  //       newname = value;
-  //     } else if (name === "email") {
-  //       email = value;
-  //     }
-  //     const data = {
-  //       ticket: current.details.ticket,
-  //       number: index,
-  //       name: newname,
-  //       email: email,
-  //     };
-  //     const clean = (prev: any) => {
-  //       let cleared = prev.filter(function (item: any) {
-  //         return (
-  //           item.ticket != data.ticket &&
-  //           item.number != data.number &&
-  //           item.name != data.name
-  //         );
-  //       });
-  //       console.log([...cleared, data]);
-  //       return [...cleared, data];
-  //     };
-  //     // console.log(data);
-  //     setGuests((prev: any) => (prev ? clean(prev) : [data]));
-  //   }
-
   useEffect(() => {
     if (index != undefined) {
       const data = {
@@ -121,19 +22,16 @@ export default function GuestFields({ item }: { item: any }) {
         price: item.price,
         startDate: item.startDate,
         endDate: item.endDate,
-        // startTime: item.startTime,
-        // endTime: item.endTime,
       };
       const clean = (prev: any) => {
         let cleared = prev.filter(function (item: any) {
           return item.id != data.id;
         });
-        //   console.log([...cleared, data]);
         return [...cleared, data];
       };
       setGuests(clean(guests));
     }
-  }, [name, email]);
+  }, [email, name, guests, item, index, setGuests]);
 
   const fields = (item: any, index: any) => {
     if (item.target.name === "fullname") {

@@ -1,17 +1,16 @@
 import ApiClient from "@/lib/axios";
-import { getCurrentUser } from "@/lib/session";
+// export const dynamic = "auto";
 
-async function getTransactions(id: any) {
+const getTransactions = async (id: any) => {
   try {
-    const session = await getCurrentUser();
-    const transactions = await ApiClient(session?.token).get(
+    const transactions = await ApiClient().get(
       `/transactions/all?eventId=${id}&pageNo=${1}`
     );
     return transactions.data.data;
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 export default async function Tickets({
   params: { id },
@@ -105,7 +104,7 @@ export default async function Tickets({
               </tr>
             </thead>
             <tbody>
-              {transactions.map((plan, planIdx) => (
+              {transactions.map((plan: any, planIdx: any) => (
                 <tr key={planIdx}>
                   <td
                     className={classNames(

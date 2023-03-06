@@ -13,7 +13,9 @@ import {
 } from "@react-google-maps/api";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
+import ApiClient from "@/lib/axios";
+import Image from "next/image";
 
 export default function NewTicket() {
   const [name, setName] = useState("");
@@ -61,12 +63,15 @@ export default function NewTicket() {
 
   const [session, setSession] = useState<any>({});
 
+  const route = useRouter();
+
   useEffect(() => {
-    async function fetchSession() {
-      const session = await getSession();
-      setSession(session);
-    }
-    fetchSession();
+    (async () => {
+      const session = await fetch(`/api/session`);
+      let user = await session.json();
+      // console.log(user);
+      setSession(user);
+    })();
   }, []);
 
   let key = country;
@@ -102,23 +107,9 @@ export default function NewTicket() {
       },
     });
 
-    // const response = await upload.json();
-    // console.log(upload);
     if (upload) {
       setImage(`${url}${filename}`);
     }
-    // if (url) {
-    //   const upload = await fetch(`/api/upload-file?url=${url}`, {
-    //     method: "POST",
-    //     body: formData,
-    //   });
-    //   const response = await upload.json();
-    //   console.log(response);
-    //   if (response) {
-    //     setImage(`${url}${filename}`);
-    //   }
-    // }
-    // console.log(upload);
   };
 
   const statusDetail = (startDate: any, endDate: any) => {
@@ -163,15 +154,15 @@ export default function NewTicket() {
 
   const getTickets = async (eventId: any) => {
     const params = { eventId: eventId, pageNo: 1 };
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_APIURL}/tickets/all?eventId=${params.eventId}&pageNo=${params.pageNo}`
+    const response = await ApiClient(session?.token).get(
+      `/tickets/all?eventId=${params.eventId}&pageNo=${params.pageNo}`
     );
     setTickets(response.data.data);
   };
 
   const createEvent = async () => {
     const data = {
-      userId: session?.user?.userData?.userId,
+      userId: session?.data?.userId,
       name,
       description,
       category,
@@ -193,10 +184,7 @@ export default function NewTicket() {
       lng: address?.lng,
     };
     try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_APIURL!}/events`,
-        data
-      );
+      const response = await ApiClient(session?.token).post(`/events`, data);
       return response.data.data;
     } catch (error) {
       console.error(error);
@@ -217,10 +205,7 @@ export default function NewTicket() {
       invitationOnly: ticketInvitationOnly,
     };
     try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_APIURL!}/tickets`,
-        data
-      );
+      const response = await ApiClient(session?.token).post(`/tickets`, data);
       if (response.data.data.eventId) {
         getTickets(response.data.data.eventId);
         setNewTicket(false);
@@ -248,12 +233,12 @@ export default function NewTicket() {
       isActive: true,
     };
     try {
-      const response = await axios.patch(
-        `${process.env.NEXT_PUBLIC_APIURL!}/events/${eventId}`,
+      const response = await ApiClient(session?.token).patch(
+        `/events/publish/${eventId}`,
         data
       );
       if (response.data.data.eventId) {
-        redirect("/dashboard/events");
+        route.push("/dashboard/events");
       }
     } catch (error) {
       console.error(error);
@@ -1043,7 +1028,40 @@ export default function NewTicket() {
                         </label> */}
                           <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
                             <div className="space-y-1 text-center">
-                              {image != "" && <img src={image} />}
+                              {image != "" && (
+                                <div className="relative h-full w-full">
+                                  <div className="absolute top-0 right-0 flex h-7 w-7 justify-center rounded-bl-md bg-white">
+                                    <a
+                                      className="cursor-pointer"
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        setImage("");
+                                      }}
+                                    >
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth={1.5}
+                                        stroke="currentColor"
+                                        className="h-6 w-6"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                      </svg>
+                                    </a>
+                                  </div>
+                                  <Image
+                                    src={image}
+                                    alt="Event Image"
+                                    height={200}
+                                    width={200}
+                                  />
+                                </div>
+                              )}
                               {image == "" && (
                                 <>
                                   <svg
@@ -1436,8 +1454,8 @@ export default function NewTicket() {
                     </thead>
 
                     <tbody className="divide-y">
-                      {tickets.map((item: any) => (
-                        <tr>
+                      {tickets.map((item: any, index: any) => (
+                        <tr key={index}>
                           {/* <td className="sticky inset-y-0 left-0 bg-white px-4 py-2">
                             <label className="sr-only" htmlFor="Row1">
                               Row 1

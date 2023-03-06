@@ -26,21 +26,18 @@ export default function Guestlists({
   const [scan, setScan] = useState(false);
   const [gueslist, setData] = useState([]);
   const [camera, setCamera] = useState([]);
-  // const { data: session, status } = useSession();
 
   useEffect(() => {
-    (async function getData() {
-      // const session = await getSession();
+    (async () => {
       const session = await fetch(`/api/session`);
-      const user = await session.json();
-      // console.log(user);
+      let user = await session.json();
       const params = { pageNo: 1 };
       const response = await ApiClient(user.token).get(
         `/guestlists/all?eventId=${id}&pageNo=${params.pageNo}`
       );
       setData(response.data.data);
     })();
-  }, []);
+  }, [id]);
 
   const stats = [
     { name: "Total guests", stat: gueslist.length },

@@ -79,6 +79,8 @@ export default function EventForm({ data }: { data: any }) {
   //   }, []);
   // console.log(session);
 
+  const { data: session } = useSession();
+
   let key = country;
   let countryname = countryList[key as keyof typeof countryList];
   const lib = ["places"];
@@ -136,7 +138,6 @@ export default function EventForm({ data }: { data: any }) {
       lng: address?.lng,
     };
     try {
-      const { data: session } = useSession();
       const response = await ApiClient(session?.token).patch(
         `/events/${eventId}}`,
         data

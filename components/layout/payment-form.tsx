@@ -19,6 +19,7 @@ import {
 } from "@stripe/react-stripe-js";
 import {} from "@stripe/react-stripe-js";
 import { XCircleIcon } from "@heroicons/react/20/solid";
+import ApiClient from "@/lib/axios";
 
 export default function PaymentForm({
   id,
@@ -72,18 +73,15 @@ export default function PaymentForm({
       // site first to authorize the payment, then redirected to the `return_url`.
 
       try {
-        const transaction = await axios.post(
-          `${process.env.NEXT_PUBLIC_APIURL}/transactions`,
-          {
-            guests: guests,
-            total: total,
-            eventId: id,
-            userId: session.userData.userId,
-            customerId: session.userData.stripeCustomerId,
-            name: session.name,
-            email: session.email,
-          }
-        );
+        const transaction = await ApiClient().post(`/transactions`, {
+          guests: guests,
+          total: total,
+          eventId: id,
+          userId: session.userData.userId,
+          customerId: session.userData.stripeCustomerId,
+          name: session.name,
+          email: session.email,
+        });
         // console.log(intent.data.data);
         //   setClientSecret(intent.data.data.client_secret);
       } catch (error) {

@@ -1,16 +1,14 @@
-import axios from "axios";
+import ApiClient from "@/lib/axios";
 import moment from "moment";
+// export const dynamic = "force-static";
 
-// import { unstable_getServerSession } from "next-auth/next";
-// import { authOptions } from "../../../../../pages/api/auth/[...nextauth]";
-
-async function getData(eventId: any) {
+const getData = async (eventId: any) => {
   const params = { eventId: eventId, pageNo: 1 };
-  const response = await axios.get(
-    `${process.env.NEXT_PUBLIC_APIURL}/tickets/all?eventId=${params.eventId}&pageNo=${params.pageNo}`
+  const response = await ApiClient().get(
+    `/tickets/all?eventId=${params.eventId}&pageNo=${params.pageNo}`
   );
   return response.data.data;
-}
+};
 
 function statusDetail(startDate: any, endDate: any) {
   const date = Date.now();
@@ -131,8 +129,8 @@ export default async function Tickets({ params }: { params: any }) {
             </thead>
 
             <tbody className="divide-y divide-gray-200">
-              {data.map((item: any) => (
-                <tr>
+              {data.map((item: any, index: any) => (
+                <tr key={index}>
                   <td className="sticky inset-y-0 left-0 bg-white px-4 py-2">
                     <label className="sr-only" htmlFor="Row1">
                       Row 1

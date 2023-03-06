@@ -7,6 +7,7 @@ import {} from "@stripe/react-stripe-js";
 import PaymentForm from "./payment-form";
 import { useAtom } from "jotai";
 import { totalAtom, clientSecretAtom } from "@/lib/atoms";
+import ApiClient from "@/lib/axios";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -40,8 +41,8 @@ export default function PaymentDetails({
   // console.log(session.userData, total.total);
   async function paymentIntent() {
     try {
-      const intent = await axios.get(
-        `${process.env.NEXT_PUBLIC_APIURL}/stripe/paymentIntent?customer=${
+      const intent = await ApiClient().get(
+        `/stripe/paymentIntent?customer=${
           session.data.stripeCustomerId
         }&amount=${total.total * 100}&currency=usd`
       );
@@ -56,7 +57,7 @@ export default function PaymentDetails({
     if (clientSecret === "") {
       paymentIntent();
     }
-  }, []);
+  });
 
   const options = {
     // passing the client secret obtained in step 3
