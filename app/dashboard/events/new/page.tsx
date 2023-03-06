@@ -69,7 +69,7 @@ export default function NewTicket() {
     (async () => {
       const session = await fetch(`/api/session`);
       let user = await session.json();
-      // console.log(user);
+      console.log(user);
       setSession(user);
     })();
   }, []);
@@ -173,8 +173,8 @@ export default function NewTicket() {
       state,
       postalCode,
       timezone,
-      startDate: new Date(startDate),
-      endDate: new Date(endDate),
+      startDate: new Date(startDate!),
+      endDate: new Date(endDate!),
       endVisible,
       image,
       website,

@@ -47,7 +47,7 @@ export default async function Events() {
             Ended
           </a>
         </nav> */}
-        {data.length === 0 && (
+        {!data && (
           <div className="h-96 content-center pt-16 text-center align-middle">
             <svg
               className="mx-auto h-12 w-12 text-gray-400"
@@ -83,7 +83,7 @@ export default async function Events() {
             </div>
           </div>
         )}
-        {data.length !== 0 && (
+        {data && data.length !== 0 && (
           <div className="divide-y divide-solid divide-gray-100">
             {data.map((item: any, index: any) => (
               <article className="relative bg-white" key={index}>
