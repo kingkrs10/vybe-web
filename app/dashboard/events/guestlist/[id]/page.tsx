@@ -1,20 +1,11 @@
 "use client";
 import ApiClient from "@/lib/axios";
-import { getCurrentUser } from "@/lib/session";
-import { useSession, getSession } from "next-auth/react";
 import { useEffect, useState, useRef } from "react";
-import { QrReader } from "react-qr-reader";
+import { QrReader, useQrReader } from "react-qr-reader";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
-
-// export async function generateStaticParams() {
-//   const session = await getCurrentUser();
-//   return session.map((post: any) => ({
-//     session: post.data,
-//   }));
-// }
 
 export default function Guestlists({
   params: { id },
@@ -32,18 +23,31 @@ export default function Guestlists({
       const session = await fetch(`/api/session`);
       let user = await session.json();
       const params = { pageNo: 1 };
-      const response = await ApiClient(user.token).get(
+      const response = await ApiClient(user?.token).get(
         `/guestlists/all?eventId=${id}&pageNo=${params.pageNo}`
       );
       setData(response.data.data);
     })();
   }, [id]);
 
-  const stats = [
-    { name: "Total guests", stat: gueslist.length },
-    // { name: "Total orders", stat: "420" },
-    // { name: "Tickets sold", stat: "560" },
-  ];
+  useEffect(() => {
+    (async () => {
+      const session = await fetch(`/api/session`);
+      let user = await session.json();
+      const guestlist = await ApiClient(user?.token).patch(
+        `/guestlists/checkin/${id}`
+      );
+      if (guestlist.data.data) {
+        const params = { pageNo: 1 };
+        const response = await ApiClient(user?.token).get(
+          `/guestlists/all?eventId=${id}&pageNo=${params.pageNo}`
+        );
+        setData(response.data.data);
+      }
+    })();
+  }, [camera, id]);
+
+  const stats = [{ name: "Total guests", stat: gueslist.length }];
   return (
     <>
       {scan && (
@@ -54,7 +58,7 @@ export default function Guestlists({
                 e.preventDefault();
                 setScan(false);
                 setCamera([]);
-                // QrReader.remove();
+                // QrReader.stop();
               }}
               className="rounded-md bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-purple-800"
             >
@@ -62,6 +66,7 @@ export default function Guestlists({
             </button>
           </div>
           <div id="reader" className="h-full w-full">
+            {/* {scan && ( */}
             <QrReader
               scanDelay={1000}
               constraints={{
@@ -79,6 +84,8 @@ export default function Guestlists({
               className="top-8 h-full w-full"
               videoContainerStyle={{ width: "100%", height: "100%" }}
             />
+            {/* )} */}
+
             {/* <p>{camera}</p> */}
           </div>
         </>
@@ -150,6 +157,12 @@ export default function Guestlists({
                     >
                       Order ID
                     </th>
+                    <th
+                      scope="col"
+                      className="hidden px-3 py-3.5 text-right text-sm font-semibold text-gray-500 lg:table-cell"
+                    >
+                      Checked In
+                    </th>
                     {/* <th
                   scope="col"
                   className="hidden px-3 py-3.5 text-right text-sm font-semibold text-gray-500 lg:table-cell"
@@ -203,6 +216,14 @@ export default function Guestlists({
                         )}
                       >
                         {plan.transactionId}
+                      </td>
+                      <td
+                        className={classNames(
+                          planIdx === 0 ? "" : "border-t border-gray-200",
+                          "hidden px-3 py-3.5 text-right text-sm text-gray-500 lg:table-cell"
+                        )}
+                      >
+                        {plan.checkedIn ? "Yes" : "No"}
                       </td>
                       {/* <td
                     className={classNames(

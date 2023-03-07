@@ -31,9 +31,9 @@ export default function NewTicket() {
   const [virtualUrl, setVirtualUrl] = useState("");
   const [password, setPassword] = useState("");
   const [timezone, setTimezone] = useState("");
-  const [startDate, setStartDate] = useState();
+  const [startDate, setStartDate] = useState("");
   const [startTime, setStartTime] = useState("");
-  const [endDate, setEndDate] = useState();
+  const [endDate, setEndDate] = useState("");
   const [endTime, setEndTime] = useState("");
   const [endVisible, setEndVisible] = useState(true);
   const [mapVisible, setMapVisible] = useState(false);
@@ -69,7 +69,7 @@ export default function NewTicket() {
     (async () => {
       const session = await fetch(`/api/session`);
       let user = await session.json();
-      console.log(user);
+      // console.log(user);
       setSession(user);
     })();
   }, []);
@@ -173,8 +173,8 @@ export default function NewTicket() {
       state,
       postalCode,
       timezone,
-      startDate: new Date(startDate!),
-      endDate: new Date(endDate!),
+      startDate: new Date(startDate),
+      endDate: new Date(endDate),
       endVisible,
       image,
       website,
@@ -206,6 +206,7 @@ export default function NewTicket() {
     };
     try {
       const response = await ApiClient(session?.token).post(`/tickets`, data);
+      // console.log(response);
       if (response.data.data.eventId) {
         getTickets(response.data.data.eventId);
         setNewTicket(false);
@@ -247,7 +248,7 @@ export default function NewTicket() {
 
   return (
     <LoadScript
-      googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY}
+      googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY!}
       libraries={["places"]}
     >
       <div className="">

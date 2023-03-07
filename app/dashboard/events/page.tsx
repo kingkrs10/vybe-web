@@ -6,6 +6,7 @@ import { PlusIcon } from "@heroicons/react/20/solid";
 
 async function getData() {
   const session = await getCurrentUser();
+  // console.log(session);
   const params = { uid: session?.data?.userId, pageNo: 1 };
   const response = await AxiosClient().get(
     `/events/all?uid=${params.uid}&pageNo=${params.pageNo}`
@@ -47,7 +48,7 @@ export default async function Events() {
             Ended
           </a>
         </nav> */}
-        {!data && (
+        {data?.length === 0 && (
           <div className="h-96 content-center pt-16 text-center align-middle">
             <svg
               className="mx-auto h-12 w-12 text-gray-400"
@@ -83,9 +84,9 @@ export default async function Events() {
             </div>
           </div>
         )}
-        {data && data.length !== 0 && (
+        {data?.length !== 0 && (
           <div className="divide-y divide-solid divide-gray-100">
-            {data.map((item: any, index: any) => (
+            {data?.map((item: any, index: any) => (
               <article className="relative bg-white" key={index}>
                 <div className="absolute right-2 top-2 inline-flex items-stretch rounded-md border bg-white">
                   <a

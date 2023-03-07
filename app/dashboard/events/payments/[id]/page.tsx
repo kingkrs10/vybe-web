@@ -104,7 +104,7 @@ export default async function Tickets({
               </tr>
             </thead>
             <tbody>
-              {transactions.map((plan: any, planIdx: any) => (
+              {transactions?.map((plan: any, planIdx: any) => (
                 <tr key={planIdx}>
                   <td
                     className={classNames(

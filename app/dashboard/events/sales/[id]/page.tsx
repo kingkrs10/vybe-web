@@ -52,7 +52,7 @@ export default async function Tickets({
 
   const ticketSales = transactions
     // .filter((transaction: any) => transaction.ticketId === ticket.ticketId)
-    .reduce(
+    ?.reduce(
       (acc: any, guest: any) =>
         // acc.price += parseFloat(guest.price);
         acc + parseInt(guest.ticketsSold),
@@ -63,8 +63,8 @@ export default async function Tickets({
     // console.log(ticket);
 
     const ticketCount = guestlist
-      .filter((guest: any) => guest.ticketId === ticket.ticketId)
-      .reduce(
+      ?.filter((guest: any) => guest.ticketId === ticket.ticketId)
+      ?.reduce(
         (acc: any, guest: any) => acc + 1,
         // acc.orders += parseInt(guest.ticketsSold);
         0
@@ -96,8 +96,10 @@ export default async function Tickets({
   // });
   // console.log(JSON.stringify(ticketsDetails));
   const totalRevenue = guestlist
-    .filter((transaction: any) => transaction.ticketId === transaction.ticketId)
-    .reduce(
+    ?.filter(
+      (transaction: any) => transaction.ticketId === transaction.ticketId
+    )
+    ?.reduce(
       (acc: any, guest: any) =>
         // acc.price += parseFloat(guest.price);
         acc + parseInt(guest.price),
@@ -106,8 +108,8 @@ export default async function Tickets({
 
   const stats = [
     { name: "Total revenue", stat: `$${totalRevenue}` },
-    { name: "Total orders", stat: transactions.length },
-    { name: "Tickets sold", stat: guestlist.length },
+    { name: "Total orders", stat: transactions?.length },
+    { name: "Tickets sold", stat: guestlist?.length },
   ];
 
   function filterItems(arr: any[], query: any) {

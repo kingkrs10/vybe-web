@@ -41,8 +41,7 @@ export default async function Overview({
                 {data.city}, {data.country}
               </p> */}
               <p className="mt-4 text-gray-600">
-                {moment(data.startDate).format("MMMM, Do YYYY")} &mdash;{" "}
-                {moment(data.startTime, "HH:mm:ss").format("h:mm A")}
+                {moment(data.startDate).format("MMMM, Do YYYY – h:mm A")}
               </p>
 
               {/* <a
