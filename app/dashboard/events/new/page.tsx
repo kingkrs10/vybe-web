@@ -32,9 +32,7 @@ export default function NewTicket() {
   const [password, setPassword] = useState("");
   const [timezone, setTimezone] = useState("");
   const [startDate, setStartDate] = useState("");
-  const [startTime, setStartTime] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [endTime, setEndTime] = useState("");
   const [endVisible, setEndVisible] = useState(true);
   const [mapVisible, setMapVisible] = useState(false);
   const [image, setImage] = useState("");
@@ -53,9 +51,7 @@ export default function NewTicket() {
   const [ticketQuantity, setTicketQuantity] = useState("");
   const [ticketLimit, setTicketLimit] = useState("");
   const [ticketStartDate, setTicketStartDate] = useState("");
-  const [ticketStartTime, setTicketStartTime] = useState("");
   const [ticketEndDate, setTicketEndDate] = useState("");
-  const [ticketEndTime, setTicketEndTime] = useState("");
   const [ticketInvitationOnly, setTicketInvitationOnly] = useState(false);
 
   const [tickets, setTickets] = useState([]);
@@ -1024,9 +1020,6 @@ export default function NewTicket() {
                     <div className="shadow sm:overflow-hidden sm:rounded-md">
                       <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
                         <div>
-                          {/* <label className="block text-sm font-medium text-gray-700">
-                          Cover photo
-                        </label> */}
                           <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
                             <div className="space-y-1 text-center">
                               {image != "" && (
@@ -1109,14 +1102,6 @@ export default function NewTicket() {
                           </div>
                         </div>
                       </div>
-                      {/* <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
-                        <button
-                          type="submit"
-                          className="inline-flex justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-                        >
-                          Save
-                        </button>
-                      </div> */}
                     </div>
                   </form>
                 </div>
