@@ -74,12 +74,18 @@ export const authOptions = {
             `${process.env.NEXT_PUBLIC_APIURL}/users/getAuthToken/${profile.email}`
           );
           // console.log(`stripeUser`, stripeUser.data);
-          await ApiClient(stripeUser?.data?.data.authToken).post(
-            `/stripe/createCustomer`,
+          await axios.post(
+            `${process.env.NEXT_PUBLIC_APIURL}/stripe/createCustomer`,
             {
               name: profile.name,
               email: profile.email,
               uid: stripeUser?.data?.data.userId,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${stripeUser?.data?.data.authToken}`,
+                "Content-Type": "application/json",
+              },
             }
           );
           // console.log(customer.data.data);
