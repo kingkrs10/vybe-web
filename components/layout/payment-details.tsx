@@ -43,11 +43,11 @@ export default function PaymentDetails({
     try {
       const session = await fetch(`/api/session`);
       let user = await session.json();
-      console.log(user.data);
+      // console.log(user.token);
       const intent = await ApiClient(user?.token).get(
         `/stripe/paymentIntent?customer=${
           user?.data?.stripeCustomerId
-        }&amount=${total.total * 100}&currency=usd`
+        }&amount=${total?.total * 100}&currency=usd`
       );
       // console.log(intent.data.data);
       setClientSecret(intent.data.data.client_secret);

@@ -90,11 +90,11 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
       .filter((item: any) => {
         return item.event === id;
       })
-      .reduce((accumulator, currentValue) => {
-        return (
-          accumulator +
-          parseFloat(currentValue.price) * parseInt(currentValue.quantity)
-        );
+      .reduce((accumulator, currentValue: any) => {
+        let price: number =
+          currentValue.price === "free" ? 0 : parseFloat(currentValue.price);
+
+        return accumulator + price * currentValue.quantity;
       }, initialValue);
 
     let fee = subtotal * 0.07;

@@ -56,7 +56,7 @@ export const authOptions = {
             const user = await axios.get(
               `${process.env.NEXT_PUBLIC_APIURL}/users/getAuthToken/${profile.email}`
             );
-            console.log(`user`, user);
+            // console.log(`user`, user);
             const customer = await ApiClient(user?.data?.data.authToken).post(
               `/stripe/createCustomer`,
               {
@@ -65,7 +65,7 @@ export const authOptions = {
                 uid: newUser.data.data.userId,
               }
             );
-            console.log(customer.data.data);
+            // console.log(customer.data.data);
           }
         }
 
@@ -73,16 +73,16 @@ export const authOptions = {
           const stripeUser = await axios.get(
             `${process.env.NEXT_PUBLIC_APIURL}/users/getAuthToken/${profile.email}`
           );
-          console.log(`stripeUser`, stripeUser.data);
-          const customer = await ApiClient(
-            stripeUser?.data?.data.authToken
-          ).post(`/stripe/createCustomer`, {
-            name: profile.name,
-            email: profile.email,
-            uid: stripeUser?.data?.data.userId,
-          });
-
-          console.log(customer.data.data);
+          // console.log(`stripeUser`, stripeUser.data);
+          await ApiClient(stripeUser?.data?.data.authToken).post(
+            `/stripe/createCustomer`,
+            {
+              name: profile.name,
+              email: profile.email,
+              uid: stripeUser?.data?.data.userId,
+            }
+          );
+          // console.log(customer.data.data);
         }
       }
       return true;
