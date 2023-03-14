@@ -41,9 +41,12 @@ export default function PaymentDetails({
   // console.log(session.userData, total.total);
   async function paymentIntent() {
     try {
-      const intent = await ApiClient().get(
+      const session = await fetch(`/api/session`);
+      let user = await session.json();
+      // console.log(user.data.data);
+      const intent = await ApiClient(user?.token).get(
         `/stripe/paymentIntent?customer=${
-          session.data.stripeCustomerId
+          user?.data?.data.stripeCustomerId
         }&amount=${total.total * 100}&currency=usd`
       );
       // console.log(intent.data.data);

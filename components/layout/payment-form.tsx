@@ -73,26 +73,30 @@ export default function PaymentForm({
       // site first to authorize the payment, then redirected to the `return_url`.
 
       try {
-        const transaction = await ApiClient().post(`/transactions`, {
+        const session = await fetch(`/api/session`);
+        let user = await session.json();
+        const transaction = await ApiClient(user?.token).post(`/transactions`, {
           guests: guests,
           total: total,
           eventId: id,
-          userId: session.userData.userId,
-          customerId: session.userData.stripeCustomerId,
-          name: session.name,
-          email: session.email,
+          userId: user?.data?.userId,
+          customerId: user?.data?.stripeCustomerId,
+          name: `${user?.data?.firstName} ${user?.data?.lastName}`,
+          email: `${user?.data?.emailAddress}`,
         });
         // console.log(intent.data.data);
-        //   setClientSecret(intent.data.data.client_secret);
+        // setClientSecret(intent.data.data.client_secret);
+        if (transaction.data.data.transactionId) {
+          setGuests([]);
+          setTotal({});
+          setTickets([]);
+          setClientSecret("");
+          setStep(1);
+          setPurchase(true);
+        }
       } catch (error) {
         console.log(error);
       }
-      setGuests([]);
-      setTotal({});
-      setTickets([]);
-      setClientSecret("");
-      setStep(1);
-      setPurchase(true);
     }
   };
   //   const router = useRouter();
