@@ -41,7 +41,7 @@ export default function PaymentDetails({
       const intent = await ApiClient(user?.token).get(
         `/stripe/paymentIntent?customer=${
           user?.data?.stripeCustomerId
-        }&amount=${total?.total * 100}&currency=usd`
+        }&amount=${total?.total.toFixed(2) * 100}&currency=usd`
       );
       // console.log(intent.data.data);
       if (intent.data.data) {
