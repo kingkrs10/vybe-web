@@ -23,7 +23,7 @@ const formatter = new Intl.NumberFormat("en-US", {
 });
 
 const stripePromise = loadStripe(
-  "pk_test_51MTFXaCUhdRlkvtYAVc1UXSJTKSKKZwQtu0ni1YvwsqnDo6hHeViCablciODf4QGRj3r5Hp5wt7Eg46sS0elwpte00ilVEB2zm"
+  "pk_live_51MTFXaCUhdRlkvtYstFFvM77UoTvNY9b5viZllrVTlapGok2RiyRDNrvvvhsD6dSsOhVpJcGUksuuyUTKsuTb2ja00YTgRXKbU"
 );
 
 export default function PaymentDetails({
