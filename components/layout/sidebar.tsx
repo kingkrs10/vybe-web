@@ -169,7 +169,7 @@ export default function Sidebar() {
                         </span>
                       </Link>
 
-                      <Link
+                      {/* <Link
                         href={`/dashboard/profile`}
                         className={`flex items-center rounded-lg px-4 py-2 hover:bg-gray-100 hover:text-gray-700 ${
                           pathname === `/dashboard/profile`
@@ -195,7 +195,7 @@ export default function Sidebar() {
                         <span className="ml-3 text-sm font-medium">
                           Profile
                         </span>
-                      </Link>
+                      </Link> */}
                     </nav>
                   )}
                   {pathname?.includes(`/dashboard/events/`) &&
@@ -517,7 +517,7 @@ export default function Sidebar() {
                   <span className="ml-3 text-sm font-medium">My events</span>
                 </Link>
 
-                <Link
+                {/* <Link
                   href={`/dashboard/profile`}
                   className={`flex items-center rounded-lg px-4 py-2 hover:bg-gray-100 hover:text-gray-700 ${
                     pathname === `/dashboard/profile`
@@ -541,7 +541,7 @@ export default function Sidebar() {
                   </svg>
 
                   <span className="ml-3 text-sm font-medium">Profile</span>
-                </Link>
+                </Link> */}
               </nav>
             )}
             {pathname?.includes(`/dashboard/events/`) &&

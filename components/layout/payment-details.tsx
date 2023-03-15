@@ -16,15 +16,9 @@ function classNames(...classes: string[]) {
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
-
-  // These options are needed to round to whole numbers if that's what you want.
-  //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-  //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 });
 
-const stripePromise = loadStripe(
-  "pk_live_51MTFXaCUhdRlkvtYstFFvM77UoTvNY9b5viZllrVTlapGok2RiyRDNrvvvhsD6dSsOhVpJcGUksuuyUTKsuTb2ja00YTgRXKbU"
-);
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_API_KEY!);
 
 export default function PaymentDetails({
   id,
@@ -50,7 +44,9 @@ export default function PaymentDetails({
         }&amount=${total?.total * 100}&currency=usd`
       );
       // console.log(intent.data.data);
-      setClientSecret(intent.data.data.client_secret);
+      if (intent.data.data) {
+        setClientSecret(intent.data.data.client_secret);
+      }
     } catch (error) {
       console.log(error);
     }

@@ -9,8 +9,8 @@ import { menuAtom } from "@/lib/atoms";
 import Image from "next/image";
 
 const userNavigation = [
-  { name: "Your Profile", href: "/dashboard/profile" },
-  { name: "Settings", href: "/dashboard/settings" },
+  // { name: "Your Profile", href: "/dashboard/profile" },
+  // { name: "Settings", href: "/dashboard/settings" },
   { name: "Signout", href: "" },
 ];
 

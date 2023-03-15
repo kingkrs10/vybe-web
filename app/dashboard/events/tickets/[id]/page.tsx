@@ -82,9 +82,9 @@ export default function Tickets({ params }: { params: any }) {
       const session = await fetch(`/api/session`);
       let user = await session.json();
       const response = await ApiClient(user?.token).post(`/tickets`, data);
-      // console.log(response);
-      if (response.data.data.eventId) {
-        getTickets(response.data.data.eventId);
+      console.log(response);
+      if (response.data.data) {
+        getTickets(params.id);
         setNewTicket(false);
       }
     } catch (error) {
