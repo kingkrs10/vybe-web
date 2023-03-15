@@ -38,15 +38,16 @@ export default function PaymentDetails({
       const session = await fetch(`/api/session`);
       let user = await session.json();
       // console.log(user.data);
+      const stripetotal: number = total?.total;
       const intent = await ApiClient(user?.token).get(
         `/stripe/paymentIntent?customer=${
           user?.data?.stripeCustomerId
-        }&amount=${total?.total.toFixed(2) * 100}&currency=usd`
+        }&amount=${stripetotal.toFixed(2) * 100}&currency=usd`
       );
       // console.log(intent.data.data);
-      if (intent.data.data) {
-        setClientSecret(intent.data.data.client_secret);
-      }
+      // if (intent.data.data) {
+      setClientSecret(intent.data.data.client_secret);
+      // }
     } catch (error) {
       console.log(error);
     }
