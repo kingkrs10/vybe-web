@@ -100,7 +100,7 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
     let fee = subtotal * 0.07;
     let total = subtotal + fee;
     setTotal({
-      total: total.toFixed(2),
+      totalAmount: total.toFixed(2),
       subtotal: subtotal.toFixed(2),
       fee: fee.toFixed(2),
     });
@@ -239,7 +239,7 @@ export default function Tickets({ id, session }: { id: any; session: any }) {
                 {/* {total.total
                   ? formatter.format(total.total)
                   : formatter.format(0)} */}
-                {formatter.format(total.total)}
+                {formatter.format(total.totalAmount)}
               </dd>
             </div>
           </dl>

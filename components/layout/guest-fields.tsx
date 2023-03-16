@@ -31,7 +31,7 @@ export default function GuestFields({ item }: { item: any }) {
       };
       setGuests(clean(guests));
     }
-  }, [email, name, guests, item, index, setGuests]);
+  }, [email, name]);
 
   const fields = (item: any, index: any) => {
     if (item.target.name === "fullname") {
