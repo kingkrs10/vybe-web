@@ -39,10 +39,10 @@ export default function PaymentDetails({
       let user = await session.json();
       // console.log(user.data);
       const { totalAmount } = total;
+      const stripeTotal = totalAmount.toFixed(2) * 100;
+      // console.log(stripeTotal);
       const intent = await ApiClient(user?.token).get(
-        `/stripe/paymentIntent?customer=${
-          user?.data?.stripeCustomerId
-        }&amount=${totalAmount * 100}&currency=usd`
+        `/stripe/paymentIntent?customer=${user?.data?.stripeCustomerId}&amount=${stripeTotal}&currency=usd`
       );
       // console.log(intent.data.data);
       // if (intent.data.data) {

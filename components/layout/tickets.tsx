@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ApiClient from "@/lib/axios";
 import moment from "moment";
 import { useAtom } from "jotai";
+import { useHydrateAtoms } from "jotai/utils";
 import {
   ticketsAtom,
   checkoutStepAtom,
@@ -58,9 +59,26 @@ const formatter = new Intl.NumberFormat("en-US", {
   currency: "USD",
 });
 
-export default function Tickets({ id, session }: { id: any; session: any }) {
+export async function generateStaticParams() {
+  const params = [{ totalAmount: 0, subtotal: 0, fee: 0 }];
+
+  return params.map((param) => ({
+    totalServer: param,
+  }));
+}
+
+export default function Tickets({
+  id,
+  session,
+  totalServer,
+}: {
+  id: any;
+  session: any;
+  totalServer: { totalAmount: number; subtotal: number; fee: number };
+}) {
   const [tickets, setTickets] = useState<any>([]);
   // const [total, setTotal] = useState<any>([]);
+  // useHydrateAtoms([[totalAtom, totalServer]]);
   const [total, setTotal] = useAtom(totalAtom);
   const [count, setCount] = useAtom(ticketsAtom);
   const [step, setStep] = useAtom(checkoutStepAtom);
