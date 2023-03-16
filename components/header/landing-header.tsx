@@ -102,8 +102,8 @@ function classNames(...classes: string[]) {
 }
 const userNavigation = [
   { name: "My events", href: "/dashboard/events" },
-  { name: "Your Profile", href: "/dashboard/profile" },
-  { name: "Settings", href: "/dashboard/settings" },
+  // { name: "Your Profile", href: "/dashboard/profile" },
+  // { name: "Settings", href: "/dashboard/settings" },
   { name: "Signout", href: "" },
 ];
 
