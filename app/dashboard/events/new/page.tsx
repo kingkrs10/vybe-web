@@ -244,6 +244,23 @@ export default function NewTicket() {
     }
   };
 
+  const clearFields = () => {
+    // const ticketsList = tickets.find((ticket: any) => {
+    //   return ticket.ticketId === item;
+    // });
+    // console.log(ticketsList);
+    setTicketId("");
+    setTicketName("");
+    setTicketDescription("");
+    setTicketType("");
+    setTicketPrice("");
+    setTicketQuantity("");
+    setTicketLimit("");
+    setTicketStartDate("");
+    setTicketEndDate("");
+    setTicketInvitationOnly(false);
+  };
+
   const setFields = (item: any) => {
     const ticketsList = tickets.find((ticket: any) => {
       return ticket.ticketId === item;
@@ -285,17 +302,7 @@ export default function NewTicket() {
       if (response.data.data) {
         getTickets(eventId);
         setEditTicket(false);
-
-        setTicketId("");
-        setTicketName("");
-        setTicketDescription("");
-        setTicketType("");
-        setTicketPrice("");
-        setTicketQuantity("");
-        setTicketLimit("");
-        setTicketStartDate("");
-        setTicketEndDate("");
-        setTicketInvitationOnly(false);
+        clearFields();
       }
     } catch (error) {
       console.error(error);
@@ -1349,18 +1356,7 @@ export default function NewTicket() {
                         // type="submit"
                         onClick={(e) => {
                           e.preventDefault();
-
-                          setTicketId("");
-                          setTicketName("");
-                          setTicketDescription("");
-                          setTicketType("");
-                          setTicketPrice("");
-                          setTicketQuantity("");
-                          setTicketLimit("");
-                          setTicketStartDate("");
-                          setTicketEndDate("");
-                          setTicketInvitationOnly(false);
-
+                          clearFields();
                           setNewTicket(true);
                         }}
                         className="group mt-4 flex rounded-md bg-purple-600 px-8 py-3 text-white transition focus:outline-none focus:ring focus:ring-yellow-400 sm:mt-0 sm:w-auto"
@@ -1404,18 +1400,7 @@ export default function NewTicket() {
                       type="submit"
                       onClick={(e) => {
                         e.preventDefault();
-
-                        setTicketId("");
-                        setTicketName("");
-                        setTicketDescription("");
-                        setTicketType("");
-                        setTicketPrice("");
-                        setTicketQuantity("");
-                        setTicketLimit("");
-                        setTicketStartDate("");
-                        setTicketEndDate("");
-                        setTicketInvitationOnly(false);
-
+                        clearFields();
                         setNewTicket(true);
                       }}
                       className="group mt-4 ml-4 flex justify-self-end rounded-md bg-purple-600 px-8 py-3 text-white transition focus:outline-none focus:ring focus:ring-yellow-400 sm:mt-0 sm:w-auto"
