@@ -35,7 +35,7 @@ export default function Guestlists({
       const session = await fetch(`/api/session`);
       let user = await session.json();
       const guestlist = await ApiClient(user?.token).patch(
-        `/guestlists/checkin/${id}`
+        `/guestlists/checkin/${camera}`
       );
       if (guestlist.data.data) {
         const params = { pageNo: 1 };
