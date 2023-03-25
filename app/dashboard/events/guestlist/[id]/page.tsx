@@ -26,7 +26,7 @@ export default function Guestlists({
       const response = await ApiClient(user?.token).get(
         `/guestlists/all?eventId=${id}&pageNo=${params.pageNo}`
       );
-      setData(response.data.data);
+      setData(response?.data?.data);
     })();
   }, [id]);
 
@@ -47,7 +47,7 @@ export default function Guestlists({
     })();
   }, [camera, id]);
 
-  const stats = [{ name: "Total guests", stat: gueslist.length }];
+  const stats = [{ name: "Total guests", stat: gueslist?.length }];
   return (
     <>
       {scan && (

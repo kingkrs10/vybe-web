@@ -16,12 +16,15 @@ import "react-datepicker/dist/react-datepicker.css";
 import { redirect, useRouter } from "next/navigation";
 import ApiClient from "@/lib/axios";
 import Image from "next/image";
+import { useForm, Controller } from "react-hook-form";
+
+// const categoryList = dynamic(() => import('../../../../resources/categories.json'))
 
 export default function NewTicket() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
-  const [type, setType] = useState("live");
+  const [type, setType] = useState("");
   const [address, setAddress] = useState({});
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
@@ -62,6 +65,14 @@ export default function NewTicket() {
   const [session, setSession] = useState<any>({});
 
   const route = useRouter();
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = handleSubmit((data) => console.log(data));
 
   useEffect(() => {
     (async () => {
@@ -424,20 +435,26 @@ export default function NewTicket() {
         {/* This is where the event details will be */}
         {step === 1 && (
           <>
-            <div>
-              <div className="mt-4 md:grid md:grid-cols-3 md:gap-6">
-                <div className="md:col-span-1">
-                  <div className="px-4 sm:px-0">
-                    <h3 className="text-lg font-medium leading-6 text-gray-900">
-                      Basics
-                    </h3>
-                    <p className="mt-1 text-sm text-gray-600">
-                      Let your guests know more about your event
-                    </p>
+            <form
+              onSubmit={handleSubmit((data) => {
+                setName(data.name);
+                setDescription(data.description);
+                setStep(2);
+              })}
+            >
+              <div>
+                <div className="mt-4 md:grid md:grid-cols-3 md:gap-6">
+                  <div className="md:col-span-1">
+                    <div className="px-4 sm:px-0">
+                      <h3 className="text-lg font-medium leading-6 text-gray-900">
+                        Basics
+                      </h3>
+                      <p className="mt-1 text-sm text-gray-600">
+                        Let your guests know more about your event
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="mt-5 md:col-span-2 md:mt-0">
-                  <form action="#" method="POST">
+                  <div className="mt-5 md:col-span-2 md:mt-0">
                     <div className="shadow sm:overflow-hidden sm:rounded-md">
                       <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
                         <div className="">
@@ -450,14 +467,23 @@ export default function NewTicket() {
                           <div className="mt-1 flex rounded-md shadow-sm">
                             <input
                               type="text"
-                              onChange={(text) => setName(text.target.value)}
-                              name="name"
                               id="name"
                               className="block w-full flex-1 rounded-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                               placeholder="Event name"
                               value={name}
+                              {...register("name", {
+                                required: true,
+                                onChange: (e) => {
+                                  setName(e.target.value);
+                                },
+                              })}
                             />
                           </div>
+                          {errors.name && (
+                            <p className="mt-2 text-sm text-rose-600">
+                              Event name is required.
+                            </p>
+                          )}
                         </div>
 
                         <div>
@@ -470,16 +496,23 @@ export default function NewTicket() {
                           <div className="mt-1">
                             <textarea
                               id="description"
-                              name="description"
-                              onChange={(text) =>
-                                setDescription(text.target.value)
-                              }
                               rows={3}
                               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                               placeholder="Tell everyone about your event."
                               value={description}
+                              {...register("description", {
+                                required: true,
+                                onChange: (e) => {
+                                  setDescription(e.target.value);
+                                },
+                              })}
                             />
                           </div>
+                          {errors.description && (
+                            <p className="mt-2 text-sm text-rose-600">
+                              Event description is required.
+                            </p>
+                          )}
                         </div>
 
                         <div className="col-span-6 sm:col-span-3">
@@ -491,12 +524,17 @@ export default function NewTicket() {
                           </label>
                           <select
                             id="category"
-                            name="category"
                             value={category}
-                            onChange={(text) => setCategory(text.target.value)}
+                            {...register("category", {
+                              required: true,
+                              onChange: (e) => {
+                                setCategory(e.target.value);
+                              },
+                            })}
                             autoComplete="category"
                             className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
                           >
+                            <option value="">Select category</option>
                             {Object.keys(categoryList)
                               .sort()
                               .map((key, index) => {
@@ -507,52 +545,56 @@ export default function NewTicket() {
                                 );
                               })}
                           </select>
+                          {errors.category && (
+                            <p className="mt-2 text-sm text-rose-600">
+                              Event category is required.
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-
-            <div className="hidden sm:block" aria-hidden="true">
-              <div className="py-5">
-                <div className="border-t border-gray-200" />
-              </div>
-            </div>
-
-            <div className="mt-10 sm:mt-0">
-              <div className="md:grid md:grid-cols-3 md:gap-6">
-                <div className="md:col-span-1">
-                  <div className="px-4 sm:px-0">
-                    <h3 className="text-lg font-medium leading-6 text-gray-900">
-                      Location
-                    </h3>
-                    <p className="mt-1 text-sm text-gray-600">
-                      Provide venue tips to enable everyone find your event
-                    </p>
                   </div>
                 </div>
-                <div className="mt-5 md:col-span-2 md:mt-0">
-                  <form action="#" method="POST">
+              </div>
+
+              <div className="hidden sm:block" aria-hidden="true">
+                <div className="py-5">
+                  <div className="border-t border-gray-200" />
+                </div>
+              </div>
+
+              <div className="mt-10 sm:mt-0">
+                <div className="md:grid md:grid-cols-3 md:gap-6">
+                  <div className="md:col-span-1">
+                    <div className="px-4 sm:px-0">
+                      <h3 className="text-lg font-medium leading-6 text-gray-900">
+                        Location
+                      </h3>
+                      <p className="mt-1 text-sm text-gray-600">
+                        Provide venue tips to enable everyone find your event
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-5 md:col-span-2 md:mt-0">
                     <div className="overflow-hidden shadow sm:rounded-md">
                       <div className="bg-white px-4 py-5 sm:p-6">
                         <div className="grid grid-cols-6 gap-6">
                           <div className="col-span-6">
                             <fieldset className="grid grid-cols-2 gap-4">
                               <legend className="sr-only">Delivery</legend>
-
                               <div className="">
                                 <input
                                   type="radio"
-                                  name="type"
                                   value="live"
                                   id="live"
                                   className="peer hidden [&:checked_+_label_svg]:block"
                                   checked={type === "live"}
-                                  onChange={(text) => {
-                                    setType(text.target.value);
-                                  }}
+                                  {...register("type", {
+                                    required: true,
+                                    onChange: (e) => {
+                                      setType(e.target.value);
+                                    },
+                                  })}
                                 />
 
                                 <label
@@ -580,14 +622,16 @@ export default function NewTicket() {
                               <div className="">
                                 <input
                                   type="radio"
-                                  name="type"
                                   value="virtual"
                                   id="virtual"
                                   checked={type === "virtual"}
-                                  onChange={(text) => {
-                                    setType(text.target.value);
-                                    setManual(false);
-                                  }}
+                                  {...register("type", {
+                                    required: true,
+                                    onChange: (e) => {
+                                      setType(e.target.value);
+                                      setManual(false);
+                                    },
+                                  })}
                                   className="peer hidden [&:checked_+_label_svg]:block"
                                 />
 
@@ -615,6 +659,11 @@ export default function NewTicket() {
                                 </label>
                               </div>
                             </fieldset>
+                            {errors.type && (
+                              <p className="mt-2 text-sm text-rose-600">
+                                Event category is required.
+                              </p>
+                            )}
                           </div>
 
                           {type === "virtual" && (
@@ -906,31 +955,29 @@ export default function NewTicket() {
                         </div>
                       </div>
                     </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-
-            <div className="hidden sm:block" aria-hidden="true">
-              <div className="py-5">
-                <div className="border-t border-gray-200" />
-              </div>
-            </div>
-
-            <div className="mt-10 sm:mt-0">
-              <div className="md:grid md:grid-cols-3 md:gap-6">
-                <div className="md:col-span-1">
-                  <div className="px-4 sm:px-0">
-                    <h3 className="text-lg font-medium leading-6 text-gray-900">
-                      Date and Time
-                    </h3>
-                    <p className="mt-1 text-sm text-gray-600">
-                      Let your guests know when your event starts and ends.
-                    </p>
                   </div>
                 </div>
-                <div className="mt-5 md:col-span-2 md:mt-0">
-                  <form action="#" method="POST">
+              </div>
+
+              <div className="hidden sm:block" aria-hidden="true">
+                <div className="py-5">
+                  <div className="border-t border-gray-200" />
+                </div>
+              </div>
+
+              <div className="mt-10 sm:mt-0">
+                <div className="md:grid md:grid-cols-3 md:gap-6">
+                  <div className="md:col-span-1">
+                    <div className="px-4 sm:px-0">
+                      <h3 className="text-lg font-medium leading-6 text-gray-900">
+                        Date and Time
+                      </h3>
+                      <p className="mt-1 text-sm text-gray-600">
+                        Let your guests know when your event starts and ends.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-5 md:col-span-2 md:mt-0">
                     <div className="overflow-hidden shadow sm:rounded-md">
                       <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
                         <fieldset>
@@ -944,13 +991,16 @@ export default function NewTicket() {
                               </label>
                               <select
                                 id="timezone"
-                                name="timezone"
                                 value={timezone}
-                                onChange={(text) =>
-                                  setTimezone(text.target.value)
-                                }
+                                {...register("timezone", {
+                                  required: true,
+                                  onChange: (e) => {
+                                    setTimezone(e.target.value);
+                                  },
+                                })}
                                 className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
                               >
+                                <option value="">Select timezone</option>
                                 {timezones
                                   .sort((a: any, b: any) => a.text - b.text)
                                   .map((key, index) => {
@@ -961,6 +1011,11 @@ export default function NewTicket() {
                                     );
                                   })}
                               </select>
+                              {errors.timezone && (
+                                <p className="mt-2 text-sm text-rose-600">
+                                  Event timezone is required.
+                                </p>
+                              )}
                             </div>
 
                             <div className="grid grid-cols-6 gap-6">
@@ -988,17 +1043,35 @@ export default function NewTicket() {
                                       />
                                     </svg>
                                   </span>
-                                  <DatePicker
-                                    name="start-date"
-                                    id="start-date"
-                                    selected={startDate}
-                                    onChange={(date) => setStartDate(date)}
-                                    timeInputLabel="Time:"
-                                    dateFormat="MM/dd/yyyy h:mm aa"
-                                    showTimeInput
-                                    className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
+                                  <Controller
+                                    control={control}
+                                    name="startDate"
+                                    rules={{ required: true }}
+                                    render={({ field: { onChange } }) => (
+                                      <>
+                                        <DatePicker
+                                          // name="start-date"
+                                          placeholderText="Select start date"
+                                          id="startDate"
+                                          selected={startDate}
+                                          onChange={(date) => {
+                                            onChange(date);
+                                            setStartDate(date);
+                                          }}
+                                          timeInputLabel="Time:"
+                                          dateFormat="MM/dd/yyyy h:mm aa"
+                                          showTimeInput
+                                          className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
+                                        />
+                                      </>
+                                    )}
                                   />
                                 </div>
+                                {errors.startDate && (
+                                  <p className="mt-2 text-sm text-rose-600">
+                                    Event start date and time are required.
+                                  </p>
+                                )}
                               </div>
 
                               <div className="col-span-6 sm:col-span-3">
@@ -1025,7 +1098,31 @@ export default function NewTicket() {
                                       />
                                     </svg>
                                   </span>
-                                  <DatePicker
+                                  <Controller
+                                    control={control}
+                                    name="endDate"
+                                    rules={{ required: true }}
+                                    render={({ field: { onChange } }) => (
+                                      <>
+                                        <DatePicker
+                                          // name="start-date"
+                                          placeholderText="Select end date"
+                                          id="endDate"
+                                          selected={endDate}
+                                          onChange={(date) => {
+                                            onChange(date);
+                                            setEndDate(date);
+                                          }}
+                                          timeInputLabel="Time:"
+                                          dateFormat="MM/dd/yyyy h:mm aa"
+                                          showTimeInput
+                                          className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
+                                        />
+                                      </>
+                                    )}
+                                  />
+
+                                  {/* <DatePicker
                                     name="end-date"
                                     id="end-date"
                                     selected={endDate}
@@ -1034,8 +1131,13 @@ export default function NewTicket() {
                                     dateFormat="MM/dd/yyyy h:mm aa"
                                     showTimeInput
                                     className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
-                                  />
+                                  /> */}
                                 </div>
+                                {errors.endDate && (
+                                  <p className="mt-2 text-sm text-rose-600">
+                                    Event end date and time are required.
+                                  </p>
+                                )}
                               </div>
                             </div>
 
@@ -1067,17 +1169,22 @@ export default function NewTicket() {
                       <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                         <button
                           type="submit"
-                          onClick={() => setStep(2)}
+                          // onClick={(e) => {
+                          //   // e.preventDefault();
+                          //   // handleSubmit((data) => console.log(data));
+                          //   // setStep(2);
+                          // }}
                           className="inline-flex justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                         >
                           Continue
                         </button>
                       </div>
                     </div>
-                  </form>
+                    {/* </form> */}
+                  </div>
                 </div>
               </div>
-            </div>
+            </form>
           </>
         )}
 
@@ -1690,9 +1797,6 @@ export default function NewTicket() {
                                   Ticket name
                                 </label>
                                 <div className="mt-1 flex rounded-md shadow-sm">
-                                  {/* <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
-                          http://
-                        </span> */}
                                   <input
                                     type="text"
                                     onChange={(text) =>
@@ -2074,21 +2178,25 @@ export default function NewTicket() {
 
             {newTicket && (
               <>
-                <div className="mt-4 sm:mt-4">
-                  <div className="md:grid md:grid-cols-3 md:gap-6">
-                    <div className="md:col-span-1">
-                      <div className="px-4 sm:px-0">
-                        <h3 className="text-lg font-medium leading-6 text-gray-900">
-                          Ticket details
-                        </h3>
-                        <p className="mt-1 text-sm text-gray-600">
-                          Provide ticket details for different tiers, benefits,
-                          etc.
-                        </p>
+                <form
+                  onSubmit={handleSubmit((data) => {
+                    createTicket();
+                  })}
+                >
+                  <div className="mt-4 sm:mt-4">
+                    <div className="md:grid md:grid-cols-3 md:gap-6">
+                      <div className="md:col-span-1">
+                        <div className="px-4 sm:px-0">
+                          <h3 className="text-lg font-medium leading-6 text-gray-900">
+                            Ticket details
+                          </h3>
+                          <p className="mt-1 text-sm text-gray-600">
+                            Provide ticket details for different tiers,
+                            benefits, etc.
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="mt-5 md:col-span-2 md:mt-0">
-                      <form action="#" method="POST">
+                      <div className="mt-5 md:col-span-2 md:mt-0">
                         <div className="overflow-hidden shadow sm:rounded-md">
                           <div className="bg-white px-4 py-5 sm:p-6">
                             <label
@@ -2103,15 +2211,21 @@ export default function NewTicket() {
                                   <div className="">
                                     <input
                                       type="radio"
-                                      name="ticketType"
+                                      // name="ticketType"
                                       value="free"
                                       id="free"
                                       className="peer hidden [&:checked_+_label_svg]:block"
-                                      checked={ticketType === "free"}
+                                      // checked={ticketType === "free"}
                                       // checked
-                                      onChange={(text) =>
-                                        setTicketType(text.target.value)
-                                      }
+                                      // onChange={(text) =>
+                                      //   setTicketType(text.target.value)
+                                      // }
+                                      {...register("ticketType", {
+                                        required: true,
+                                        onChange: (e) => {
+                                          setTicketType(e.target.value);
+                                        },
+                                      })}
                                     />
 
                                     <label
@@ -2139,14 +2253,17 @@ export default function NewTicket() {
                                   <div className="">
                                     <input
                                       type="radio"
-                                      name="ticketType"
+                                      // name="ticketType"
                                       value="paid"
                                       id="paid"
-                                      checked={ticketType === "paid"}
+                                      // checked={ticketType === "paid"}
                                       // checked
-                                      onChange={(text) =>
-                                        setTicketType(text.target.value)
-                                      }
+                                      {...register("ticketType", {
+                                        required: true,
+                                        onChange: (e) => {
+                                          setTicketType(e.target.value);
+                                        },
+                                      })}
                                       className="peer hidden [&:checked_+_label_svg]:block"
                                     />
 
@@ -2172,6 +2289,11 @@ export default function NewTicket() {
                                     </label>
                                   </div>
                                 </fieldset>
+                                {errors.ticketType && (
+                                  <p className="mt-2 text-sm text-rose-600">
+                                    Ticket type is required.
+                                  </p>
+                                )}
                               </div>
 
                               <div className="col-span-6">
@@ -2182,118 +2304,139 @@ export default function NewTicket() {
                                   Ticket name
                                 </label>
                                 <div className="mt-1 flex rounded-md shadow-sm">
-                                  {/* <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
-                          http://
-                        </span> */}
                                   <input
                                     type="text"
-                                    onChange={(text) =>
-                                      setTicketName(text.target.value)
-                                    }
-                                    name="ticketName"
                                     id="ticketName"
+                                    {...register("ticketName", {
+                                      required: true,
+                                      onChange: (e) => {
+                                        setTicketName(e.target.value);
+                                      },
+                                    })}
                                     className="block w-full flex-1 rounded-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                     placeholder="Event name"
                                     value={ticketName}
                                   />
                                 </div>
+                                {errors.ticketName && (
+                                  <p className="mt-2 text-sm text-rose-600">
+                                    Ticket name is required.
+                                  </p>
+                                )}
                               </div>
 
                               <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                                <label
-                                  htmlFor="city"
-                                  className="block text-sm font-medium text-gray-700"
-                                >
-                                  Quantity
-                                </label>
-                                <input
-                                  type="text"
-                                  name="ticketQuantity"
-                                  id="ticketQuantity"
-                                  value={ticketQuantity}
-                                  onChange={(text) =>
-                                    setTicketQuantity(text.target.value)
-                                  }
-                                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
-                                />
+                                <div>
+                                  <label
+                                    htmlFor="city"
+                                    className="block text-sm font-medium text-gray-700"
+                                  >
+                                    Quantity
+                                  </label>
+                                  <input
+                                    type="text"
+                                    id="ticketQuantity"
+                                    value={ticketQuantity}
+                                    {...register("ticketQuantity", {
+                                      required: true,
+                                      onChange: (e) => {
+                                        setTicketQuantity(e.target.value);
+                                      },
+                                    })}
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
+                                  />
+                                </div>
+                                {errors.ticketQuantity && (
+                                  <p className="mt-2 text-sm text-rose-600">
+                                    Ticket quantity is required.
+                                  </p>
+                                )}
                               </div>
 
                               {ticketType === "paid" && (
                                 <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                                  <label
-                                    htmlFor="region"
-                                    className="block text-sm font-medium text-gray-700"
-                                  >
-                                    Price
-                                  </label>
-                                  <input
-                                    type="text"
-                                    name="ticketPrice"
-                                    id="ticketPrice"
-                                    value={ticketPrice}
-                                    onChange={(text) =>
-                                      setTicketPrice(text.target.value)
-                                    }
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
-                                  />
+                                  <div>
+                                    <label
+                                      htmlFor="region"
+                                      className="block text-sm font-medium text-gray-700"
+                                    >
+                                      Price
+                                    </label>
+                                    <input
+                                      type="text"
+                                      id="ticketPrice"
+                                      value={ticketPrice}
+                                      {...register("ticketPrice", {
+                                        required: true,
+                                        onChange: (e) => {
+                                          setTicketPrice(e.target.value);
+                                        },
+                                      })}
+                                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
+                                    />
+                                  </div>
+                                  {errors.ticketPrice && (
+                                    <p className="mt-2 text-sm text-rose-600">
+                                      Ticket price is required.
+                                    </p>
+                                  )}
                                 </div>
                               )}
 
                               <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                                <label
-                                  htmlFor="postal-code"
-                                  className="block text-sm font-medium text-gray-700"
-                                >
-                                  Purchase limit
-                                </label>
-                                <input
-                                  type="text"
-                                  name="ticketLimit"
-                                  id="ticketLimit"
-                                  value={ticketLimit}
-                                  onChange={(text) =>
-                                    setTicketLimit(text.target.value)
-                                  }
-                                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
-                                />
+                                <div>
+                                  <label
+                                    htmlFor="postal-code"
+                                    className="block text-sm font-medium text-gray-700"
+                                  >
+                                    Purchase limit
+                                  </label>
+                                  <input
+                                    type="text"
+                                    id="ticketLimit"
+                                    value={ticketLimit}
+                                    {...register("ticketLimit", {
+                                      required: true,
+                                      onChange: (e) => {
+                                        setTicketLimit(e.target.value);
+                                      },
+                                    })}
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
+                                  />
+                                </div>
+                                {errors.ticketLimit && (
+                                  <p className="mt-2 text-sm text-rose-600">
+                                    Ticket purchase limit is required.
+                                  </p>
+                                )}
                               </div>
                             </div>
                           </div>
-                          {/* <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
-                          <button
-                            type="submit"
-                            className="inline-flex justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-                          >
-                            Save
-                          </button>
-                        </div> */}
                         </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="hidden sm:block" aria-hidden="true">
-                  <div className="py-5">
-                    <div className="border-t border-gray-200" />
-                  </div>
-                </div>
-
-                <div className="mt-10 sm:mt-0">
-                  <div className="md:grid md:grid-cols-3 md:gap-6">
-                    <div className="md:col-span-1">
-                      <div className="px-4 sm:px-0">
-                        <h3 className="text-lg font-medium leading-6 text-gray-900">
-                          Additional information
-                        </h3>
-                        <p className="mt-1 text-sm text-gray-600">
-                          Let your guests know when your tickets sales starts
-                          and ends.
-                        </p>
                       </div>
                     </div>
-                    <div className="mt-5 md:col-span-2 md:mt-0">
-                      <form action="#" method="POST">
+                  </div>
+
+                  <div className="hidden sm:block" aria-hidden="true">
+                    <div className="py-5">
+                      <div className="border-t border-gray-200" />
+                    </div>
+                  </div>
+
+                  <div className="mt-10 sm:mt-0">
+                    <div className="md:grid md:grid-cols-3 md:gap-6">
+                      <div className="md:col-span-1">
+                        <div className="px-4 sm:px-0">
+                          <h3 className="text-lg font-medium leading-6 text-gray-900">
+                            Additional information
+                          </h3>
+                          <p className="mt-1 text-sm text-gray-600">
+                            Let your guests know when your tickets sales starts
+                            and ends.
+                          </p>
+                        </div>
+                      </div>
+                      <div className="mt-5 md:col-span-2 md:mt-0">
                         <div className="overflow-hidden shadow sm:rounded-md">
                           <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
                             <fieldset>
@@ -2307,21 +2450,24 @@ export default function NewTicket() {
                                   </label>
                                   <div className="mt-1">
                                     <textarea
-                                      id="description"
-                                      name="description"
-                                      onChange={(text) =>
-                                        setTicketDescription(text.target.value)
-                                      }
+                                      id="ticketDescription"
+                                      {...register("ticketDescription", {
+                                        // required: true,
+                                        onChange: (e) => {
+                                          setTicketDescription(e.target.value);
+                                        },
+                                      })}
                                       rows={3}
                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                       placeholder="Tell everyone about your event."
                                       value={ticketDescription}
-                                      // defaultValue={""}
                                     />
                                   </div>
-                                  {/* <p className="mt-2 text-sm text-gray-500">
-                      Brief description for your profile. URLs are hyperlinked.
-                    </p> */}
+                                  {errors.ticketDescription && (
+                                    <p className="mt-2 text-sm text-rose-600">
+                                      Ticket description is required.
+                                    </p>
+                                  )}
                                 </div>
 
                                 <div className="grid grid-cols-6 gap-6">
@@ -2349,30 +2495,36 @@ export default function NewTicket() {
                                           />
                                         </svg>
                                       </span>
-                                      {/* <input
-                                        type="text"
-                                        name="start-date"
-                                        id="start-date"
-                                        value={ticketStartDate}
-                                        onChange={(text) =>
-                                          setTicketStartDate(text.target.value)
-                                        }
-                                        className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
-                                        placeholder="01/01/2024"
-                                      /> */}
-                                      <DatePicker
-                                        name="start-date"
-                                        id="start-date"
-                                        selected={ticketStartDate}
-                                        onChange={(date) =>
-                                          setTicketStartDate(date)
-                                        }
-                                        timeInputLabel="Time:"
-                                        dateFormat="MM/dd/yyyy h:mm aa"
-                                        showTimeInput
-                                        className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
+                                      <Controller
+                                        control={control}
+                                        name="ticketStartDate"
+                                        rules={{ required: true }}
+                                        render={({ field: { onChange } }) => (
+                                          <>
+                                            <DatePicker
+                                              // name="start-date"
+                                              placeholderText="Select sale start date"
+                                              id="ticketStartDate"
+                                              selected={ticketStartDate}
+                                              onChange={(date) => {
+                                                onChange(date);
+                                                setTicketStartDate(date);
+                                              }}
+                                              timeInputLabel="Time:"
+                                              dateFormat="MM/dd/yyyy h:mm aa"
+                                              showTimeInput
+                                              className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
+                                            />
+                                          </>
+                                        )}
                                       />
                                     </div>
+                                    {errors.ticketStartDate && (
+                                      <p className="mt-2 text-sm text-rose-600">
+                                        Ticket sale start date and time are
+                                        required.
+                                      </p>
+                                    )}
                                   </div>
 
                                   <div className="col-span-6 sm:col-span-3">
@@ -2399,120 +2551,44 @@ export default function NewTicket() {
                                           />
                                         </svg>
                                       </span>
-                                      {/* <input
-                                        type="text"
-                                        name="end-date"
-                                        id="end-date"
-                                        value={ticketEndDate}
-                                        onChange={(text) =>
-                                          setTicketEndDate(text.target.value)
-                                        }
-                                        className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
-                                        placeholder="01/01/2024"
-                                      /> */}
-                                      <DatePicker
-                                        name="end-date"
-                                        id="end-date"
-                                        selected={ticketEndDate}
-                                        onChange={(date) =>
-                                          setTicketEndDate(date)
-                                        }
-                                        timeInputLabel="Time:"
-                                        dateFormat="MM/dd/yyyy h:mm aa"
-                                        showTimeInput
-                                        className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
+                                      <Controller
+                                        control={control}
+                                        name="ticketEndDate"
+                                        rules={{ required: true }}
+                                        render={({ field: { onChange } }) => (
+                                          <>
+                                            <DatePicker
+                                              // name="start-date"
+                                              placeholderText="Select sale end date"
+                                              id="ticketEndDate"
+                                              selected={ticketEndDate}
+                                              onChange={(date) => {
+                                                onChange(date);
+                                                setTicketEndDate(date);
+                                              }}
+                                              timeInputLabel="Time:"
+                                              dateFormat="MM/dd/yyyy h:mm aa"
+                                              showTimeInput
+                                              className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
+                                            />
+                                          </>
+                                        )}
                                       />
                                     </div>
+                                    {errors.ticketEndDate && (
+                                      <p className="mt-2 text-sm text-rose-600">
+                                        Ticket sale start date and time are
+                                        required.
+                                      </p>
+                                    )}
                                   </div>
-
-                                  {/* <div className="col-span-6 sm:col-span-3">
-                                    <label
-                                      htmlFor="start-time"
-                                      className="block text-sm font-medium text-gray-700"
-                                    >
-                                      Start time
-                                    </label>
-                                    <div className="mt-1 flex rounded-md shadow-sm">
-                                      <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
-                                        <svg
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          fill="none"
-                                          viewBox="0 0 24 24"
-                                          strokeWidth={1.5}
-                                          stroke="currentColor"
-                                          className="h-6 w-6"
-                                        >
-                                          <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                                          />
-                                        </svg>
-                                      </span>
-                                      <input
-                                        type="text"
-                                        name="start-time"
-                                        id="start-time"
-                                        value={ticketStartTime}
-                                        onChange={(text) =>
-                                          setTicketStartTime(text.target.value)
-                                        }
-                                        className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
-                                        placeholder="2:00 PM"
-                                      />
-                                    </div>
-                                  </div> */}
                                 </div>
-
-                                {/* <div className="grid grid-cols-6 gap-6">
-                                  
-
-                                  <div className="col-span-6 sm:col-span-3">
-                                    <label
-                                      htmlFor="end-time"
-                                      className="block text-sm font-medium text-gray-700"
-                                    >
-                                      End time
-                                    </label>
-                                    <div className="mt-1 flex rounded-md shadow-sm">
-                                      <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
-                                        <svg
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          fill="none"
-                                          viewBox="0 0 24 24"
-                                          strokeWidth={1.5}
-                                          stroke="currentColor"
-                                          className="h-6 w-6"
-                                        >
-                                          <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                                          />
-                                        </svg>
-                                      </span>
-                                      <input
-                                        type="text"
-                                        name="end-time"
-                                        id="end-time"
-                                        value={ticketEndTime}
-                                        onChange={(text) =>
-                                          setTicketEndTime(text.target.value)
-                                        }
-                                        className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
-                                        placeholder="3:00 PM"
-                                      />
-                                    </div>
-                                  </div>
-                                </div> */}
-
                                 <div className="flex items-start">
                                   <div className="flex h-5 items-center">
                                     <input
                                       id="end-visible"
                                       name="end-visible"
                                       type="checkbox"
-                                      // value={ticketInvitationOnly}
                                       checked={ticketInvitationOnly}
                                       onChange={(text) =>
                                         setTicketInvitationOnly(
@@ -2547,20 +2623,20 @@ export default function NewTicket() {
                             </button>
                             <button
                               type="submit"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                createTicket();
-                              }}
+                              // onClick={(e) => {
+                              //   e.preventDefault();
+
+                              // }}
                               className="ml-4 inline-flex justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                             >
                               Save
                             </button>
                           </div>
                         </div>
-                      </form>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </form>
               </>
             )}
           </>

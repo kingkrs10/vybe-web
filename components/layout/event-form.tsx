@@ -12,12 +12,32 @@ import {
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ApiClient from "@/lib/axios";
-import { Transition } from "@headlessui/react";
+import { Transition, Listbox } from "@headlessui/react";
 // import { CheckCirlce } from "@heroicons/react/solid";
-import { XCircleIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
+import {
+  XCircleIcon,
+  CheckCircleIcon,
+  ChevronDownIcon,
+  CheckIcon,
+} from "@heroicons/react/24/solid";
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
 
 export default function EventForm({ data }: { data: any }) {
-  // console.log(data);
+  const publishingOptions = [
+    {
+      name: "Published",
+      description: "This job posting can be viewed by anyone who has the link.",
+      current: true,
+    },
+    {
+      name: "Draft",
+      description: "This job posting will no longer be publicly accessible.",
+      current: false,
+    },
+  ];
   const [name, setName] = useState(data.name);
   const [description, setDescription] = useState(data.description);
   const [category, setCategory] = useState(data.category);
@@ -46,6 +66,7 @@ export default function EventForm({ data }: { data: any }) {
   const [session, setSession] = useState<any>({});
 
   const [show, setShow] = useState(false);
+  const [active, setActive] = useState(data.isActive);
 
   // const { data: session } = useSession();
 
@@ -154,6 +175,23 @@ export default function EventForm({ data }: { data: any }) {
     }
   };
 
+  const publishEvent = async () => {
+    const request = {
+      isActive: !active,
+    };
+    try {
+      const response = await ApiClient(session?.token).patch(
+        `/events/publish/${eventId}`,
+        request
+      );
+      if (response.data.data.eventId) {
+        setActive(response.data.data.isActive);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <LoadScript
       googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY!}
@@ -161,6 +199,156 @@ export default function EventForm({ data }: { data: any }) {
     >
       <>
         <div className="">
+          <div className="flex w-full items-end justify-end">
+            {active === false ? (
+              <button
+                type="submit"
+                onClick={(e) => {
+                  e.preventDefault();
+                  publishEvent();
+                }}
+                className="group mt-4 flex justify-self-end rounded-md bg-purple-600 px-8 py-3 text-white transition focus:outline-none  sm:mt-0 sm:w-auto"
+              >
+                <span className="text-sm font-medium">Publish event</span>
+
+                <svg
+                  className="ml-3 h-5 w-5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </button>
+            ) : (
+              <button
+                type="submit"
+                onClick={(e) => {
+                  e.preventDefault();
+                  publishEvent();
+                }}
+                className="group mt-4 flex justify-self-end rounded-md bg-purple-400 px-8 py-3 text-white transition focus:outline-none sm:mt-0 sm:w-auto"
+              >
+                <span className="text-sm font-medium">Unpublish event</span>
+
+                <svg
+                  className="ml-3 h-5 w-5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </button>
+            )}
+          </div>
+          {/* <div className="relative z-0">
+            <Listbox value={selected} onChange={setSelected}>
+              {({ open }) => (
+                <>
+                  <Listbox.Label className="sr-only">
+                    Change published status
+                  </Listbox.Label>
+                  <div className="relative text-right">
+                    <div className="inline-flex divide-x divide-purple-600 rounded-md shadow-sm">
+                      <div className="relative z-0 inline-flex divide-x divide-purple-600 rounded-md shadow-sm">
+                        <div className="relative inline-flex items-center rounded-l-md border border-transparent bg-purple-500 py-2 pl-3 pr-4 text-white shadow-sm">
+                          <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                          <p className="ml-2.5 text-sm font-medium">
+                            {selected.name}
+                          </p>
+                        </div>
+                        <Listbox.Button className="relative inline-flex items-center rounded-l-none rounded-r-md bg-purple-500 p-2 text-sm font-medium text-white hover:bg-purple-600 focus:z-10 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-50">
+                          <span className="sr-only">
+                            Change published status
+                          </span>
+                          <ChevronDownIcon
+                            className="h-5 w-5 text-white"
+                            aria-hidden="true"
+                          />
+                        </Listbox.Button>
+                      </div>
+                    </div>
+
+                    <Transition
+                      show={open}
+                      as={Fragment}
+                      leave="transition ease-in duration-100"
+                      leaveFrom="opacity-100"
+                      leaveTo="opacity-0"
+                    >
+                      <Listbox.Options className="absolute left-0 mt-2 -mr-1 w-72 origin-top-right divide-y divide-gray-200 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:left-auto sm:right-0">
+                        {publishingOptions.map((option) => (
+                          <Listbox.Option
+                            key={option.name}
+                            className={({ active }) =>
+                              classNames(
+                                active
+                                  ? "bg-purple-500 text-white"
+                                  : "text-gray-900",
+                                "relative cursor-default select-none p-4 text-sm"
+                              )
+                            }
+                            value={option}
+                          >
+                            {({ selected, active }) => (
+                              <div className="flex flex-col">
+                                <div className="flex justify-between">
+                                  <p
+                                    className={
+                                      selected ? "font-semibold" : "font-normal"
+                                    }
+                                  >
+                                    {option.name}
+                                  </p>
+                                  {selected ? (
+                                    <span
+                                      className={
+                                        active
+                                          ? "text-white"
+                                          : "text-purple-500"
+                                      }
+                                    >
+                                      <CheckIcon
+                                        className="h-5 w-5"
+                                        aria-hidden="true"
+                                      />
+                                    </span>
+                                  ) : null}
+                                </div>
+                                <p
+                                  className={classNames(
+                                    active
+                                      ? "text-purple-200"
+                                      : "text-gray-500",
+                                    "mt-2 text-right"
+                                  )}
+                                >
+                                  {option.description}
+                                </p>
+                              </div>
+                            )}
+                          </Listbox.Option>
+                        ))}
+                      </Listbox.Options>
+                    </Transition>
+                  </div>
+                </>
+              )}
+            </Listbox>
+          </div> */}
           <>
             <div>
               <div className="mt-4 md:grid md:grid-cols-3 md:gap-6">
@@ -191,7 +379,7 @@ export default function EventForm({ data }: { data: any }) {
                               onChange={(text) => setName(text.target.value)}
                               name="name"
                               id="name"
-                              className="block w-full flex-1 rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                              className="block w-full flex-1 rounded-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                               placeholder="Event name"
                               defaultValue={name}
                             />
@@ -213,7 +401,7 @@ export default function EventForm({ data }: { data: any }) {
                                 setDescription(text.target.value)
                               }
                               rows={3}
-                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                               placeholder="Tell everyone about your event."
                               defaultValue={description}
                             />
@@ -233,7 +421,7 @@ export default function EventForm({ data }: { data: any }) {
                             defaultValue={category}
                             onChange={(text) => setCategory(text.target.value)}
                             autoComplete="category"
-                            className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                            className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
                           >
                             {Object.keys(categoryList)
                               .sort()
@@ -295,12 +483,12 @@ export default function EventForm({ data }: { data: any }) {
 
                                 <label
                                   htmlFor="live"
-                                  className="block cursor-pointer rounded-lg border border-gray-100 p-4 text-sm font-medium shadow-sm hover:border-gray-200 peer-checked:border-blue-500 peer-checked:ring-1 peer-checked:ring-blue-500"
+                                  className="block cursor-pointer rounded-lg border border-gray-100 p-4 text-sm font-medium shadow-sm hover:border-gray-200 peer-checked:border-purple-500 peer-checked:ring-1 peer-checked:ring-purple-500"
                                 >
                                   <div className="flex items-center justify-between">
                                     <p className="text-gray-700">Live event</p>
                                     <svg
-                                      className="hidden h-5 w-5 text-blue-600"
+                                      className="hidden h-5 w-5 text-purple-600"
                                       xmlns="http://www.w3.org/2000/svg"
                                       viewBox="0 0 20 20"
                                       fill="currentColor"
@@ -331,14 +519,14 @@ export default function EventForm({ data }: { data: any }) {
 
                                 <label
                                   htmlFor="virtual"
-                                  className="block cursor-pointer rounded-lg border border-gray-100 p-4 text-sm font-medium shadow-sm hover:border-gray-200 peer-checked:border-blue-500 peer-checked:ring-1 peer-checked:ring-blue-500"
+                                  className="block cursor-pointer rounded-lg border border-gray-100 p-4 text-sm font-medium shadow-sm hover:border-gray-200 peer-checked:border-purple-500 peer-checked:ring-1 peer-checked:ring-purple-500"
                                 >
                                   <div className="flex items-center justify-between">
                                     <p className="text-gray-700">
                                       Virtual event
                                     </p>
                                     <svg
-                                      className="hidden h-5 w-5 text-blue-600"
+                                      className="hidden h-5 w-5 text-purple-600"
                                       xmlns="http://www.w3.org/2000/svg"
                                       viewBox="0 0 20 20"
                                       fill="currentColor"
@@ -389,7 +577,7 @@ export default function EventForm({ data }: { data: any }) {
                                     onChange={(text) =>
                                       setVirtualUrl(text.target.value)
                                     }
-                                    className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                    className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                     placeholder="Vitual address"
                                   />
                                 </div>
@@ -434,7 +622,7 @@ export default function EventForm({ data }: { data: any }) {
                                     onChange={(text) =>
                                       setPassword(text.target.value)
                                     }
-                                    className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                    className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                     placeholder="Password"
                                   />
                                 </div>
@@ -461,7 +649,7 @@ export default function EventForm({ data }: { data: any }) {
                                     name="address"
                                     id="address"
                                     defaultValue={address}
-                                    className="form-control block w-full flex-1 rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                    className="form-control block w-full flex-1 rounded-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                     placeholder="Your address"
                                   />
                                 </StandaloneSearchBox>
@@ -478,7 +666,7 @@ export default function EventForm({ data }: { data: any }) {
                                       onChange={(text) =>
                                         setManual(text.target.checked)
                                       }
-                                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                      className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                                     />
                                   </div>
                                   <div className="ml-3 text-sm">
@@ -512,7 +700,7 @@ export default function EventForm({ data }: { data: any }) {
                                         setCountry(text.target.value)
                                       }
                                       autoComplete="country-name"
-                                      className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                      className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
                                     >
                                       {Object.keys(countryList)
                                         .sort()
@@ -542,7 +730,7 @@ export default function EventForm({ data }: { data: any }) {
                                         setAddress(text.target.value)
                                       }
                                       autoComplete="street-address"
-                                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                     />
                                   </div>
 
@@ -561,7 +749,7 @@ export default function EventForm({ data }: { data: any }) {
                                         setCity(text.target.value)
                                       }
                                       autoComplete="country-name"
-                                      className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                      className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
                                     >
                                       {countryname?.sort().map((key, index) => {
                                         return (
@@ -589,7 +777,7 @@ export default function EventForm({ data }: { data: any }) {
                                         setState(text.target.value)
                                       }
                                       autoComplete="address-level1"
-                                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                     />
                                   </div>
 
@@ -609,7 +797,7 @@ export default function EventForm({ data }: { data: any }) {
                                         setPostalCode(text.target.value)
                                       }
                                       autoComplete="postal-code"
-                                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                     />
                                   </div>
                                 </>
@@ -631,7 +819,7 @@ export default function EventForm({ data }: { data: any }) {
                                 onChange={(text) =>
                                   setMapVisible(text.target.checked)
                                 }
-                                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                               />
                             </div>
                             <div className="ml-3 text-sm">
@@ -693,7 +881,7 @@ export default function EventForm({ data }: { data: any }) {
                                 onChange={(text) =>
                                   setTimezone(text.target.value)
                                 }
-                                className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
                               >
                                 {timezones
                                   .sort((a: any, b: any) => a.name - b.name)
@@ -816,7 +1004,7 @@ export default function EventForm({ data }: { data: any }) {
                                   onChange={(text) =>
                                     setEndDate(text.target.value)
                                   }
-                                  className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                  className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                   placeholder="01/01/2024"
                                 />
                               </div>
@@ -854,7 +1042,7 @@ export default function EventForm({ data }: { data: any }) {
                                   onChange={(text) =>
                                     setEndTime(text.target.value)
                                   }
-                                  className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                  className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                                   placeholder="3:00 PM"
                                 />
                               </div>
@@ -871,7 +1059,7 @@ export default function EventForm({ data }: { data: any }) {
                                   onChange={(text) =>
                                     setEndVisible(text.target.checked)
                                   }
-                                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                  className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                                 />
                               </div>
                               <div className="ml-3 text-sm">
@@ -1040,7 +1228,7 @@ export default function EventForm({ data }: { data: any }) {
                               defaultValue={website}
                               name="website"
                               id="website"
-                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                             />
                           </div>
                         </div>
@@ -1061,7 +1249,7 @@ export default function EventForm({ data }: { data: any }) {
                               defaultValue={twitter}
                               name="twitter"
                               id="twitter"
-                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                             />
                           </div>
                         </div>
@@ -1084,7 +1272,7 @@ export default function EventForm({ data }: { data: any }) {
                               defaultValue={facebook}
                               name="facebook"
                               id="facebook"
-                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                             />
                           </div>
                         </div>
@@ -1107,7 +1295,7 @@ export default function EventForm({ data }: { data: any }) {
                               defaultValue={instagram}
                               name="instagram"
                               id="instagram"
-                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                             />
                           </div>
                         </div>
@@ -1167,7 +1355,7 @@ export default function EventForm({ data }: { data: any }) {
                     </div>
                     <div className="ml-4 flex flex-shrink-0">
                       <button
-                        className="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                         onClick={() => {
                           setShow(false);
                         }}
