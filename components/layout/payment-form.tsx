@@ -27,13 +27,10 @@ export default function PaymentForm({
   id: string;
   session: any;
 }) {
-  //   console.log("session", session);
-  //   const [total, setTotal] = useState<any>([]);
   const [total, setTotal] = useAtom(totalAtom);
   const [tickets, setTickets] = useAtom(ticketsAtom);
   const [step, setStep] = useAtom(checkoutStepAtom);
   const [purchase, setPurchase] = useAtom(completedPurchaseAtom);
-  const [isFilled] = useAtom(guestFilledAtom);
   const [guests, setGuests] = useAtom(guestsAtom);
   const [errorMessage, setErrorMessage] = useState(null);
   const [clientSecret, setClientSecret] = useAtom(clientSecretAtom);
@@ -78,6 +75,7 @@ export default function PaymentForm({
           guests: guests,
           total: total,
           eventId: id,
+          ticketsSold: guests.length,
           userId: user?.data?.userId,
           customerId: user?.data?.stripeCustomerId,
           name: `${user?.data?.firstName} ${user?.data?.lastName}`,

@@ -57,6 +57,7 @@ export default function GuestDetails({
         guests: guests,
         total: total,
         eventId: id,
+        ticketsSold: guests.length,
         userId: user?.data?.userId,
         customerId: user?.data?.stripeCustomerId,
         name: `${user?.data?.firstName} ${user?.data?.lastName}`,

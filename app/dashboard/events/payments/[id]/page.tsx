@@ -6,6 +6,7 @@ const getTransactions = async (id: any) => {
     const transactions = await ApiClient().get(
       `/transactions/all?eventId=${id}&pageNo=${1}`
     );
+    // console.log(transactions.data.data);
     return transactions.data.data;
   } catch (error) {
     console.log(error);
