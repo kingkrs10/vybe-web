@@ -27,12 +27,9 @@ export default function PaymentDetails({
   id: any;
   session: any;
 }) {
-  // const [clientSecret, setClientSecret] = useState("");
   const [total, setTotal] = useAtom(totalAtom);
   const [clientSecret, setClientSecret] = useAtom(clientSecretAtom);
-  // console.log(total);
-  // const [total, setTotal] = useState<any>([]);
-  // console.log(session.userData, total.total);
+
   async function paymentIntent() {
     try {
       const session = await fetch(`/api/session`);
@@ -42,21 +39,17 @@ export default function PaymentDetails({
       const stripeTotal: string = parseInt(
         (totalAmount * 100).toString()
       ).toString();
-      // console.log(stripeTotal);
       const intent = await ApiClient(user?.token).get(
         `/stripe/paymentIntent?customer=${user?.data?.stripeCustomerId}&amount=${stripeTotal}&currency=usd`
       );
-      // console.log(intent.data.data);
-      // if (intent.data.data) {
       setClientSecret(intent.data.data.client_secret);
-      // }
     } catch (error) {
       console.log(error);
     }
   }
 
   useEffect(() => {
-    if (clientSecret === "") {
+    if (clientSecret === "" && total.total !== 0) {
       paymentIntent();
     }
   });

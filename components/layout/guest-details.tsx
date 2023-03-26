@@ -7,7 +7,11 @@ import {
   checkoutStepAtom,
   guestFilledAtom,
   guestsAtom,
+  totalAtom,
+  completedPurchaseAtom,
+  clientSecretAtom,
 } from "@/lib/atoms";
+import ApiClient from "@/lib/axios";
 
 export default function GuestDetails({
   id,
@@ -20,6 +24,12 @@ export default function GuestDetails({
   const [step, setStep] = useAtom(checkoutStepAtom);
   const [isFilled, setFilled] = useAtom(guestFilledAtom);
   const [guests, setGuests] = useAtom(guestsAtom);
+
+  const [total, setTotal] = useAtom(totalAtom);
+  const [tickets, setTickets] = useAtom(ticketsAtom);
+  const [purchase, setPurchase] = useAtom(completedPurchaseAtom);
+  const [clientSecret, setClientSecret] = useAtom(clientSecretAtom);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     let filled = [];
@@ -37,6 +47,33 @@ export default function GuestDetails({
       setFilled(true);
     }
   }, [guests, setFilled]);
+
+  const handleSubmit = async (event: any) => {
+    // event.preventDefault();
+    try {
+      const session = await fetch(`/api/session`);
+      let user = await session.json();
+      const transaction = await ApiClient(user?.token).post(`/transactions`, {
+        guests: guests,
+        total: total,
+        eventId: id,
+        userId: user?.data?.userId,
+        customerId: user?.data?.stripeCustomerId,
+        name: `${user?.data?.firstName} ${user?.data?.lastName}`,
+        email: `${user?.data?.emailAddress}`,
+      });
+      if (transaction.data.data.transactionId) {
+        setGuests([]);
+        setTotal({});
+        setTickets([]);
+        setClientSecret("");
+        setStep(1);
+        setPurchase(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <section
@@ -138,8 +175,10 @@ export default function GuestDetails({
                 disabled={!isFilled}
                 onClick={(e) => {
                   e.preventDefault();
-                  if (isFilled) {
+                  if (isFilled === true && total.total > 0) {
                     setStep(3);
+                  } else {
+                    handleSubmit();
                   }
                 }}
                 className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"

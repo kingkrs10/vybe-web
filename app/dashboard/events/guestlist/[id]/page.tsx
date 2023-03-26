@@ -26,6 +26,7 @@ export default function Guestlists({
       const response = await ApiClient(user?.token).get(
         `/guestlists/all?eventId=${id}&pageNo=${params.pageNo}`
       );
+      // console.log(response.data.data);
       setData(response?.data?.data);
     })();
   }, [id]);
@@ -42,7 +43,7 @@ export default function Guestlists({
         const response = await ApiClient(user?.token).get(
           `/guestlists/all?eventId=${id}&pageNo=${params.pageNo}`
         );
-        setData(response.data.data);
+        setData(response?.data?.data);
       }
     })();
   }, [camera, id]);
@@ -181,7 +182,7 @@ export default function Guestlists({
                   </tr>
                 </thead>
                 <tbody>
-                  {gueslist.map((plan, planIdx) => (
+                  {gueslist.map((plan: any, planIdx: any) => (
                     <tr key={planIdx}>
                       <td
                         className={classNames(
@@ -215,7 +216,7 @@ export default function Guestlists({
                           "hidden px-3 py-3.5 text-right text-sm text-gray-500 lg:table-cell"
                         )}
                       >
-                        {plan.transactionId}
+                        {plan.transactionId.split("-")[0]}
                       </td>
                       <td
                         className={classNames(
@@ -223,7 +224,7 @@ export default function Guestlists({
                           "hidden px-3 py-3.5 text-right text-sm text-gray-500 lg:table-cell"
                         )}
                       >
-                        {plan.checkedIn ? "Yes" : "No"}
+                        {plan.checkedIn === true ? "Yes" : "No"}
                       </td>
                       {/* <td
                     className={classNames(

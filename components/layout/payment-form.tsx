@@ -17,7 +17,6 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import {} from "@stripe/react-stripe-js";
 import { XCircleIcon } from "@heroicons/react/20/solid";
 import ApiClient from "@/lib/axios";
 
