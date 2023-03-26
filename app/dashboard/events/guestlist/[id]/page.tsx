@@ -1,7 +1,7 @@
 "use client";
 import ApiClient from "@/lib/axios";
 import { useEffect, useState, useRef } from "react";
-import { QrReader, useQrReader } from "react-qr-reader";
+import { useZxing } from "react-zxing";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -16,7 +16,7 @@ export default function Guestlists({
 }) {
   const [scan, setScan] = useState(false);
   const [gueslist, setData] = useState([]);
-  const [camera, setCamera] = useState([]);
+  const [camera, setCamera] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -49,6 +49,13 @@ export default function Guestlists({
   }, [camera, id]);
 
   const stats = [{ name: "Total guests", stat: gueslist?.length }];
+
+  const { ref } = useZxing({
+    onResult(result) {
+      setCamera(result.getText());
+    },
+  });
+
   return (
     <>
       {scan && (
@@ -58,7 +65,7 @@ export default function Guestlists({
               onClick={(e) => {
                 e.preventDefault();
                 setScan(false);
-                setCamera([]);
+                setCamera("");
                 // QrReader.stop();
               }}
               className="rounded-md bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-purple-800"
@@ -66,9 +73,10 @@ export default function Guestlists({
               Close Scanner
             </button>
           </div>
-          <div id="reader" className="h-full w-full">
+          <div id="reader" className="mt-6 h-full w-full">
+            <video ref={ref} className="h-full w-full" />
             {/* {scan && ( */}
-            <QrReader
+            {/* <QrReader
               scanDelay={1000}
               constraints={{
                 facingMode: "environment",
@@ -84,7 +92,7 @@ export default function Guestlists({
               // style={{ width: "100%", height: "100%" }}
               className="top-8 h-full w-full"
               videoContainerStyle={{ width: "100%", height: "100%" }}
-            />
+            /> */}
             {/* )} */}
 
             {/* <p>{camera}</p> */}
@@ -100,7 +108,7 @@ export default function Guestlists({
                 onClick={(e) => {
                   e.preventDefault();
                   setScan(true);
-                  setCamera([]);
+                  setCamera("");
                 }}
                 className="rounded-md bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-purple-800"
               >
