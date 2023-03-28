@@ -661,7 +661,7 @@ export default function NewTicket() {
                             </fieldset>
                             {errors.type && (
                               <p className="mt-2 text-sm text-rose-600">
-                                Event category is required.
+                                Event type is required.
                               </p>
                             )}
                           </div>
