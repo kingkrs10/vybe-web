@@ -128,7 +128,7 @@ export default function Tickets({ params }: { params: any }) {
   };
 
   const setFields = (item: any) => {
-    const ticketsList = tickets.find((ticket: any) => {
+    const ticketsList: any = tickets.find((ticket: any) => {
       return ticket.ticketId === item;
     });
     // console.log(ticketsList);
@@ -425,7 +425,7 @@ export default function Tickets({ params }: { params: any }) {
                       {item.quantity}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      {item.price}
+                      {item.price === 0 ? "Free" : item.price}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2">
                       {statusDetail(item.startDate, item.endDate)}

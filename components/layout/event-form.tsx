@@ -4,26 +4,12 @@ import categoryList from "@/resources/categories.json";
 import countryList from "@/resources/countries-cities.json";
 import timezones from "@/resources/timezones.json";
 import Image from "next/image";
-import {
-  StandaloneSearchBox,
-  LoadScript,
-  useLoadScript,
-} from "@react-google-maps/api";
+import { StandaloneSearchBox, LoadScript } from "@react-google-maps/api";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ApiClient from "@/lib/axios";
-import { Transition, Listbox } from "@headlessui/react";
-// import { CheckCirlce } from "@heroicons/react/solid";
-import {
-  XCircleIcon,
-  CheckCircleIcon,
-  ChevronDownIcon,
-  CheckIcon,
-} from "@heroicons/react/24/solid";
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+import { Transition } from "@headlessui/react";
+import { XCircleIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
 
 export default function EventForm({ data }: { data: any }) {
   const publishingOptions = [
