@@ -27,6 +27,8 @@ function classNames(...classes: string[]) {
 function statusDetail(startDate: any, endDate: any) {
   const date = Date.now();
   const today = new Date(date).toISOString().substring(0, 10);
+  startDate = new Date(startDate).toISOString().substring(0, 10);
+  endDate = new Date(startDate).toISOString().substring(0, 10);
   if (startDate >= today && endDate <= today) {
     return (
       <>
@@ -176,7 +178,14 @@ export default function Tickets({
                     <select
                       id="count"
                       name="count"
-                      disabled={step === 2 || step === 3 ? true : false}
+                      disabled={
+                        step === 2 ||
+                        step === 3 ||
+                        new Date(item.endDate).toISOString().substring(0, 10) <=
+                          new Date(Date.now()).toISOString().substring(0, 10)
+                          ? true
+                          : false
+                      }
                       className="mt-1 w-16 self-end justify-self-end rounded-md border-gray-300 py-1 pl-3 pr-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                       defaultValue={getDefault(item.ticketId)}
                       onChange={(e) => {
