@@ -7,7 +7,11 @@ const selectedMenuAtom = atomWithStorage("menu", "");
 const ticketsAtom = atomWithStorage("tickets", []);
 const guestsAtom = atomWithStorage("guests", []);
 const sessionAtom = atomWithStorage("session", []);
-const totalAtom = atomWithStorage("total", {});
+const totalAtom = atomWithStorage("total", {
+  totalAmount: 0,
+  subtotal: 0,
+  fee: 0,
+});
 const checkoutStepAtom = atomWithStorage("checkout", 1);
 const clientSecretAtom = atomWithStorage("clientSecret", "");
 const guestFilledAtom = atom(false);

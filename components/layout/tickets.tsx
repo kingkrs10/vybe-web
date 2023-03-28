@@ -70,11 +70,11 @@ export async function generateStaticParams() {
 export default function Tickets({
   id,
   session,
-  totalServer,
-}: {
+}: // totalServer,
+{
   id: any;
   session: any;
-  totalServer: { totalAmount: number; subtotal: number; fee: number };
+  // totalServer: { totalAmount: number; subtotal: number; fee: number };
 }) {
   const [tickets, setTickets] = useState<any>([]);
   // const [total, setTotal] = useState<any>([]);
@@ -127,28 +127,26 @@ export default function Tickets({
   }, [count, id, setTickets, setTotal]);
 
   const getDefault = (ticket: any) => {
-    let defaultValue = count.filter((i: any) => {
+    let defaultValue: any = count.filter((i: any) => {
       return i.ticket === ticket;
     });
     return defaultValue[0] ? defaultValue[0].quantity : 0;
   };
 
-  function buttonStatus(session: any, step: number, isFilled: boolean) {
+  const buttonStatus = (session: any, step: number, isFilled: boolean) => {
     // console.log(session, step, isFilled);
-    if (session == undefined) {
+    if (session === undefined) {
       return ["Login to purchase now", true];
-    } else if (session != undefined && step == 1) {
+    } else if (session !== undefined && step == 1) {
       return ["Purchase now", true];
-    } else if (session != undefined && step == 2 && !isFilled) {
+    } else if (session !== undefined && step == 2 && !isFilled) {
       return ["Please add guest(s)", false];
-    } else if (session != undefined && step == 2 && isFilled) {
+    } else if (session !== undefined && step == 2 && isFilled) {
       return ["Pay now", true];
-    } else if (session != undefined && step == 3) {
+    } else if (session !== undefined && step == 3) {
       return ["Confirm payment", false];
-    } else if (session != undefined && step == 4) {
-      return ["Thank You", false];
     }
-  }
+  };
 
   return (
     <section
@@ -200,7 +198,7 @@ export default function Tickets({
                           });
                           return [...cleared, data];
                         };
-                        setCount((prev: any) => clean(prev));
+                        setCount((prev) => clean(prev));
                       }}
                     >
                       {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i, n) => (
@@ -268,7 +266,7 @@ export default function Tickets({
         <div className="justify-stretch flex flex-col px-4 py-4 sm:px-4">
           <button
             type="button"
-            disabled={!buttonStatus(session, step, isFilled)[1]}
+            disabled={!buttonStatus(session, step, isFilled)![1]}
             onClick={(e) => {
               e.preventDefault();
               if (session == undefined) {
@@ -279,7 +277,7 @@ export default function Tickets({
             }}
             className="inline-flex items-center justify-center rounded-md border border-transparent bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
-            {buttonStatus(session, step, isFilled)[0].toString()}
+            {buttonStatus(session, step, isFilled)![0].toString()}
           </button>
         </div>
       </div>

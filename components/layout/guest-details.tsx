@@ -48,8 +48,7 @@ export default function GuestDetails({
     }
   }, [guests, setFilled]);
 
-  const handleSubmit = async (event: any) => {
-    // event.preventDefault();
+  const handleSubmit = async () => {
     try {
       const session = await fetch(`/api/session`);
       let user = await session.json();
@@ -65,7 +64,7 @@ export default function GuestDetails({
       });
       if (transaction.data.data.transactionId) {
         setGuests([]);
-        setTotal({});
+        setTotal({ totalAmount: 0, subtotal: 0, fee: 0 });
         setTickets([]);
         setClientSecret("");
         setStep(1);
@@ -176,7 +175,7 @@ export default function GuestDetails({
                 disabled={!isFilled}
                 onClick={(e) => {
                   e.preventDefault();
-                  if (isFilled === true && total.total > 0) {
+                  if (isFilled === true && total.totalAmount > 0) {
                     setStep(3);
                   } else {
                     handleSubmit();

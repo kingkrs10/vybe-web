@@ -85,7 +85,7 @@ export default function PaymentForm({
         // setClientSecret(intent.data.data.client_secret);
         if (transaction.data.data.transactionId) {
           setGuests([]);
-          setTotal({});
+          setTotal({ totalAmount: 0, subtotal: 0, fee: 0 });
           setTickets([]);
           setClientSecret("");
           setStep(1);

@@ -51,7 +51,7 @@ export default function LandingContent({
               </div>
               <div className="ml-3">
                 <p className="text-sm font-medium text-green-800">
-                  Thank you! You have successfully completed you ticket
+                  Thank you! You have successfully completed your ticket
                   purchase.
                 </p>
               </div>
@@ -78,7 +78,6 @@ export default function LandingContent({
           {step == 1 && <TicketDetails id={id} session={session} />}
           {step == 2 && <GuestDetails id={id} session={session} />}
           {step == 3 && <PaymentDetails id={id} session={session} />}
-          {/* {step == 4 && <TicketDetails id={id} />} */}
         </div>
         <Tickets id={id} session={session} />
       </div>
