@@ -95,7 +95,7 @@ export default function Guestlists({
               }}
               // style={{ width: "100%", height: "100%" }}
               className="top-8 h-full w-full"
-              videoContainerStyle={{ width: "100%", height: "100%" }}
+              // videoContainerStyle={{ width: "100%", height: "100%" }}
             />
           </div>
         </>

@@ -5,45 +5,32 @@ import moment from "moment";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-function statusDetail(startDate: any, endDate: any) {
+const statusDetail = (startDate: any, endDate: any) => {
   const date = Date.now();
-  const today = new Date(date).toISOString();
+  const today = new Date(date).toISOString().substring(0, 10);
   // console.log(startDate, endDate, today);
   if (startDate >= today && endDate <= today) {
     return (
       <>
-        <strong className="rounded bg-red-100 px-3 py-1.5 text-xs font-medium text-red-700">
-          On sale
-        </strong>
-        <p className="mt-2 text-xs">
-          Ends {moment(endDate).format("MMMM, Do YYYY")}
-        </p>
+        <p className="">Ends on {moment(endDate).format("MMMM, Do YYYY")}</p>
       </>
     );
   } else if (startDate > today) {
     return (
       <>
-        <strong className="rounded bg-red-100 px-3 py-1.5 text-xs font-medium text-red-700">
-          Scheduled
-        </strong>
-        <p className="mt-2 text-xs">
-          Ends {moment(endDate).format("MMMM, Do YYYY")}
+        <p className="">
+          Scheduled for {moment(endDate).format("MMMM, Do YYYY")}
         </p>
       </>
     );
   } else if (endDate < today) {
     return (
       <>
-        <strong className="rounded bg-red-100 px-3 py-1.5 text-xs font-medium text-red-700">
-          Ended
-        </strong>
-        <p className="mt-2 text-xs">
-          Ends {moment(endDate).format("MMMM, Do YYYY")}
-        </p>
+        <p className="">Ended on {moment(endDate).format("MMMM, Do YYYY")}</p>
       </>
     );
   }
-}
+};
 
 export default function Tickets({ params }: { params: any }) {
   // const [eventId, setEventId] = useState("");
@@ -164,7 +151,7 @@ export default function Tickets({ params }: { params: any }) {
         `/tickets/${id}`,
         data
       );
-      console.log(response);
+      // console.log(response);
       if (response.data.data) {
         getTickets(params.id);
         setEditTicket(false);
@@ -425,7 +412,9 @@ export default function Tickets({ params }: { params: any }) {
                       {item.quantity}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      {item.price === 0 ? "Free" : item.price}
+                      {item.price === null || item.price === 0
+                        ? "Free"
+                        : item.price}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2">
                       {statusDetail(item.startDate, item.endDate)}

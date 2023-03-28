@@ -113,7 +113,7 @@ export default async function Tickets({
                     )}
                   >
                     <div className="font-medium text-gray-900">
-                      {plan.transactionId}
+                      {plan.transactionId.split("-")[0]}
                     </div>
                     {planIdx !== 0 ? (
                       <div className="absolute right-0 left-6 -top-px h-px bg-gray-200" />

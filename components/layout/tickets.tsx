@@ -26,7 +26,7 @@ function classNames(...classes: string[]) {
 
 function statusDetail(startDate: any, endDate: any) {
   const date = Date.now();
-  const today = new Date(date).toISOString();
+  const today = new Date(date).toISOString().substring(0, 10);
   if (startDate >= today && endDate <= today) {
     return (
       <>
