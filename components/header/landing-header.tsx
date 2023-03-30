@@ -354,7 +354,7 @@ export default function LandingNav() {
                               className={
                                 "block cursor-pointer py-2 px-4 text-sm text-gray-700 hover:bg-gray-100"
                               }
-                              onClick={(e) => signOut()}
+                              onClick={() => signOut()}
                             >
                               Sign out
                             </a>
@@ -410,7 +410,7 @@ export default function LandingNav() {
           className="absolute inset-x-0 top-0 origin-top-right transform p-2 transition md:hidden"
         >
           <div className="divide-y-2 divide-gray-50 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
-            <div className="px-5 pt-5 pb-6">
+            {/* <div className="px-5 pt-5 pb-6">
               <div className="flex items-center justify-between">
                 <div className="z-20">
                   <Logo />
@@ -441,9 +441,9 @@ export default function LandingNav() {
                   ))}
                 </nav>
               </div>
-            </div>
+            </div> */}
             <div className="space-y-6 py-6 px-5">
-              <div className="grid grid-cols-2 gap-y-4 gap-x-8">
+              {/* <div className="grid grid-cols-2 gap-y-4 gap-x-8">
                 <a
                   href="#"
                   className="text-base font-medium text-gray-900 hover:text-gray-700"
@@ -466,14 +466,23 @@ export default function LandingNav() {
                     {item.name}
                   </a>
                 ))}
-              </div>
+              </div> */}
               <div>
-                {session == undefined && (
+                {session === undefined && (
                   <a
                     href="/login"
                     className="flex w-full items-center justify-center rounded-md border border-transparent bg-purple-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-purple-700"
                   >
                     Sign in
+                  </a>
+                )}
+                {session !== undefined && (
+                  <a
+                    // href="/login"
+                    onClick={() => signOut()}
+                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-purple-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-purple-700"
+                  >
+                    Sign out
                   </a>
                 )}
 
