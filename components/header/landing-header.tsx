@@ -410,7 +410,7 @@ export default function LandingNav() {
           className="absolute inset-x-0 top-0 origin-top-right transform p-2 transition md:hidden"
         >
           <div className="divide-y-2 divide-gray-50 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
-            {/* <div className="px-5 pt-5 pb-6">
+            <div className="px-5 pt-5 pb-6">
               <div className="flex items-center justify-between">
                 <div className="z-20">
                   <Logo />
@@ -422,7 +422,7 @@ export default function LandingNav() {
                   </Popover.Button>
                 </div>
               </div>
-              <div className="mt-6">
+              {/* <div className="mt-6">
                 <nav className="grid gap-y-8">
                   {solutions.map((item) => (
                     <a
@@ -440,8 +440,8 @@ export default function LandingNav() {
                     </a>
                   ))}
                 </nav>
-              </div>
-            </div> */}
+              </div> */}
+            </div>
             <div className="space-y-6 py-6 px-5">
               {/* <div className="grid grid-cols-2 gap-y-4 gap-x-8">
                 <a
