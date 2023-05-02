@@ -468,7 +468,7 @@ export default function LandingNav() {
                 ))}
               </div> */}
               <div>
-                {session === undefined && (
+                {session?.user === undefined && (
                   <a
                     href="/login"
                     className="flex w-full items-center justify-center rounded-md border border-transparent bg-purple-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-purple-700"
@@ -476,14 +476,23 @@ export default function LandingNav() {
                     Sign in
                   </a>
                 )}
-                {session !== undefined && (
-                  <a
-                    // href="/login"
-                    onClick={() => signOut()}
-                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-purple-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-purple-700"
-                  >
-                    Sign out
-                  </a>
+                {session?.user !== undefined && (
+                  <>
+                    <a
+                      className="mb-2 flex w-full items-center justify-center rounded-md border bg-white px-4 py-2 text-base font-medium text-black shadow-sm hover:bg-gray-100"
+                      href="/dashboard/events"
+                      // onClick={() => signOut()}
+                    >
+                      My events
+                    </a>
+                    <a
+                      // href="/login"
+                      onClick={() => signOut()}
+                      className="flex w-full items-center justify-center rounded-md border border-transparent bg-purple-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-purple-700"
+                    >
+                      Sign out
+                    </a>
+                  </>
                 )}
 
                 {/* <p className="mt-6 text-center text-base font-medium text-gray-500">

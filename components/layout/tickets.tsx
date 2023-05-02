@@ -167,55 +167,62 @@ export default function Tickets({
           <ul role="list" className="">
             {tickets.map((item: any, itemIdx: any) => (
               <li key={itemIdx}>
-                <div className="mb-4 flex">
-                  <div className="mr-4 mb-0 flex-shrink-0">
+                <div className="mb-4 flex flex-col">
+                  <div className="mb-0 flex-shrink-0">
                     <p className="text-lg">{item.name}</p>
-                    {statusDetail(item.startDate, item.endDate)}
-                    <p className="text-xs text-gray-500">{item.description}</p>
                   </div>
-                  <div className="grow justify-items-end text-right">
-                    {item.type == "free" ? <p>Free</p> : <p>${item.price}</p>}
-                    <select
-                      id="count"
-                      name="count"
-                      disabled={
-                        step === 2 ||
-                        step === 3 ||
-                        new Date(item.endDate).toISOString().substring(0, 10) <=
-                          new Date(Date.now()).toISOString().substring(0, 10)
-                          ? true
-                          : false
-                      }
-                      className="mt-1 w-16 self-end justify-self-end rounded-md border-gray-300 py-1 pl-3 pr-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                      defaultValue={getDefault(item.ticketId)}
-                      onChange={(e) => {
-                        const data = {
-                          event: item.eventId,
-                          ticket: item.ticketId,
-                          quantity: e.target.value,
-                          price: parseFloat(item.price) || 0,
-                          name: item.name,
-                          type: item.type,
-                          startDate: item.startDate,
-                          endDate: item.endDate,
-                          // startTime: item.startTime,
-                          // endTime: item.endTime,
-                        };
-                        const clean = (prev: any) => {
-                          let cleared = prev.filter(function (item: any) {
-                            return item.ticket != data.ticket;
-                          });
-                          return [...cleared, data];
-                        };
-                        setCount((prev) => clean(prev));
-                      }}
-                    >
-                      {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i, n) => (
-                        <option key={n} value={i}>
-                          {i}
-                        </option>
-                      ))}
-                    </select>
+                  <div className="flex grow justify-between justify-items-end text-right">
+                    <div className="mr-2">
+                      {statusDetail(item.startDate, item.endDate)}
+                      <p className="truncate text-xs text-gray-500">
+                        {item.description}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="mr-3">
+                        {item.type == "free" ? "Free" : `$${item.price}`}
+                      </span>
+                      <select
+                        id="count"
+                        name="count"
+                        disabled={
+                          step === 2 ||
+                          step === 3 ||
+                          new Date(item.endDate) <= new Date(Date.now())
+                            ? true
+                            : false
+                        }
+                        className="mt-1 w-16 self-end justify-self-end rounded-md border-gray-300 py-1 pl-3 pr-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                        defaultValue={getDefault(item.ticketId)}
+                        onChange={(e) => {
+                          const data = {
+                            event: item.eventId,
+                            ticket: item.ticketId,
+                            quantity: e.target.value,
+                            price: parseFloat(item.price) || 0,
+                            name: item.name,
+                            type: item.type,
+                            startDate: item.startDate,
+                            endDate: item.endDate,
+                            // startTime: item.startTime,
+                            // endTime: item.endTime,
+                          };
+                          const clean = (prev: any) => {
+                            let cleared = prev.filter(function (item: any) {
+                              return item.ticket != data.ticket;
+                            });
+                            return [...cleared, data];
+                          };
+                          setCount((prev) => clean(prev));
+                        }}
+                      >
+                        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i, n) => (
+                          <option key={n} value={i}>
+                            {i}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
                 </div>
               </li>
@@ -239,7 +246,7 @@ export default function Tickets({
             </div>
             <div className="flex items-center justify-between border-t border-gray-200 pt-4">
               <dt className="flex text-sm text-gray-600">
-                <span>Service fee (7%)</span>
+                <span>Service fee</span>
                 <a
                   href="#"
                   className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500"

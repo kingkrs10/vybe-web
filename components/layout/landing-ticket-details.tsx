@@ -54,7 +54,9 @@ export default function TicketsDetails({
           <dl className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
             <div className="sm:col-span-2">
               <dt className="text-sm font-medium text-gray-500">About</dt>
-              <dd className="mt-1 text-sm text-gray-900">{data.description}</dd>
+              <dd className="mt-1 whitespace-pre-wrap text-sm text-gray-900">
+                {data.description}
+              </dd>
             </div>
             <div className="sm:col-span-1">
               <dt className="text-sm font-medium text-gray-500">

@@ -11,7 +11,8 @@ import Image from "next/image";
 const userNavigation = [
   // { name: "Your Profile", href: "/dashboard/profile" },
   // { name: "Settings", href: "/dashboard/settings" },
-  { name: "Signout", href: "" },
+  { name: "Sign in", href: "/login" },
+  { name: "Sign in", href: "/login" },
 ];
 
 function classNames(...classes: string[]) {
@@ -94,19 +95,32 @@ export default function HeaderMenu() {
                 leaveTo="transform opacity-0 scale-95"
               >
                 <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  {userNavigation.map((item) =>
-                    item.name === "Signout" ? (
-                      <Menu.Item key={item.name}>
+                  {session?.user?.email !== undefined ? (
+                    <>
+                      <Menu.Item key={1}>
                         <a
                           className={
                             "block cursor-pointer py-2 px-4 text-sm text-gray-700 hover:bg-gray-100"
                           }
-                          onClick={(e) => signOut()}
+                          href="/dashboard/events"
+                          // onClick={() => signOut()}
+                        >
+                          My events
+                        </a>
+                      </Menu.Item>
+                      <Menu.Item key={2}>
+                        <a
+                          className={
+                            "block cursor-pointer py-2 px-4 text-sm text-gray-700 hover:bg-gray-100"
+                          }
+                          onClick={() => signOut()}
                         >
                           Sign out
                         </a>
                       </Menu.Item>
-                    ) : (
+                    </>
+                  ) : (
+                    userNavigation.map((item) => (
                       <Menu.Item key={item.name}>
                         {({ active }: { active: any }) => (
                           <a
@@ -120,7 +134,7 @@ export default function HeaderMenu() {
                           </a>
                         )}
                       </Menu.Item>
-                    )
+                    ))
                   )}
                 </Menu.Items>
               </Transition>
