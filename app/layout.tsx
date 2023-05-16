@@ -1,4 +1,5 @@
 import Providers from "./providers";
+import GoogleAnalytics from "@/lib/google-analytics";
 import "../styles/dist.css";
 import "tailwindcss/tailwind.css";
 import type { Metadata } from "next";
@@ -19,6 +20,7 @@ export default function RootLayout({
     <Providers>
       <html lang="en" className="h-full">
         <head />
+        <GoogleAnalytics />
         <body className="h-full">{children}</body>
       </html>
     </Providers>
