@@ -102,7 +102,7 @@ export default function Tickets({
         console.log(error);
       }
     })();
-  }, []);
+  });
 
   useEffect(() => {
     const initialValue = 0;
@@ -279,7 +279,7 @@ export default function Tickets({
           </dl>
         </section>
 
-        <div className="justify-stretch flex flex-col px-4 py-4 sm:px-4">
+        <div className="flex flex-col justify-stretch px-4 py-4 sm:px-4">
           <button
             type="button"
             disabled={!buttonStatus(session, step, isFilled)![1]}
