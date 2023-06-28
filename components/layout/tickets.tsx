@@ -27,29 +27,29 @@ function classNames(...classes: string[]) {
 function statusDetail(startDate: any, endDate: any) {
   const date = Date.now();
   const today = new Date(date).toISOString().substring(0, 10);
-  startDate = new Date(startDate).toISOString().substring(0, 10);
-  endDate = new Date(endDate).toISOString().substring(0, 10);
-  if (startDate >= today && endDate <= today) {
+  const statStartDate = new Date(startDate).toISOString().substring(0, 10);
+  const statEndDate = new Date(endDate).toISOString().substring(0, 10);
+  if (statStartDate >= today && statEndDate <= today) {
     return (
       <>
         <p className="text-xs">
-          Ends on {moment(endDate).format("MMMM, Do YYYY")}
+          Ends on {moment(statEndDate).format("MMMM, Do YYYY")}
         </p>
       </>
     );
-  } else if (startDate > today) {
+  } else if (statStartDate >= today) {
     return (
       <>
         <p className="text-xs">
-          Scheduled for {moment(startDate).format("MMMM, Do YYYY")}
+          Scheduled for {moment(statStartDate).format("MMMM, Do YYYY")}
         </p>
       </>
     );
-  } else if (endDate < today) {
+  } else if (statEndDate <= today) {
     return (
       <>
         <p className="text-xs">
-          Ended on {moment(endDate).format("MMMM, Do YYYY")}
+          Ended on {moment(statEndDate).format("MMMM, Do YYYY")}
         </p>
       </>
     );
