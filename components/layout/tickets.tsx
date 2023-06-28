@@ -28,7 +28,7 @@ function statusDetail(startDate: any, endDate: any) {
   const date = Date.now();
   const today = new Date(date).toISOString().substring(0, 10);
   startDate = new Date(startDate).toISOString().substring(0, 10);
-  endDate = new Date(startDate).toISOString().substring(0, 10);
+  endDate = new Date(endDate).toISOString().substring(0, 10);
   if (startDate >= today && endDate <= today) {
     return (
       <>
