@@ -19,42 +19,40 @@ import {
 } from "@heroicons/react/20/solid";
 import { useRouter, usePathname } from "next/navigation";
 import axios from "axios";
+import React from "react";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-function statusDetail(startDate: any, endDate: any) {
-  const date = Date.now();
-  const today = new Date(date).toISOString().substring(0, 10);
-  const statStartDate = new Date(startDate).toISOString().substring(0, 10);
-  const statEndDate = new Date(endDate).toISOString().substring(0, 10);
-  if (statStartDate >= today && statEndDate <= today) {
+const today = new Date(Date.now()).getTime();
+
+const statusDetail = (startDate: any, endDate: any) => {
+  // const date = ;
+  const statStartDate = new Date(startDate).getTime();
+  const statEndDate = new Date(endDate).getTime();
+  console.log(statStartDate, statEndDate, today);
+  if (statStartDate < today && statEndDate > today) {
     return (
-      <>
-        <p className="text-xs">
-          Ends on {moment(statEndDate).format("MMMM, Do YYYY")}
-        </p>
-      </>
+      <p className="text-xs">
+        Ends on {moment(statEndDate).format("MMMM, Do YYYY")}
+      </p>
     );
-  } else if (statStartDate >= today) {
+  } else if (statStartDate > today) {
     return (
-      <>
-        <p className="text-xs">
-          Scheduled for {moment(statStartDate).format("MMMM, Do YYYY")}
-        </p>
-      </>
+      <p className="text-xs">
+        Scheduled for {moment(statStartDate).format("MMMM, Do YYYY")}
+      </p>
     );
-  } else if (statEndDate <= today) {
+  } else if (statEndDate < today) {
     return (
-      <>
-        <p className="text-xs">
-          Ended on {moment(statEndDate).format("MMMM, Do YYYY")}
-        </p>
-      </>
+      <p className="text-xs">
+        Ended on {moment(statEndDate).format("MMMM, Do YYYY")}
+      </p>
     );
   }
-}
+  // return null;
+};
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -102,7 +100,7 @@ export default function Tickets({
         console.log(error);
       }
     })();
-  });
+  }, []);
 
   useEffect(() => {
     const initialValue = 0;
