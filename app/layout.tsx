@@ -17,12 +17,12 @@ export default function RootLayout({
   params: any;
 }) {
   return (
-    <Providers>
-      <html lang="en" className="h-full">
-        <head />
-        <GoogleAnalytics />
-        <body className="h-full">{children}</body>
-      </html>
-    </Providers>
+    <html lang="en" className="h-full">
+      <head />
+      <GoogleAnalytics />
+      <body className="h-full">
+        <Providers>{children}</Providers>
+      </body>
+    </html>
   );
 }

@@ -31,7 +31,7 @@ const statusDetail = (startDate: any, endDate: any) => {
   // const date = ;
   const statStartDate = new Date(startDate).getTime();
   const statEndDate = new Date(endDate).getTime();
-  console.log(statStartDate, statEndDate, today);
+  // console.log(statStartDate, statEndDate, today);
   if (statStartDate < today && statEndDate > today) {
     return (
       <p className="text-xs">
@@ -100,7 +100,7 @@ export default function Tickets({
         console.log(error);
       }
     })();
-  });
+  }, [id]);
 
   useEffect(() => {
     const initialValue = 0;
