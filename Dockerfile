@@ -17,10 +17,9 @@ ENV NEXT_PUBLIC_GOOGLE_API_KEY AIzaSyB0hYyI2S3b1bB--5Z-nRq2ZRcw1YXC-ag
 ENV NEXT_PUBLIC_STRIPE_API_KEY pk_live_51MTFXaCUhdRlkvtYstFFvM77UoTvNY9b5viZllrVTlapGok2RiyRDNrvvvhsD6dSsOhVpJcGUksuuyUTKsuTb2ja00YTgRXKbU
 
 COPY package.json /app/
-COPY yarn.lock /app/
-RUN yarn install
+RUN npm install
 
 COPY . /app
-RUN yarn build
+RUN npm run build
 # start app
-CMD [ "yarn", "start" ]
+CMD [ "npm", "run", "start"]
