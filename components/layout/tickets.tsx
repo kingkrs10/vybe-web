@@ -100,7 +100,7 @@ export default function Tickets({
         console.log(error);
       }
     })();
-  }, []);
+  });
 
   useEffect(() => {
     const initialValue = 0;
