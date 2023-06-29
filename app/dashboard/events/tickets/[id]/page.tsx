@@ -201,7 +201,7 @@ export default function Tickets({ params }: { params: any }) {
                   <span className="text-sm font-medium">Back to events</span>
                 </a>
                 <button
-                  // type="submit"
+                  // // type="submit"
                   onClick={(e) => {
                     e.preventDefault();
 
@@ -254,7 +254,7 @@ export default function Tickets({ params }: { params: any }) {
                 <span className="text-sm font-medium">Back to events</span>
               </a> */}
               <button
-                type="submit"
+                // type="submit"
                 onClick={(e) => {
                   e.preventDefault();
 
@@ -292,7 +292,7 @@ export default function Tickets({ params }: { params: any }) {
               </button>
             </div>
             {/* <button
-              type="submit"
+              // type="submit"
               onClick={(e) => {
                 e.preventDefault();
                 publishEvent();
@@ -638,7 +638,7 @@ export default function Tickets({ params }: { params: any }) {
                     </div>
                     {/* <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                           <button
-                            type="submit"
+                            // type="submit"
                             className="inline-flex justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                           >
                             Save
@@ -907,22 +907,22 @@ export default function Tickets({ params }: { params: any }) {
                     </div>
                     <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                       <button
-                        type="submit"
+                        // type="submit"
                         onClick={(e) => {
                           e.preventDefault();
                           setNewTicket(false);
                         }}
-                        className="inline-flex justify-center rounded border border-purple-600 py-2 px-4 text-sm font-medium text-purple-600 hover:bg-purple-600 hover:text-white focus:outline-none focus:ring active:bg-purple-500"
+                        className="inline-flex justify-center rounded border border-purple-600 px-4 py-2 text-sm font-medium text-purple-600 hover:bg-purple-600 hover:text-white focus:outline-none focus:ring active:bg-purple-500"
                       >
                         Cancel
                       </button>
                       <button
-                        type="submit"
+                        // type="submit"
                         onClick={(e) => {
                           e.preventDefault();
                           createTicket();
                         }}
-                        className="ml-4 inline-flex justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                        className="ml-4 inline-flex justify-center rounded-md border border-transparent bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                       >
                         Save
                       </button>
@@ -1123,7 +1123,7 @@ export default function Tickets({ params }: { params: any }) {
                     </div>
                     {/* <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                           <button
-                            type="submit"
+                            // type="submit"
                             className="inline-flex justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                           >
                             Save
@@ -1392,22 +1392,22 @@ export default function Tickets({ params }: { params: any }) {
                     </div>
                     <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                       <button
-                        type="submit"
+                        // type="submit"
                         onClick={(e) => {
                           e.preventDefault();
                           setEditTicket(false);
                         }}
-                        className="inline-flex justify-center rounded border border-purple-600 py-2 px-4 text-sm font-medium text-purple-600 hover:bg-purple-600 hover:text-white focus:outline-none focus:ring active:bg-purple-500"
+                        className="inline-flex justify-center rounded border border-purple-600 px-4 py-2 text-sm font-medium text-purple-600 hover:bg-purple-600 hover:text-white focus:outline-none focus:ring active:bg-purple-500"
                       >
                         Cancel
                       </button>
                       <button
-                        type="submit"
+                        // type="submit"
                         onClick={(e) => {
                           e.preventDefault();
                           updateTicket(ticketId);
                         }}
-                        className="ml-4 inline-flex justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                        className="ml-4 inline-flex justify-center rounded-md border border-transparent bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                       >
                         Save
                       </button>

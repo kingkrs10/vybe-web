@@ -28,7 +28,7 @@ export default function Example(props: Props) {
             height={500}
           />
         </div>
-        <div className="flex flex-1 flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+        <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
           <div className="mx-auto w-full max-w-sm lg:w-96">
             <div>
               <Logo />
@@ -124,7 +124,7 @@ export default function Example(props: Props) {
                           // }
                           //  });
                         }}
-                        className="inline-flex w-full cursor-pointer justify-center rounded-md border border-gray-300 bg-white py-2 px-4 align-middle text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
+                        className="inline-flex w-full cursor-pointer justify-center rounded-md border border-gray-300 bg-white px-4 py-2 align-middle text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
                       >
                         <span className="sr-only">Sign in with Google</span>
                         <svg
@@ -224,7 +224,7 @@ export default function Example(props: Props) {
 
                   <div>
                     <button
-                      type="submit"
+                      // type="submit"
                       className="flex w-full justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                     >
                       Sign in

@@ -188,7 +188,7 @@ export default function EventForm({ data }: { data: any }) {
           <div className="flex w-full items-end justify-end">
             {active === false ? (
               <button
-                type="submit"
+                // type="submit"
                 onClick={(e) => {
                   e.preventDefault();
                   publishEvent();
@@ -214,7 +214,7 @@ export default function EventForm({ data }: { data: any }) {
               </button>
             ) : (
               <button
-                type="submit"
+                // type="submit"
                 onClick={(e) => {
                   e.preventDefault();
                   publishEvent();
@@ -407,7 +407,7 @@ export default function EventForm({ data }: { data: any }) {
                             defaultValue={category}
                             onChange={(text) => setCategory(text.target.value)}
                             autoComplete="category"
-                            className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
+                            className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
                           >
                             {Object.keys(categoryList)
                               .sort()
@@ -686,7 +686,7 @@ export default function EventForm({ data }: { data: any }) {
                                         setCountry(text.target.value)
                                       }
                                       autoComplete="country-name"
-                                      className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
+                                      className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
                                     >
                                       {Object.keys(countryList)
                                         .sort()
@@ -735,7 +735,7 @@ export default function EventForm({ data }: { data: any }) {
                                         setCity(text.target.value)
                                       }
                                       autoComplete="country-name"
-                                      className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
+                                      className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
                                     >
                                       {countryname?.sort().map((key, index) => {
                                         return (
@@ -867,7 +867,7 @@ export default function EventForm({ data }: { data: any }) {
                                 onChange={(text) =>
                                   setTimezone(text.target.value)
                                 }
-                                className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
+                                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
                               >
                                 {timezones
                                   .sort((a: any, b: any) => a.name - b.name)
@@ -1089,11 +1089,11 @@ export default function EventForm({ data }: { data: any }) {
                     <div className="shadow sm:overflow-hidden sm:rounded-md">
                       <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
                         <div>
-                          <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
+                          <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pb-6 pt-5">
                             <div className="space-y-1 text-center">
                               {image != "" && (
                                 <div className="relative">
-                                  <div className="absolute top-0 right-0 flex h-7 w-7 justify-center rounded-bl-md bg-white">
+                                  <div className="absolute right-0 top-0 flex h-7 w-7 justify-center rounded-bl-md bg-white">
                                     <a
                                       className="cursor-pointer"
                                       onClick={(e) => {
@@ -1288,12 +1288,12 @@ export default function EventForm({ data }: { data: any }) {
                       </div>
                       <div className="bg-gray-50 px-4 py-3 text-right sm:px-4">
                         <button
-                          type="submit"
+                          // type="submit"
                           onClick={(e) => {
                             e.preventDefault();
                             saveEvent();
                           }}
-                          className="inline-flex justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                          className="inline-flex justify-center rounded-md border border-transparent bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                         >
                           Save
                         </button>
