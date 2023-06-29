@@ -74,7 +74,7 @@ export default async function Events() {
             <div className="mt-6">
               <a href="/dashboard/events/new">
                 <button
-                  type="button"
+                  // type="button"
                   className="inline-flex items-center rounded-md border border-transparent bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                 >
                   <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
@@ -101,7 +101,7 @@ export default async function Events() {
                     href={`/dashboard/events/overview/${item.eventId}`}
                     className="relative block shrink-0"
                   >
-                    <div className="absolute top-2 left-2">
+                    <div className="absolute left-2 top-2">
                       <span className="inline-flex items-center justify-center rounded-full bg-emerald-100 px-2.5 py-0.5 text-emerald-700">
                         <p className="whitespace-nowrap text-sm">
                           {item.isActive ? "Published" : "Draft"}
@@ -127,7 +127,7 @@ export default async function Events() {
                       </a>
                     </h3>
 
-                    <p className="text-sm text-gray-700 line-clamp-2">
+                    <p className="line-clamp-2 text-sm text-gray-700">
                       {item.description}
                     </p>
 

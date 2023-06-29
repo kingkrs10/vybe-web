@@ -26,7 +26,7 @@ export default function HeaderMenu() {
     <>
       <div className="sticky top-0 z-20 flex h-16 flex-shrink-0 border-b border-gray-200 bg-white">
         <button
-          type="button"
+          // type="button"
           className="border-r border-gray-200 px-4 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500 md:hidden"
           onClick={() => setSidebarOpen(true)}
         >
@@ -56,7 +56,7 @@ export default function HeaderMenu() {
           <div className="ml-4 flex items-center md:ml-4">
             <a
               href="/dashboard/events/new"
-              className="mr-2 inline-block rounded-md border border-transparent bg-white py-2 px-4 text-base font-medium text-purple-600 hover:bg-opacity-75"
+              className="mr-2 inline-block rounded-md border border-transparent bg-white px-4 py-2 text-base font-medium text-purple-600 hover:bg-opacity-75"
             >
               Create an event
             </a>
@@ -100,7 +100,7 @@ export default function HeaderMenu() {
                       <Menu.Item key={1}>
                         <a
                           className={
-                            "block cursor-pointer py-2 px-4 text-sm text-gray-700 hover:bg-gray-100"
+                            "block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           }
                           href="/dashboard/events"
                           // onClick={() => signOut()}
@@ -111,7 +111,7 @@ export default function HeaderMenu() {
                       <Menu.Item key={2}>
                         <a
                           className={
-                            "block cursor-pointer py-2 px-4 text-sm text-gray-700 hover:bg-gray-100"
+                            "block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           }
                           onClick={() => signOut()}
                         >
@@ -127,7 +127,7 @@ export default function HeaderMenu() {
                             href={item.href}
                             className={classNames(
                               active ? "bg-gray-100" : "",
-                              "block py-2 px-4 text-sm text-gray-700"
+                              "block px-4 py-2 text-sm text-gray-700"
                             )}
                           >
                             {item.name}

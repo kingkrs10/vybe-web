@@ -75,7 +75,7 @@ export default function Settings() {
         <div className="mx-auto flex max-w-4xl flex-col md:px-8 xl:px-0">
           <main className="flex-1">
             <div className="relative mx-auto max-w-4xl md:px-8 xl:px-0">
-              <div className="pt-10 pb-16">
+              <div className="pb-16 pt-10">
                 <div className="px-4 sm:px-6 md:px-0">
                   <h1 className="text-3xl font-bold tracking-tight text-gray-900">
                     Profile
@@ -110,7 +110,7 @@ export default function Settings() {
                                 tab.current
                                   ? "border-purple-500 text-purple-600"
                                   : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
-                                "whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium"
+                                "whitespace-nowrap border-b-2 px-1 py-4 text-sm font-medium"
                               )}
                             >
                               {tab.name}
@@ -141,7 +141,7 @@ export default function Settings() {
                               {/* <span className="flex-grow">{user.name}</span> */}
                               <span className="ml-4 flex-shrink-0">
                                 <button
-                                  type="button"
+                                  // type="button"
                                   className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                                 >
                                   Update
@@ -165,7 +165,7 @@ export default function Settings() {
                               </span>
                               <span className="ml-4 flex flex-shrink-0 items-start space-x-4">
                                 <button
-                                  type="button"
+                                  // type="button"
                                   className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                                 >
                                   Update
@@ -177,7 +177,7 @@ export default function Settings() {
                                   |
                                 </span>
                                 <button
-                                  type="button"
+                                  // type="button"
                                   className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                                 >
                                   Remove
@@ -195,7 +195,7 @@ export default function Settings() {
                               </span>
                               <span className="ml-4 flex-shrink-0">
                                 <button
-                                  type="button"
+                                  // type="button"
                                   className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                                 >
                                   Update
@@ -213,7 +213,7 @@ export default function Settings() {
                               </span>
                               <span className="ml-4 flex-shrink-0">
                                 <button
-                                  type="button"
+                                  // type="button"
                                   className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                                 >
                                   Update
@@ -244,7 +244,7 @@ export default function Settings() {
                               <span className="flex-grow">English</span>
                               <span className="ml-4 flex-shrink-0">
                                 <button
-                                  type="button"
+                                  // type="button"
                                   className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                                 >
                                   Update
@@ -260,7 +260,7 @@ export default function Settings() {
                               <span className="flex-grow">DD-MM-YYYY</span>
                               <span className="ml-4 flex flex-shrink-0 items-start space-x-4">
                                 <button
-                                  type="button"
+                                  // type="button"
                                   className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                                 >
                                   Update
@@ -272,7 +272,7 @@ export default function Settings() {
                                   |
                                 </span>
                                 <button
-                                  type="button"
+                                  // type="button"
                                   className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                                 >
                                   Remove
