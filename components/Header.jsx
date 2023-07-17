@@ -40,6 +40,7 @@ function MobileNavLink({ children, ...props }) {
   return (
     <Popover.Button
       as={Link}
+      passHref
       className="block text-base leading-7 tracking-tight text-gray-700"
       {...props}
     >
@@ -95,6 +96,7 @@ export function Header() {
                     My events
                   </Link>
                   <Link
+                    href={"#"}
                     passHref
                     onClick={() => signOut()}
                     className="ml-4 inline-block h-11 w-full items-center justify-center rounded-md border border-transparent bg-purple-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-purple-700"
