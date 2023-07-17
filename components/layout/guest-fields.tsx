@@ -23,7 +23,7 @@ export default function GuestFields({ item }: { item: any }) {
         startDate: item.startDate,
         endDate: item.endDate,
       };
-      const clean = (prev: any) => {
+      const clean = (prev: any): any => {
         let cleared = prev.filter(function (item: any) {
           return item.id != data.id;
         });

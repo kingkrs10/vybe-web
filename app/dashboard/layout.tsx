@@ -8,15 +8,9 @@ export default async function DashboardLayout({
 }: // session,
 {
   children: React.ReactNode;
-  session: any;
+  // session: any;
 }) {
-  // if (localStorage.getItem("session") === undefined) {
   const session = await getCurrentUser();
-  // localStorage.setItem("session", JSON.stringify(session));
-  // }
-  // const session = localStorage.getItem("session");
-  // console.log(session);
-  // const path = usePathname();
   if (session === undefined /*&& path == "/dashboard/events/new"*/) {
     redirect("/login?redirect=/dashboard/events");
   }

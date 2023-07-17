@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { Popover } from "@headlessui/react";
 import { AnimatePresence, motion } from "framer-motion";
+import Head from "next/head";
 
 import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
@@ -52,7 +53,7 @@ function MobileNavLink({ children, ...props }) {
 export function Header() {
   const { data: session } = useSession();
   return (
-    <header>
+    <div>
       <nav>
         <Container className="relative z-50 flex justify-between py-8">
           <div className="relative z-10 flex items-center gap-16">
@@ -160,7 +161,7 @@ export function Header() {
                             <Button href="/login" variant="outline">
                               Log in
                             </Button>
-                            <Button href="#">Download the app</Button>
+                            {/* <Button href="#">Download the app</Button> */}
                           </div>
                         </Popover.Panel>
                       </>
@@ -172,6 +173,6 @@ export function Header() {
           </div>
         </Container>
       </nav>
-    </header>
+    </div>
   );
 }

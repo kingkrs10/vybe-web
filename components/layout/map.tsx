@@ -33,7 +33,7 @@ export default function Map({ lat, lng }: { lat: any; lng: any }) {
   return (
     <div className="mt-4 h-96">
       {lat && lng && (
-        <Wrapper apiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY}>
+        <Wrapper apiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY!}>
           <MyMapComponent
             center={{
               lat: parseFloat(lat),

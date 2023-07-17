@@ -3,7 +3,7 @@ import ApiClient from "@/lib/axios";
 import moment from "moment";
 import LandingNav from "@/components/header/landing-header";
 import LandingFooter from "@/components/footer/landing-footer";
-export const dynamic = "force-dynamic";
+export const dynamic = "force-static";
 
 import Head from "next/head";
 
@@ -30,13 +30,13 @@ export default async function EventsHome() {
   const data = await getData();
   return (
     <>
-      <Head>
+      <head>
         <title>Pocket - Invest at the perfect time.</title>
         <meta
           name="description"
           content="By leveraging insights from our network of industry insiders, you’ll know exactly when to buy to maximize profit, and exactly when to sell to avoid painful losses."
         />
-      </Head>
+      </head>
       <Header />
       <main>
         <Hero />

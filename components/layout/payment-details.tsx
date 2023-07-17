@@ -49,22 +49,31 @@ export default function PaymentDetails({
   }
 
   useEffect(() => {
-    if (clientSecret === "" && total.total !== 0) {
+    if (clientSecret === "" && total.totalAmount !== 0) {
       paymentIntent();
     }
   });
 
-  const options = {
-    // passing the client secret obtained in step 3
-    clientSecret: clientSecret,
-    // Fully customizable with appearance API.
+  type Options = {
+    clientSecret: string;
     appearance: {
-      theme: "stripe",
+      theme: string;
+      variables: {
+        colorPrimary: string;
+        colorBackground: string;
+        colorText: string;
+      };
+    };
+  };
+
+  const options = {
+    clientSecret: clientSecret,
+    appearance: {
+      // theme: "stripe",
       variables: {
         colorPrimary: "#9333ea",
         colorBackground: "#ffffff",
         colorText: "#000000",
-        // See all possible variables below
       },
     },
   };

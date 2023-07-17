@@ -11,6 +11,8 @@ import ApiClient from "@/lib/axios";
 import { Transition } from "@headlessui/react";
 import { XCircleIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
 
+const lib: any = ["places"];
+
 export default function EventForm({ data }: { data: any }) {
   const publishingOptions = [
     {
@@ -75,7 +77,6 @@ export default function EventForm({ data }: { data: any }) {
 
   let key = country;
   let countryname = countryList[key as keyof typeof countryList];
-  const lib = ["places"];
 
   const uploadPhoto = async (e: any) => {
     const file = e.target.files[0];
@@ -181,7 +182,7 @@ export default function EventForm({ data }: { data: any }) {
   return (
     <LoadScript
       googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY!}
-      libraries={["places"]}
+      libraries={lib}
     >
       <>
         <div className="">

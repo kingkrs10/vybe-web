@@ -4,7 +4,7 @@ const SignToken = async (email: any) => {
   console.log(email);
   const token = jwt.sign(
     JSON.stringify({ emailAddress: email }),
-    process.env.NEXTAUTH_SECRET,
+    process.env.NEXTAUTH_SECRET!,
     {
       expiresIn: "1d",
     },

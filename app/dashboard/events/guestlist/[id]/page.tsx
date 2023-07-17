@@ -9,13 +9,7 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Guestlists({
-  params: { id },
-  session,
-}: {
-  params: { id: any };
-  session: any;
-}) {
+export default function Guestlists({ params }: { params: any }) {
   const [scan, setScan] = useState(false);
   const [gueslist, setData] = useState([]);
   const [camera, setCamera] = useState("");
@@ -26,14 +20,14 @@ export default function Guestlists({
     (async () => {
       const session = await fetch(`/api/session`);
       let user = await session.json();
-      const params = { pageNo: 1 };
+      const request = { pageNo: 1 };
       const response = await ApiClient(user?.token).get(
-        `/guestlists/all?eventId=${id}&pageNo=${params.pageNo}`
+        `/guestlists/all?eventId=${params?.id}&pageNo=${request.pageNo}`
       );
       // console.log(response.data.data);
       setData(response?.data?.data);
     })();
-  }, [id]);
+  }, [params.id]);
 
   useEffect(() => {
     (async () => {
@@ -46,9 +40,9 @@ export default function Guestlists({
         setShow(true);
         setName(guestlist.data.data.name);
 
-        const params = { pageNo: 1 };
+        const request = { pageNo: 1 };
         const response = await ApiClient(user?.token).get(
-          `/guestlists/all?eventId=${id}&pageNo=${params.pageNo}`
+          `/guestlists/all?eventId=${params?.id}&pageNo=${request.pageNo}`
         );
 
         setData(response?.data?.data);
@@ -58,7 +52,7 @@ export default function Guestlists({
         }, 3000);
       }
     })();
-  }, [camera, id]);
+  }, [camera, params?.id]);
 
   const stats = [{ name: "Total guests", stat: gueslist?.length }];
 

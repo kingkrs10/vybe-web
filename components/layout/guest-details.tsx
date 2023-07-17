@@ -32,7 +32,7 @@ export default function GuestDetails({
   const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
-    let filled = [];
+    let filled: any = [];
     guests.map((item: any) => {
       if (item.name === "" || item.email === "") {
         filled.push(false);

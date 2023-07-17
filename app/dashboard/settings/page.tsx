@@ -1,7 +1,8 @@
+"use client";
 import Image from "next/image";
 // import styles from "./page.module.css";
 
-export default function Dashboard() {
+export default function Settings() {
   return (
     <div className="">
       <section className="rounded-lg bg-gray-900 text-white">

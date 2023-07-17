@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, use } from "react";
 import categoryList from "@/resources/categories.json";
 import countryList from "@/resources/countries-cities.json";
 import timezones from "@/resources/timezones.json";
@@ -17,15 +17,20 @@ import { redirect, useRouter } from "next/navigation";
 import ApiClient from "@/lib/axios";
 import Image from "next/image";
 import { useForm, Controller } from "react-hook-form";
+import { UUID } from "crypto";
 
-// const categoryList = dynamic(() => import('../../../../resources/categories.json'))
+// const categoryList = dynamic(() => require("@/resources/categories.json"));
+// const timezones = dynamic(() => require("@/resources/timezones.json"));
+// const countryList = dynamic(() => require("@/resources/countries-cities.json"));
+
+const lib: any = ["places"];
 
 export default function NewTicket() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [type, setType] = useState("");
-  const [address, setAddress] = useState({});
+  const [address, setAddress] = useState({ address: "", lat: 0, lng: 0 });
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
@@ -63,6 +68,30 @@ export default function NewTicket() {
   const [editTicket, setEditTicket] = useState(false);
 
   const [session, setSession] = useState<any>({});
+  const [countries, setCountries] = useState<any>([]);
+  const [timezones, setTimezones] = useState<any>([]);
+  const [categories, setCategories] = useState<any>([]);
+
+  useEffect(() => {
+    Promise.all([
+      fetch(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/categories`),
+      fetch(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/timezones`),
+      fetch(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/countries`),
+    ])
+      .then(([categories, timezones, countries]) => {
+        return Promise.all([
+          categories.json(),
+          timezones.json(),
+          countries.json(),
+        ]);
+      })
+      .then(([categories, timezones, countries]) => {
+        setCountries(countries);
+        setTimezones(timezones);
+        setCategories(categories);
+        // console.log(categories);
+      });
+  }, []);
 
   const route = useRouter();
   const {
@@ -272,21 +301,34 @@ export default function NewTicket() {
     setTicketInvitationOnly(false);
   };
 
-  const setFields = (item: any) => {
-    const ticketsList = tickets.find((ticket: any) => {
-      return ticket.ticketId === item;
-    });
+  type List = {
+    ticketId: string;
+    name: string;
+    description: string;
+    type: string;
+    price: string;
+    quantity: string;
+    limit: string;
+    startDate: string;
+    endDate: string;
+    invitationOnly: boolean;
+  };
+
+  const setFields = (item: any): any => {
+    // const ticketsList: List = tickets.find((ticket: any) => {
+    //   return ticket.ticketId === item;
+    // });
     // console.log(ticketsList);
-    setTicketId(ticketsList?.ticketId);
-    setTicketName(ticketsList?.name);
-    setTicketDescription(ticketsList?.description);
-    setTicketType(ticketsList?.type);
-    setTicketPrice(ticketsList?.price);
-    setTicketQuantity(ticketsList?.quantity);
-    setTicketLimit(ticketsList?.limit);
-    setTicketStartDate(new Date(ticketsList?.startDate));
-    setTicketEndDate(new Date(ticketsList?.endDate));
-    setTicketInvitationOnly(ticketsList?.invitationOnly);
+    setTicketId(item?.ticketId!);
+    setTicketName(item?.name!);
+    setTicketDescription(item?.description!);
+    setTicketType(item?.type!);
+    setTicketPrice(item?.price!);
+    setTicketQuantity(item?.quantity!);
+    setTicketLimit(item?.limit!);
+    setTicketStartDate(item?.startDate!);
+    setTicketEndDate(item?.endDate!);
+    setTicketInvitationOnly(item?.invitationOnly!);
   };
 
   const updateTicket = async (id: any) => {
@@ -338,7 +380,7 @@ export default function NewTicket() {
   return (
     <LoadScript
       googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY!}
-      libraries={["places"]}
+      libraries={lib}
     >
       <div className="">
         <section className="rounded-lg bg-gray-900 text-white">
@@ -535,7 +577,7 @@ export default function NewTicket() {
                             className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
                           >
                             <option value="">Select category</option>
-                            {Object.keys(categoryList)
+                            {Object.keys(categories)
                               .sort()
                               .map((key, index) => {
                                 return (
@@ -823,7 +865,7 @@ export default function NewTicket() {
                                       autoComplete="country-name"
                                       className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
                                     >
-                                      {Object.keys(countryList)
+                                      {Object.keys(countries)
                                         .sort()
                                         .map((key, index) => {
                                           return (
@@ -868,13 +910,15 @@ export default function NewTicket() {
                                       autoComplete="country-name"
                                       className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
                                     >
-                                      {countryname?.sort().map((key, index) => {
-                                        return (
-                                          <option key={index} value={key}>
-                                            {key}
-                                          </option>
-                                        );
-                                      })}
+                                      {countries
+                                        ?.sort()
+                                        .map((key: any, index: any) => {
+                                          return (
+                                            <option key={index} value={key}>
+                                              {key}
+                                            </option>
+                                          );
+                                        })}
                                     </select>
                                   </div>
 
@@ -1003,7 +1047,7 @@ export default function NewTicket() {
                                 <option value="">Select timezone</option>
                                 {timezones
                                   .sort((a: any, b: any) => a.text - b.text)
-                                  .map((key, index) => {
+                                  .map((key: any, index: any) => {
                                     return (
                                       <option key={index} value={key.text}>
                                         {key.text}
@@ -1661,7 +1705,7 @@ export default function NewTicket() {
                               // href="#"
                               onClick={(e) => {
                                 e.preventDefault();
-                                setFields(item.ticketId);
+                                setFields(item);
                                 setEditTicket(true);
                               }}
                               className="cursor-pointer text-sm font-medium text-purple-600 hover:underline"

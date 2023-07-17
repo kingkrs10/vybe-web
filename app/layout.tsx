@@ -1,8 +1,9 @@
 import Providers from "./providers";
 import GoogleAnalytics from "@/lib/google-analytics";
-import "../styles/dist.css";
+// import "../styles/dist.css";
 import "tailwindcss/tailwind.css";
 import type { Metadata } from "next";
+import Head from "next/head";
 
 export const metadata: Metadata = {
   title: "VYBE Events - All the hottest events in your city",
@@ -18,6 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full">
+      {/* <Head>{children}</Head> */}
       <head />
       <GoogleAnalytics />
       <body className="h-full">
