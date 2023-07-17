@@ -256,7 +256,7 @@ function CreateScreen({ custom, animated = false }) {
                             name="live"
                           />
                           <label
-                            forhtml="live"
+                            htmlFor="live"
                             className="block cursor-pointer rounded-lg border border-gray-100 p-4 text-sm font-medium shadow-sm hover:border-gray-200 peer-checked:border-purple-500 peer-checked:ring-1 peer-checked:ring-purple-500"
                           >
                             <div className="flex items-center justify-between">
@@ -288,7 +288,7 @@ function CreateScreen({ custom, animated = false }) {
                             readOnly
                           />
                           <label
-                            forhtml="virtual"
+                            htmlFor="virtual"
                             className="block cursor-pointer rounded-lg border border-gray-100 p-4 text-sm font-medium shadow-sm hover:border-gray-200 peer-checked:border-purple-500 peer-checked:ring-1 peer-checked:ring-purple-500"
                           >
                             <div className="flex items-center justify-between">
@@ -340,7 +340,7 @@ function CreateScreen({ custom, animated = false }) {
                     <div className="mt-0 space-y-4">
                       <div className="col-span-6">
                         <label
-                          forhtml="country"
+                          htmlFor="country"
                           className="block text-sm font-medium text-gray-700"
                         >
                           Timezone
@@ -356,7 +356,7 @@ function CreateScreen({ custom, animated = false }) {
                       <div className="grid grid-cols-6 gap-6">
                         <div className="col-span-6 sm:col-span-6">
                           <label
-                            forhtml="start-date"
+                            htmlFor="start-date"
                             className="block text-sm font-medium text-gray-700"
                           >
                             Start date
@@ -393,7 +393,7 @@ function CreateScreen({ custom, animated = false }) {
                         </div>
                         <div className="col-span-6 sm:col-span-6">
                           <label
-                            forhtml="end-date"
+                            htmlFor="end-date"
                             className="block text-sm font-medium text-gray-700"
                           >
                             End date

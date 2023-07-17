@@ -390,7 +390,7 @@ export function Hero() {
             <p className="mt-6 text-lg text-gray-600">
               Let VYBE elevate your next event to new heights and create the
               unforgettable experience your attendees deserve. Your vision, our
-              passion – let's craft extraordinary memories together.
+              passion – let&#39;s craft extraordinary memories together.
             </p>
             <div className="mt-8 flex flex-wrap gap-x-6 gap-y-4">
               {/* <AppStoreLink /> */}

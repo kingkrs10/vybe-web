@@ -143,6 +143,7 @@ export default function Sidebar() {
                     <nav aria-label="Main Nav" className="space-y-1 px-2 pb-4">
                       <Link
                         href={`/dashboard/events`}
+                        passHref
                         className={`flex items-center rounded-lg px-4 py-2 hover:bg-gray-100 hover:text-gray-700 ${
                           pathname === `/dashboard/events`
                             ? ` bg-gray-100 text-black`
@@ -207,6 +208,7 @@ export default function Sidebar() {
                         >
                           <Link
                             href={`/dashboard/events`}
+                            passHref
                             className={`flex items-center rounded-lg px-4 py-2 hover:bg-gray-100 hover:text-gray-700 `}
                           >
                             <svg
@@ -235,6 +237,7 @@ export default function Sidebar() {
                         <nav aria-label="Main Nav" className="px-2">
                           <Link
                             href={`/dashboard/events`}
+                            passHref
                             className={`flex items-center rounded-lg px-4 py-2 hover:bg-gray-100 hover:text-gray-700 ${
                               pathname === `/dashboard/events`
                                 ? ` bg-gray-100 text-black`
@@ -267,6 +270,7 @@ export default function Sidebar() {
                         >
                           <Link
                             href={`/dashboard/events/overview/${eventId}`}
+                            passHref
                             className={`flex items-center rounded-lg px-4 py-2 hover:bg-gray-100 hover:text-gray-700 ${
                               pathname ===
                               `/dashboard/events/overview/${eventId}`
@@ -296,6 +300,7 @@ export default function Sidebar() {
 
                           <Link
                             href={`/dashboard/events/information/${eventId}`}
+                            passHref
                             className={`flex items-center rounded-lg px-4 py-2 hover:bg-gray-100 hover:text-gray-700 ${
                               pathname ===
                               `/dashboard/events/information/${eventId}`
@@ -325,6 +330,7 @@ export default function Sidebar() {
 
                           <Link
                             href={`/dashboard/events/tickets/${eventId}`}
+                            passHref
                             className={`flex items-center rounded-lg px-4 py-2 hover:bg-gray-100 hover:text-gray-700 ${
                               pathname ===
                               `/dashboard/events/tickets/${eventId}`
@@ -358,6 +364,7 @@ export default function Sidebar() {
                         >
                           <Link
                             href={`/dashboard/events/sales/${eventId}`}
+                            passHref
                             className={`flex items-center rounded-lg px-4 py-2 hover:bg-gray-100 hover:text-gray-700 ${
                               pathname === `/dashboard/events/sales/${eventId}`
                                 ? ` bg-gray-100 text-black`
@@ -386,6 +393,7 @@ export default function Sidebar() {
 
                           <Link
                             href={`/dashboard/events/guestlist/${eventId}`}
+                            passHref
                             className={`flex items-center rounded-lg px-4 py-2 hover:bg-gray-100 hover:text-gray-700 ${
                               pathname ===
                               `/dashboard/events/guestlist/${eventId}`
@@ -415,6 +423,7 @@ export default function Sidebar() {
 
                           <Link
                             href={`/dashboard/events/payments/${eventId}`}
+                            passHref
                             className={`flex items-center rounded-lg px-4 py-2 hover:bg-gray-100 hover:text-gray-700 ${
                               pathname ===
                               `/dashboard/events/payments/${eventId}`
@@ -493,6 +502,7 @@ export default function Sidebar() {
               <nav aria-label="Main Nav" className="space-y-1 px-2 pb-4">
                 <Link
                   href={`/dashboard/events`}
+                  passHref
                   className={`flex items-center rounded-lg px-4 py-2 hover:bg-gray-100 hover:text-gray-700 ${
                     pathname === `/dashboard/events`
                       ? ` bg-gray-100 text-black`
@@ -550,6 +560,7 @@ export default function Sidebar() {
                   <nav aria-label="Main Nav" className="space-y-1 px-2 pb-4">
                     <Link
                       href={`/dashboard/events`}
+                      passHref
                       className={`flex items-center rounded-lg px-4 py-2 hover:bg-gray-100 hover:text-gray-700 `}
                     >
                       <svg
@@ -578,6 +589,7 @@ export default function Sidebar() {
                   <nav aria-label="Main Nav" className="space-y-1 px-2 pb-4">
                     <Link
                       href={`/dashboard/events`}
+                      passHref
                       className={`flex items-center rounded-lg px-4 py-2 hover:bg-gray-100 hover:text-gray-700 ${
                         pathname === `/dashboard/events`
                           ? ` bg-gray-100 text-black`
@@ -607,6 +619,7 @@ export default function Sidebar() {
                   <nav aria-label="Main Nav" className="space-y-1 px-2 pb-4">
                     <Link
                       href={`/dashboard/events/overview/${eventId}`}
+                      passHref
                       className={`flex items-center rounded-lg px-4 py-2 hover:bg-gray-100 hover:text-gray-700 ${
                         pathname === `/dashboard/events/overview/${eventId}`
                           ? ` bg-gray-100 text-black`
@@ -633,6 +646,7 @@ export default function Sidebar() {
 
                     <Link
                       href={`/dashboard/events/information/${eventId}`}
+                      passHref
                       className={`flex items-center rounded-lg px-4 py-2 hover:bg-gray-100 hover:text-gray-700 ${
                         pathname === `/dashboard/events/information/${eventId}`
                           ? ` bg-gray-100 text-black`
@@ -661,6 +675,7 @@ export default function Sidebar() {
 
                     <Link
                       href={`/dashboard/events/tickets/${eventId}`}
+                      passHref
                       className={`flex items-center rounded-lg px-4 py-2 hover:bg-gray-100 hover:text-gray-700 ${
                         pathname === `/dashboard/events/tickets/${eventId}`
                           ? ` bg-gray-100 text-black`
@@ -688,6 +703,7 @@ export default function Sidebar() {
                   <nav aria-label="Main Nav" className="space-y-1 px-2 pb-4">
                     <Link
                       href={`/dashboard/events/sales/${eventId}`}
+                      passHref
                       className={`flex items-center rounded-lg px-4 py-2 hover:bg-gray-100 hover:text-gray-700 ${
                         pathname === `/dashboard/events/sales/${eventId}`
                           ? ` bg-gray-100 text-black`
@@ -714,6 +730,7 @@ export default function Sidebar() {
 
                     <Link
                       href={`/dashboard/events/guestlist/${eventId}`}
+                      passHref
                       className={`flex items-center rounded-lg px-4 py-2 hover:bg-gray-100 hover:text-gray-700 ${
                         pathname === `/dashboard/events/guestlist/${eventId}`
                           ? ` bg-gray-100 text-black`
@@ -742,6 +759,7 @@ export default function Sidebar() {
 
                     <Link
                       href={`/dashboard/events/payments/${eventId}`}
+                      passHref
                       className={`flex items-center rounded-lg px-4 py-2 hover:bg-gray-100 hover:text-gray-700 ${
                         pathname === `/dashboard/events/payments/${eventId}`
                           ? ` bg-gray-100 text-black`

@@ -1,16 +1,17 @@
-import Link from 'next/link'
-import clsx from 'clsx'
+import Link from "next/link";
+import clsx from "clsx";
 
-export function AppStoreLink({ color = 'black' }) {
+export function AppStoreLink({ color = "black" }) {
   return (
     <Link
       href="#"
+      passHref
       aria-label="Download on the App Store"
       className={clsx(
-        'rounded-lg transition-colors',
-        color === 'black'
-          ? 'bg-gray-800 text-white hover:bg-gray-900'
-          : 'bg-white text-gray-900 hover:bg-gray-50'
+        "rounded-lg transition-colors",
+        color === "black"
+          ? "bg-gray-800 text-white hover:bg-gray-900"
+          : "bg-white text-gray-900 hover:bg-gray-50"
       )}
     >
       <svg viewBox="0 0 120 40" aria-hidden="true" className="h-10">
@@ -20,5 +21,5 @@ export function AppStoreLink({ color = 'black' }) {
         />
       </svg>
     </Link>
-  )
+  );
 }

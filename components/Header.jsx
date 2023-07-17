@@ -55,7 +55,7 @@ export function Header() {
       <nav>
         <Container className="relative z-50 flex justify-between py-8">
           <div className="relative z-10 flex items-center gap-16">
-            <Link href="/" aria-label="Home">
+            <Link href="/" passHref aria-label="Home">
               <Logo />
             </Link>
             <div className="hidden lg:flex lg:gap-10">
@@ -77,27 +77,30 @@ export function Header() {
             </Link> */}
             <div className="hidden md:block">
               {session?.user === undefined && (
-                <a
+                <Link
                   href="/login"
+                  passHref
                   className="flex w-full items-center justify-center rounded-md border border-transparent bg-purple-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-purple-700"
                 >
                   Sign in
-                </a>
+                </Link>
               )}
               {session?.user !== undefined && (
                 <div className="flex justify-between">
-                  <a
+                  <Link
                     className="mb-2 inline-block h-11 items-center justify-center whitespace-nowrap rounded-md border bg-white px-4 py-2 text-base font-medium text-black shadow-sm hover:bg-gray-100"
                     href="/dashboard/events"
+                    passHref
                   >
                     My events
-                  </a>
-                  <a
+                  </Link>
+                  <Link
+                    passHref
                     onClick={() => signOut()}
                     className="ml-4 inline-block h-11 w-full items-center justify-center rounded-md border border-transparent bg-purple-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-purple-700"
                   >
                     Sign out
-                  </a>
+                  </Link>
                 </div>
               )}
             </div>
