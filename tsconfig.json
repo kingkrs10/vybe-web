@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -18,31 +14,16 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "types": [
-      "google.maps"
-    ],
-    "typeRoots": [
-      "node_modules/@types"
-    ],
+    "types": ["google.maps"],
+    "typeRoots": ["node_modules/@types"],
     "paths": {
-      "@/components/*": [
-        "./components/*"
-      ],
-      "@/resources/*": [
-        "./resources/*"
-      ],
-      "@/public/*": [
-        "./public/*"
-      ],
-      "@/lib/*": [
-        "./lib/*"
-      ],
-      "@/styles/*": [
-        "./styles/*"
-      ],
-      "@/pages/*": [
-        "./pages/*"
-      ]
+      "@/components/*": ["./components/*"],
+      "@/resources/*": ["./resources/*"],
+      "@/public/*": ["./public/*"],
+      "@/lib/*": ["./lib/*"],
+      "@/styles/*": ["./styles/*"],
+      "@/pages/*": ["./pages/*"],
+      "@/images/*": ["./images/*"]
     },
     "plugins": [
       {
@@ -51,13 +32,6 @@
     ],
     "strictNullChecks": true
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
 }

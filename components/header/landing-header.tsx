@@ -114,9 +114,9 @@ const loaderProp = ({ src }) => {
 export default function LandingNav() {
   const { data: session } = useSession();
   return (
-    <Popover className="relative z-50 border-b-2 border-gray-100 bg-white">
+    <Popover className="relative z-50 bg-white">
       <div className="mx-auto max-w-7xl px-4  sm:px-6">
-        <div className="flex items-center justify-between  py-6 md:justify-start md:space-x-10">
+        <div className="flex items-center justify-between py-6 md:justify-start md:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
             <span className="sr-only">VYBE Events</span>
             <Logo />
@@ -307,18 +307,6 @@ export default function LandingNav() {
             </Popover>
           </Popover.Group> */}
           <div className="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
-            <a
-              href={`/`}
-              className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
-            >
-              Discover events
-            </a>
-            <a
-              href={`/dashboard/events/new`}
-              className="ml-6 whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
-            >
-              Create an event
-            </a>
             {session != undefined && (
               <>
                 <Menu as="div" className="relative ml-6 mr-4">
@@ -352,7 +340,7 @@ export default function LandingNav() {
                           <Menu.Item key={item.name}>
                             <a
                               className={
-                                "block cursor-pointer py-2 px-4 text-sm text-gray-700 hover:bg-gray-100"
+                                "block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                               }
                               onClick={() => signOut()}
                             >
@@ -366,7 +354,7 @@ export default function LandingNav() {
                                 href={item.href}
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
-                                  "block py-2 px-4 text-sm text-gray-700"
+                                  "block px-4 py-2 text-sm text-gray-700"
                                 )}
                               >
                                 {item.name}
@@ -410,7 +398,7 @@ export default function LandingNav() {
           className="absolute inset-x-0 top-0 origin-top-right transform p-2 transition md:hidden"
         >
           <div className="divide-y-2 divide-gray-50 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
-            <div className="px-5 pt-5 pb-6">
+            <div className="px-5 pb-6 pt-5">
               <div className="flex items-center justify-between">
                 <div className="z-20">
                   <Logo />
@@ -442,7 +430,7 @@ export default function LandingNav() {
                 </nav>
               </div> */}
             </div>
-            <div className="space-y-6 py-6 px-5">
+            <div className="space-y-6 px-5 py-6">
               {/* <div className="grid grid-cols-2 gap-y-4 gap-x-8">
                 <a
                   href="#"
