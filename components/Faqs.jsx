@@ -1,60 +1,60 @@
-import Link from 'next/link'
+import Link from "next/link";
 
-import { Container } from '@/components/Container'
+import { Container } from "@/components/Container";
 
 const faqs = [
   [
     {
-      question: 'How do I know the tips are good?',
+      question: "How can I sell tickets on your platform?",
       answer:
-        'Our whole business depends on our tips being good, so it’s in our best interest that they are. The results of our customers speak for themselves, just trust us.',
+        "You can create your event and tickets via our web app. We support multiple ticket types, pricing options, and availability settings. After setting up, the tickets will be available for sale.",
     },
     {
-      question: 'Isn’t this insider trading?',
+      question: "How does the check-in process work?",
       answer:
-        'Yes exactly. But at scale! Historically you could only make insider trades with knowledge from your direct network. Pocket brings you insider trading tips from people you don’t even know.',
+        "Our platform generates unique QR codes for each ticket. At the event, you can scan these QR codes using our app to manage attendee check-ins.",
     },
     {
-      question: 'But isn’t insider trading illegal?',
+      question: "Is my payment information safe?",
       answer:
-        'Here’s the thing: you’re the one doing the insider trading, not us. We’re just giving you the tips and some tools to make trades. We’re not doing anything wrong here.',
+        "Absolutely. All payments are processed through Stripe, a trusted payment processing platform. We don't store your payment information on our servers.",
     },
   ],
   [
     {
-      question: 'Do the people giving you tips realize what they are doing?',
+      question: "How do I get paid for my ticket sales?",
       answer:
-        'Again I would argue this isn’t really our responsibility. People make their own choices. If they don’t research the consequences that’s on them, not on us.',
+        "Your earnings from ticket sales are transferred directly to your bank account. The details are provided when setting up the event.",
     },
     {
-      question: 'Where is Pocket based?',
+      question: "Is there a limit to the number of tickets I can sell?",
       answer:
-        'Let’s just say it’s not somewhere where the SEC is going to find us.',
+        "No, there's no limit. You can sell as many tickets as the capacity of your event allows.",
     },
     {
-      question: 'Is there any age limit to trading on Pocket?',
+      question: "Can I manage multiple events at the same time?",
       answer:
-        'For our free plan, the age limit is based on the minimum age to trade in your country of residence. Our VIP plan uses advanced transaction anonymization though, so you can use that plan even if you’re 9 years old. Or a dog.',
+        "Yes, our platform is designed to allow you to manage multiple events simultaneously.",
     },
   ],
   [
     {
-      question: 'How did you get this on the App Store?',
+      question: "What happens if a customer requests a refund?",
       answer:
-        'Honestly we were surprised too, but eventually we found out that the app reviewer found the app so compelling they approved it just so they could use it themselves.',
+        "Our platform provides an easy-to-use interface for managing refunds. You can choose to approve or deny refund requests based on your event's refund policy.",
     },
     {
-      question: 'How do I explain the money I withdraw from Pocket to the IRS?',
+      question: "Can I customize my event page?",
       answer:
-        'This feels like one-hundred percent a you problem. Pocket is not responsible in any way for your tax returns.',
+        "Yes, you can fully customize your event page to match your event's theme and brand.",
     },
     {
-      question: 'How do I become an insider?',
+      question: "What customer support options do you provide?",
       answer:
-        'Contact us with some details about your industry and the type of access you have to apply for an insider account. Once approved, we’ll send you a guide on collecting insider information without being detected at work.',
+        "We offer round-the-clock customer support through email and live chat. Our dedicated team is always ready to assist you.",
     },
   ],
-]
+];
 
 export function Faqs() {
   return (
@@ -72,9 +72,9 @@ export function Faqs() {
             Frequently asked questions
           </h2>
           <p className="mt-2 text-lg text-gray-600">
-            If you have anything else you want to ask,{' '}
+            If you have anything else you want to ask,{" "}
             <Link
-              href="mailto:info@example.com"
+              href="mailto:hello@vybe.events"
               className="text-gray-900 underline"
             >
               reach out to us
@@ -103,5 +103,5 @@ export function Faqs() {
         </ul>
       </Container>
     </section>
-  )
+  );
 }

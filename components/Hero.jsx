@@ -395,7 +395,7 @@ export function Hero() {
             <div className="mt-8 flex flex-wrap gap-x-6 gap-y-4">
               {/* <AppStoreLink /> */}
               <Button
-                href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                href="/login"
                 variant="solid"
                 // color="purple"
                 className="flex items-center bg-purple-600 px-6 align-middle hover:bg-purple-700"

@@ -14,87 +14,87 @@ import { Container } from "@/components/Container";
 
 const reviews = [
   {
-    title: "It really works.",
-    body: "I downloaded Pocket today and turned $5000 into $25,000 in half an hour.",
-    author: "CrazyInvestor",
+    title: "Superb Experience",
+    body: "VYBE transformed our annual conference. The web app is intuitive and comprehensive. Made planning seamless.",
+    author: "Alexandra S.",
     rating: 5,
   },
   {
-    title: "You need this app.",
-    body: "I didn't understand the stock market at all before Pocket. I still don't, but at least I'm rich now.",
-    author: "CluelessButRich",
+    title: "Effortless Wedding Planning",
+    body: "VYBE was a lifesaver for my wedding. All tools needed in one place, made the process effortless.",
+    author: "Jenny M.",
     rating: 5,
   },
   {
-    title: "This shouldn't be legal.",
-    body: "Pocket makes it so easy to win big in the stock market that I can't believe it's actually legal.",
-    author: "LivingDaDream",
+    title: "User-friendly and Efficient",
+    body: "VYBE has been instrumental for our organization's events. Their platform never disappoints.",
+    author: "Thomas R.",
     rating: 5,
   },
   {
-    title: "Screw financial advisors.",
-    body: "I barely made any money investing in mutual funds. With Pocket, I'm doubling my net-worth every single month.",
-    author: "JordanBelfort1962",
+    title: "Best Event Platform",
+    body: "VYBE is the best event platform. The web app is brilliant and makes event planning a piece of cake.",
+    author: "Nancy D.",
     rating: 5,
   },
   {
-    title: "I love it!",
-    body: "I started providing insider information myself and now I get new insider tips every 5 minutes. I don't even have time to act on all of them. New Lamborghini is being delivered next week!",
-    author: "MrBurns",
+    title: "Outstanding Service",
+    body: "VYBE streamlined our product launch and ensured a successful event.",
+    author: "Martin P.",
     rating: 5,
   },
   {
-    title: "Too good to be true.",
-    body: "I was making money so fast with Pocket that it felt like a scam. But I sold my shares and withdrew the money and it's really there, right in my bank account. This app is crazy!",
-    author: "LazyRich99",
+    title: "Exceptional Platform",
+    body: "VYBE was key to our charity fundraiser's success. Their web app is a must-have.",
+    author: "Sophia L.",
     rating: 5,
   },
   {
-    title: "Wish I could give 6 stars",
-    body: "This is literally the most important app you will ever download in your life. Get on this before it's so popular that everyone else is getting these tips too.",
-    author: "SarahLuvzCash",
+    title: "Hassle-free Corporate Event",
+    body: "VYBE nailed it with their web app. Managing our corporate event became hassle-free.",
+    author: "George H.",
     rating: 5,
   },
   {
-    title: "Bought an island.",
-    body: "Yeah, you read that right. Want your own island too? Get Pocket.",
-    author: "ScroogeMcduck",
+    title: "Stress-free Party Planning",
+    body: "Amazing experience with VYBE for our private party. Their web app made event planning stress-free.",
+    author: "Emily K.",
     rating: 5,
   },
   {
-    title: "No more debt!",
-    body: "After 2 weeks of trading on Pocket I was debt-free. Why did I even go to school at all when Pocket exists?",
-    author: "BruceWayne",
+    title: "Conference Game Changer",
+    body: "VYBE' web app is a game changer. Our conference was well-executed and memorable, thanks to them.",
+    author: "Carlos V.",
     rating: 5,
   },
   {
-    title: "I'm 13 and I'm rich.",
-    body: "I love that with Pocket's transaction anonymization I could sign up and start trading when I was 12 years old. I had a million dollars before I had armpit hair!",
-    author: "RichieRich",
+    title: "Innovative and Effective",
+    body: "The VYBE web app turned our annual gala into a sensation. The features are innovative and highly effective.",
+    author: "Olivia N.",
     rating: 5,
   },
   {
-    title: "Started an investment firm.",
-    body: "I charge clients a 3% management fee and just throw all their investments into Pocket. Easy money!",
-    author: "TheCountOfMonteChristo",
+    title: "Easy and Efficient",
+    body: "VYBE made planning our business seminar a breeze. The web app is easy to use and highly efficient.",
+    author: "James T.",
     rating: 5,
   },
   {
-    title: "It's like a superpower.",
-    body: "Every tip Pocket has sent me has paid off. It's like playing Blackjack but knowing exactly what card is coming next!",
-    author: "ClarkKent",
+    title: "Perfect for Product Launches",
+    body: "Used VYBE for our new product launch. Their web app made the process so much simpler and efficient.",
+    author: "Matthew L.",
     rating: 5,
   },
   {
-    title: "Quit my job.",
-    body: "I downloaded Pocket three days ago and quit my job today. I can't believe no one else thought to build a stock trading app that works this way!",
-    author: "GeorgeCostanza",
+    title: "Great for Large Conferences",
+    body: "Organizing a large conference was never easier, thanks to VYBE. Their web app is a lifesaver.",
+    author: "Sarah P.",
     rating: 5,
   },
   {
-    title: "Don't download this app",
-    body: "Unless you want to have the best life ever! I am literally writing this from a yacht.",
-    author: "JeffBezos",
+    title: "Ideal for Social Gatherings",
+    body: "Used VYBE for a social gathering. The web app helped us plan every detail flawlessly.",
+    author: "Emma J.",
     rating: 5,
   },
 ];
@@ -252,8 +252,8 @@ function ReviewGrid() {
           />
         </>
       )}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-gray-50" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-gray-50" />
+      {/* <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-gray-50" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-gray-50" /> */}
     </div>
   );
 }

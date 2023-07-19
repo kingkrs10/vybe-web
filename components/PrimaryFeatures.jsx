@@ -34,14 +34,14 @@ const features = [
   {
     name: "Manage journey of your attendees",
     description:
-      "Get a push notification every time we find out something that’s going to lower the share price on your holdings so you can sell before the information hits the public markets.",
+      "We helop you manage the journey of your attendees, from the moment they buy a ticket to the moment they arrive at your event.",
     icon: DeviceUserIcon,
     screen: JourneyScreen,
   },
   {
     name: "Manage your sales and payouts",
     description:
-      "We hide your stock purchases behind thousands of anonymous trading accounts, so suspicious activity can never be traced back to you.",
+      "We help you manage your sales and payouts, with real-time reporting and analytics, and payouts to your bank account.",
     icon: DeviceChartIcon,
     screen: SalesScreen,
   },

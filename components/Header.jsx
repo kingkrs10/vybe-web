@@ -78,7 +78,7 @@ export function Header() {
               Create an event
             </Link> */}
             <div className="hidden md:block">
-              {session?.user === undefined && (
+              {session?.user === undefined ? (
                 <Link
                   href="/login"
                   passHref
@@ -86,8 +86,7 @@ export function Header() {
                 >
                   Sign in
                 </Link>
-              )}
-              {session?.user !== undefined && (
+              ) : (
                 <div className="flex justify-between">
                   <Link
                     className="mb-2 inline-block h-11 items-center justify-center whitespace-nowrap rounded-md border bg-white px-4 py-2 text-base font-medium text-black shadow-sm hover:bg-gray-100"
@@ -158,9 +157,49 @@ export function Header() {
                             <MobileNavLink href="#faqs">FAQs</MobileNavLink>
                           </div>
                           <div className="mt-8 flex flex-col gap-4">
-                            <Button href="/login" variant="outline">
+                            {session?.user === undefined ? (
+                              // <Link
+                              //   href="/login"
+                              //   passHref
+                              //   className="flex w-full items-center justify-center rounded-md border border-transparent bg-purple-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-purple-700"
+                              // >
+                              //   Sign in
+                              // </Link>
+                              <Button href="/login" variant="outline">
+                                Log in
+                              </Button>
+                            ) : (
+                              <div className="">
+                                {/* <Link
+                                  className="mb-2 inline-block h-11 items-center justify-center whitespace-nowrap rounded-md border bg-white px-4 py-2 text-base font-medium text-black shadow-sm hover:bg-gray-100"
+                                  href="/dashboard/events"
+                                  passHref
+                                >
+                                  My events
+                                </Link>
+                                <Link
+                                  href={"#"}
+                                  passHref
+                                  onClick={() => signOut()}
+                                  className="ml-4 inline-block h-11 w-full items-center justify-center rounded-md border border-transparent bg-purple-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-purple-700"
+                                >
+                                  Sign out
+                                </Link> */}
+                                <Button href="/dashboard/events">
+                                  My events
+                                </Button>
+                                <Button
+                                  href={"#"}
+                                  passHref
+                                  onClick={() => signOut()}
+                                >
+                                  Log in
+                                </Button>
+                              </div>
+                            )}
+                            {/* <Button href="/login" variant="outline">
                               Log in
-                            </Button>
+                            </Button> */}
                             {/* <Button href="#">Download the app</Button> */}
                           </div>
                         </Popover.Panel>

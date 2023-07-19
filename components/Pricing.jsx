@@ -11,57 +11,57 @@ const plans = [
   {
     name: "Starter",
     featured: false,
-    price: { Monthly: "$0", Annually: "$0" },
+    price: { Monthly: "7% per ticket", Annually: "7% per ticket" },
     description:
-      "You’re new to investing but want to do it right. Get started for free.",
+      "You’re new to event management but want to do it right. Get started for free, we only charge 7% per ticket sold.",
     button: {
-      label: "Get started for free",
-      href: "/register",
+      label: "Get started now",
+      href: "/login",
     },
     features: [
-      "Commission-free trading",
-      "Multi-layered encryption",
-      "One tip every day",
-      "Invest up to $1,500 each month",
+      "Create and manage events",
+      "Ticket sales management",
+      "QR code check-in system",
+      // "Sales up to $1,500 each month",
     ],
     logomarkClassName: "fill-gray-300",
   },
   {
-    name: "Investor",
+    name: "Event Planner",
     featured: false,
-    price: { Monthly: "$7", Annually: "$70" },
+    price: { Monthly: "7% per ticket", Annually: "7% per ticket" },
     description:
-      "You’ve been investing for a while. Invest more and grow your wealth faster.",
+      "You’ve been managing events for a while. Host more and grow your brand faster, with a service fee of 7% per ticket sold.",
     button: {
-      label: "Subscribe",
-      href: "/register",
+      label: "Get started now",
+      href: "/login",
     },
     features: [
-      "Commission-free trading",
-      "Multi-layered encryption",
-      "One tip every hour",
-      "Invest up to $15,000 each month",
-      "Basic transaction anonymization",
+      "Create and manage events",
+      "Ticket sales management",
+      "QR code check-in system",
+      // "Sales up to $15,000 each month",
+      "Basic attendee tracking",
     ],
     logomarkClassName: "fill-gray-500",
   },
   {
     name: "VIP",
     featured: true,
-    price: { Monthly: "$199", Annually: "$1,990" },
+    price: { Monthly: "7% per ticket", Annually: "7% per ticket" },
     description:
-      "You’ve got a huge amount of assets but it’s not enough. To the moon.",
+      "You’re an industry leader, hosting major events. Let's take your events to the next level, with a service fee of 7% per ticket sold.",
     button: {
-      label: "Subscribe",
-      href: "/register",
+      label: "Get started now",
+      href: "/login",
     },
     features: [
-      "Commission-free trading",
-      "Multi-layered encryption",
-      "Real-time tip notifications",
-      "No investment limits",
-      "Advanced transaction anonymization",
-      "Automated tax-loss harvesting",
+      "Create and manage events",
+      "Ticket sales management",
+      "QR code check-in system",
+      // "No sales limits",
+      "Advanced attendee tracking",
+      "Priority customer support",
     ],
     logomarkClassName: "fill-purple-500",
   },
@@ -215,7 +215,7 @@ export function Pricing() {
 
         <div className="mt-8 flex justify-center">
           <div className="relative">
-            <RadioGroup
+            {/* <RadioGroup
               value={activePeriod}
               onChange={setActivePeriod}
               className="grid grid-cols-2"
@@ -234,7 +234,7 @@ export function Pricing() {
                   {period}
                 </RadioGroup.Option>
               ))}
-            </RadioGroup>
+            </RadioGroup> */}
             <div
               aria-hidden="true"
               className={clsx(
