@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       {/* <Head>{children}</Head> */}
-      <head />
+      <Head />
       <GoogleAnalytics />
       <body className="h-full">
         <Providers>{children}</Providers>
