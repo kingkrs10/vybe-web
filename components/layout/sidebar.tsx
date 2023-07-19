@@ -109,7 +109,9 @@ export default function Sidebar() {
                   </div>
                 </Transition.Child>
                 <div className="flex flex-shrink-0 items-center px-4">
-                  <Logo />
+                  <Link href="/" passHref aria-label="Home">
+                    <Logo />
+                  </Link>
                 </div>
                 <div className="mt-5 h-0 flex-1 overflow-y-auto">
                   {/* <nav className="space-y-1 px-2">
@@ -468,7 +470,9 @@ export default function Sidebar() {
         {/* Sidebar component, swap this element with another sidebar if you like */}
         <div className="flex flex-grow flex-col overflow-y-auto border-r border-gray-200 bg-white pt-5">
           <div className="z-20 flex flex-shrink-0 items-center px-4">
-            <Logo />
+            <Link href="/" passHref aria-label="Home">
+              <Logo />
+            </Link>
           </div>
           <div className="mt-5 flex flex-grow flex-col">
             {/* <nav className="space-y-1 px-2 pb-4">

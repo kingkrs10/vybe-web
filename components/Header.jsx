@@ -169,7 +169,7 @@ export function Header() {
                                 Log in
                               </Button>
                             ) : (
-                              <div className="">
+                              <div className="flex flex-col gap-3">
                                 {/* <Link
                                   className="mb-2 inline-block h-11 items-center justify-center whitespace-nowrap rounded-md border bg-white px-4 py-2 text-base font-medium text-black shadow-sm hover:bg-gray-100"
                                   href="/dashboard/events"
@@ -185,7 +185,10 @@ export function Header() {
                                 >
                                   Sign out
                                 </Link> */}
-                                <Button href="/dashboard/events">
+                                <Button
+                                  href="/dashboard/events"
+                                  variant="outline"
+                                >
                                   My events
                                 </Button>
                                 <Button
@@ -193,7 +196,7 @@ export function Header() {
                                   passHref
                                   onClick={() => signOut()}
                                 >
-                                  Log in
+                                  Sign out
                                 </Button>
                               </div>
                             )}
