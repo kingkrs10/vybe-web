@@ -50,14 +50,14 @@ export default async function Tickets({
 
   // console.log(guestlist, transactions, tickets);
 
-  const ticketSales = transactions
-    // .filter((transaction: any) => transaction.ticketId === ticket.ticketId)
-    ?.reduce(
-      (acc: any, guest: any) =>
-        // acc.price += parseFloat(guest.price);
-        acc + parseInt(guest.ticketsSold),
-      0
-    );
+  // const ticketSales = transactions
+  //   // .filter((transaction: any) => transaction.ticketId === ticket.ticketId)
+  //   ?.reduce(
+  //     (acc: any, guest: any) =>
+  //       // acc.price += parseFloat(guest.price);
+  //       acc + parseInt(guest.ticketsSold),
+  //     0
+  //   );
 
   tickets.map((ticket: any, index: any) => {
     // console.log(ticket);
@@ -71,30 +71,9 @@ export default async function Tickets({
       );
 
     ticket.count = ticketCount;
-    // ticket.sales = ticketSales;
-    // ticket.index = index;
-    // ticket.revenue = ticketRevenue;
     ticketsDetails.push(ticket);
   });
 
-  // transactions.map((ticket: any, index: any) => {
-  //   // console.log(ticket);
-
-  //   const ticketCount = guestlist
-  //     .filter((guest: any) => guest.ticketId === ticket.ticketId)
-  //     .reduce(
-  //       (acc: any, guest: any) => acc + 1,
-  //       // acc.orders += parseInt(guest.ticketsSold);
-  //       0
-  //     );
-
-  //   ticket.count = ticketCount;
-  //   // ticket.sales = ticketSales;
-  //   // ticket.index = index;
-  //   // ticket.revenue = ticketRevenue;
-  //   ticketsDetails.push(ticket);
-  // });
-  // console.log(JSON.stringify(ticketsDetails));
   const totalRevenue = guestlist
     ?.filter(
       (transaction: any) => transaction.ticketId === transaction.ticketId
@@ -107,16 +86,13 @@ export default async function Tickets({
     );
 
   const stats = [
-    { name: "Total revenue", stat: `$${totalRevenue}` },
-    { name: "Total orders", stat: transactions?.length },
-    { name: "Tickets sold", stat: guestlist?.length },
+    { name: "Total revenue", stat: totalRevenue ? `$${totalRevenue}` : `$0` },
+    { name: "Total orders", stat: transactions?.length || 0 },
+    { name: "Tickets sold", stat: guestlist?.length || 0 },
   ];
 
   function filterItems(arr: any[], query: any) {
-    const result = arr.filter((el: any) => el.ticketId === query);
-    // arr.filter((el: any) => el.ticketId === query);
-    // console.log(result);
-    return result;
+    return arr.filter((el: any) => el.ticketId === query);
   }
 
   const formatter = new Intl.NumberFormat("en-US", {
@@ -212,7 +188,7 @@ export default async function Tickets({
                       "hidden px-3 py-3.5 text-right text-sm text-gray-500 lg:table-cell"
                     )}
                   >
-                    {filterItems(ticketsDetails, plan.ticketId)[0].count}/
+                    {filterItems(ticketsDetails, plan.ticketId)[0].count || 0}/
                     {plan.quantity}
                   </td>
                   <td
@@ -230,9 +206,8 @@ export default async function Tickets({
                     )}
                   >
                     {formatter.format(
-                      filterItems(ticketsDetails, plan.ticketId)[0].count *
-                        plan.price *
-                        0.07
+                      filterItems(ticketsDetails, plan.ticketId)[0].count ||
+                        0 * plan.price * 0.07
                     )}
                   </td>
                   <td
@@ -242,8 +217,8 @@ export default async function Tickets({
                     )}
                   >
                     {formatter.format(
-                      filterItems(ticketsDetails, plan.ticketId)[0].count *
-                        plan.price
+                      filterItems(ticketsDetails, plan.ticketId)[0].count ||
+                        0 * plan.price
                     )}
                   </td>
                   {/* <td

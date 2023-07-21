@@ -25,7 +25,7 @@ export default function Guestlists({ params }: { params: any }) {
         `/guestlists/all?eventId=${params?.id}&pageNo=${request.pageNo}`
       );
       // console.log(response.data.data);
-      setData(response?.data?.data);
+      setData(response?.data?.data || []);
     })();
   }, [params.id]);
 

@@ -8,24 +8,24 @@ import { Container } from "@/components/Container";
 import { Logomark } from "@/components/Logo";
 
 const plans = [
-  {
-    name: "Starter",
-    featured: false,
-    price: { Monthly: "7% per ticket", Annually: "7% per ticket" },
-    description:
-      "You’re new to event management but want to do it right. Get started for free, we only charge 7% per ticket sold.",
-    button: {
-      label: "Get started now",
-      href: "/login",
-    },
-    features: [
-      "Create and manage events",
-      "Ticket sales management",
-      "QR code check-in system",
-      // "Sales up to $1,500 each month",
-    ],
-    logomarkClassName: "fill-gray-300",
-  },
+  // {
+  //   name: "Starter",
+  //   featured: false,
+  //   price: { Monthly: "7% per ticket", Annually: "7% per ticket" },
+  //   description:
+  //     "You’re new to event management but want to do it right. Get started for free, we only charge 7% per ticket sold.",
+  //   button: {
+  //     label: "Get started now",
+  //     href: "/login",
+  //   },
+  //   features: [
+  //     "Create and manage events",
+  //     "Ticket sales management",
+  //     "QR code check-in system",
+  //     // "Sales up to $1,500 each month",
+  //   ],
+  //   logomarkClassName: "fill-gray-300",
+  // },
   {
     name: "Event Planner",
     featured: false,
@@ -45,26 +45,26 @@ const plans = [
     ],
     logomarkClassName: "fill-gray-500",
   },
-  {
-    name: "VIP",
-    featured: true,
-    price: { Monthly: "7% per ticket", Annually: "7% per ticket" },
-    description:
-      "You’re an industry leader, hosting major events. Let's take your events to the next level, with a service fee of 7% per ticket sold.",
-    button: {
-      label: "Get started now",
-      href: "/login",
-    },
-    features: [
-      "Create and manage events",
-      "Ticket sales management",
-      "QR code check-in system",
-      // "No sales limits",
-      "Advanced attendee tracking",
-      "Priority customer support",
-    ],
-    logomarkClassName: "fill-purple-500",
-  },
+  // {
+  //   name: "VIP",
+  //   featured: true,
+  //   price: { Monthly: "7% per ticket", Annually: "7% per ticket" },
+  //   description:
+  //     "You’re an industry leader, hosting major events. Let's take your events to the next level, with a service fee of 7% per ticket sold.",
+  //   button: {
+  //     label: "Get started now",
+  //     href: "/login",
+  //   },
+  //   features: [
+  //     "Create and manage events",
+  //     "Ticket sales management",
+  //     "QR code check-in system",
+  //     // "No sales limits",
+  //     "Advanced attendee tracking",
+  //     "Priority customer support",
+  //   ],
+  //   logomarkClassName: "fill-purple-500",
+  // },
 ];
 
 function CheckIcon(props) {
@@ -101,7 +101,7 @@ function Plan({
   return (
     <section
       className={clsx(
-        "flex flex-col overflow-hidden rounded-3xl p-6 shadow-lg shadow-gray-900/5",
+        "mx-auto flex w-96 flex-col overflow-hidden rounded-3xl p-6 shadow-lg shadow-gray-900/5",
         featured ? "order-first bg-gray-900 lg:order-none" : "bg-white"
       )}
     >
@@ -259,7 +259,7 @@ export function Pricing() {
           </div>
         </div>
 
-        <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 items-start gap-x-8 gap-y-10 sm:mt-20 lg:max-w-none lg:grid-cols-3">
+        <div className="items mx-auto mt-16 grid max-w-2xl grid-cols-1 justify-center gap-x-8 gap-y-10 sm:mt-20 lg:max-w-none lg:grid-cols-1">
           {plans.map((plan) => (
             <Plan key={plan.name} {...plan} activePeriod={activePeriod} />
           ))}

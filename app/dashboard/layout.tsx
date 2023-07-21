@@ -11,6 +11,7 @@ export default async function DashboardLayout({
   // session: any;
 }) {
   const session = await getCurrentUser();
+  // console.log(session);
   if (session === undefined /*&& path == "/dashboard/events/new"*/) {
     redirect("/login?redirect=/dashboard/events");
   }
