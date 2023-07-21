@@ -405,9 +405,10 @@ export function Hero() {
                 Create event
               </Button>
               <Button
-                href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                href="https://youtu.be/uuj9L_IxS30"
                 variant="outline"
                 className="flex items-center px-6 align-middle"
+                target="_blank"
               >
                 <PlayIcon className="h-6 w-6 flex-none" />
                 <span className="ml-2.5">Watch the video</span>
