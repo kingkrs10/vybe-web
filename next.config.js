@@ -1,21 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    appDir: true,
-  },
   output: "standalone",
   images: {
-    domains: [
-      "tailwindui.com",
-      "storage.googleapis.com",
-      "lh3.googleusercontent.com",
-    ],
     remotePatterns: [
       {
         protocol: "https",
         hostname: "storage.googleapis.com",
         port: "",
-        pathname: "/tickets_dev/**",
+        pathname: "/**",
       },
       {
         protocol: "https",
