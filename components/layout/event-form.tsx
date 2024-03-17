@@ -427,10 +427,10 @@ export default function EventForm({ data }: { data: any }) {
 
                         <div className="col-span-6 sm:col-span-3">
                           <label
-                            htmlFor="category"
+                            htmlFor="currency"
                             className="block text-sm font-medium text-gray-700"
                           >
-                            Category
+                            Currency
                           </label>
                           <select
                             id="currency"
