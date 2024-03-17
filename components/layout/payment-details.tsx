@@ -13,22 +13,22 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-const formatter = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-});
-
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_API_KEY!);
 
 export default function PaymentDetails({
-  id,
+  ticket,
   session,
 }: {
-  id: any;
+  ticket: any;
   session: any;
 }) {
   const [total, setTotal] = useAtom(totalAtom);
   const [clientSecret, setClientSecret] = useAtom(clientSecretAtom);
+
+  // const formatter = new Intl.NumberFormat("en-US", {
+  //   style: "currency",
+  //   currency: currency || "USD",
+  // });
 
   async function paymentIntent() {
     try {
@@ -40,7 +40,7 @@ export default function PaymentDetails({
         (totalAmount * 100).toString()
       ).toString();
       const intent = await ApiClient(user?.token).get(
-        `/stripe/paymentIntent?customer=${user?.data?.stripeCustomerId}&amount=${stripeTotal}&currency=usd`
+        `/stripe/paymentIntent?customer=${user?.data?.stripeCustomerId}&amount=${stripeTotal}&currency=${ticket.currency}`
       );
       setClientSecret(intent.data.data.client_secret);
     } catch (error) {
@@ -86,7 +86,7 @@ export default function PaymentDetails({
       {clientSecret && (
         <div className="mx-auto bg-white p-6 shadow sm:rounded-lg">
           <Elements stripe={stripePromise} options={options}>
-            <PaymentForm id={id} session={session} />
+            <PaymentForm id={ticket.id} session={session} />
           </Elements>
         </div>
       )}

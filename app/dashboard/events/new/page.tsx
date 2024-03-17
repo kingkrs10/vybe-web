@@ -30,6 +30,7 @@ export default function NewTicket() {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [type, setType] = useState("");
+  const [currency, setCurrency] = useState("");
   const [address, setAddress] = useState({ address: "", lat: 0, lng: 0 });
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
@@ -71,25 +72,28 @@ export default function NewTicket() {
   const [countries, setCountries] = useState<any>([]);
   const [timezones, setTimezones] = useState<any>([]);
   const [categories, setCategories] = useState<any>([]);
+  const [currencies, setCurrencies] = useState<any>([]);
 
   useEffect(() => {
     Promise.all([
       fetch(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/categories`),
       fetch(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/timezones`),
       fetch(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/countries`),
+      fetch(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/currencies`),
     ])
-      .then(([categories, timezones, countries]) => {
+      .then(([categories, timezones, countries, currencies]) => {
         return Promise.all([
           categories.json(),
           timezones.json(),
           countries.json(),
+          currencies.json(),
         ]);
       })
-      .then(([categories, timezones, countries]) => {
+      .then(([categories, timezones, countries, currencies]) => {
         setCountries(countries);
         setTimezones(timezones);
         setCategories(categories);
-        // console.log(categories);
+        setCurrencies(currencies);
       });
   }, []);
 
@@ -101,19 +105,18 @@ export default function NewTicket() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = handleSubmit((data) => console.log(data));
+  // const onSubmit = handleSubmit((data) => console.log(data));
 
   useEffect(() => {
     (async () => {
       const session = await fetch(`/api/session`);
       let user = await session.json();
-      // console.log(user);
       setSession(user);
     })();
   }, []);
 
   let key = country;
-  let countryname = countryList[key as keyof typeof countryList];
+  // let countryname = countryList[key as keyof typeof countryList];
   // const lib = ["places"];
 
   const uploadPhoto = async (e: any) => {
@@ -205,6 +208,7 @@ export default function NewTicket() {
       description,
       category,
       type,
+      currency,
       address: address?.address,
       country,
       city,
@@ -590,6 +594,41 @@ export default function NewTicket() {
                           {errors.category && (
                             <p className="mt-2 text-sm text-rose-600">
                               Event category is required.
+                            </p>
+                          )}
+                        </div>
+
+                        <div className="col-span-6 sm:col-span-3">
+                          <label
+                            htmlFor="category"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            Currency
+                          </label>
+                          <select
+                            id="currency"
+                            value={currency}
+                            {...register("currency", {
+                              required: true,
+                              onChange: (e) => {
+                                setCurrency(e.target.value);
+                              },
+                            })}
+                            // autoComplete="category"
+                            className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
+                          >
+                            <option value="">Select currency</option>
+                            {currencies.map((key: any, index: number) => {
+                              return (
+                                <option key={index} value={key.code}>
+                                  {key.name}
+                                </option>
+                              );
+                            })}
+                          </select>
+                          {errors.currency && (
+                            <p className="mt-2 text-sm text-rose-600">
+                              Event currency is required.
                             </p>
                           )}
                         </div>

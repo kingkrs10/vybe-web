@@ -7,40 +7,38 @@ import ApiClient from "@/lib/axios";
 import axios from "axios";
 
 export default function TicketsDetails({
-  id,
+  data,
   session,
 }: {
-  id: any;
+  data: any;
   session: any;
 }) {
-  const [data, setData] = useState<any>([]);
+  // const [data, setData] = useState<any>([]);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        // const session = await fetch(`/api/session`);
-        // let user = await session.json();
-        const event = await ApiClient(null).get(`/events/${id}`);
-        setData(event.data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, [id]);
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       // const session = await fetch(`/api/session`);
+  //       // let user = await session.json();
+  //       const event = await ApiClient(null).get(`/events/${id}`);
+  //       setData(event.data.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   })();
+  // }, [id]);
 
   return (
     <section aria-labelledby="applicant-information-title">
       <div className="bg-white shadow sm:rounded-lg">
-        {data.image && (
-          <Image
-            alt="Party"
-            src={data.image ? data.image : "/login.jpeg"}
-            width={500}
-            priority
-            height={500}
-            className="h-96 w-full rounded-t-lg object-cover"
-          />
-        )}
+        <Image
+          alt="Party"
+          src={data.image ? data.image : "/login.jpeg"}
+          width={500}
+          priority
+          height={500}
+          className="h-96 w-full rounded-t-lg object-cover"
+        />
 
         <div className="px-4 py-5 sm:px-6">
           <h2

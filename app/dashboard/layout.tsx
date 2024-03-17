@@ -21,7 +21,7 @@ export default async function DashboardLayout({
         <div>
           <Sidebar />
           <div className="md:pl-64">
-            <Menu />
+            <Menu session={session} />
             <div className="mx-auto flex max-w-4xl flex-col md:px-8 xl:px-0">
               <div className="px-4 py-4">{children}</div>
             </div>

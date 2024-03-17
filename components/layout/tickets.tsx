@@ -54,11 +54,6 @@ const statusDetail = (startDate: any, endDate: any) => {
   // return null;
 };
 
-const formatter = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-});
-
 export async function generateStaticParams() {
   const params = [{ totalAmount: 0, subtotal: 0, fee: 0 }];
 
@@ -68,15 +63,19 @@ export async function generateStaticParams() {
 }
 
 export default function Tickets({
+  tickets,
   id,
   session,
+  currency,
 }: // totalServer,
 {
+  tickets: any;
   id: any;
   session: any;
+  currency: string;
   // totalServer: { totalAmount: number; subtotal: number; fee: number };
 }) {
-  const [tickets, setTickets] = useState<any>([]);
+  // const [tickets, setTickets] = useState<any>([]);
   // const [total, setTotal] = useState<any>([]);
   // useHydrateAtoms([[totalAtom, totalServer]]);
   const [total, setTotal] = useAtom(totalAtom);
@@ -87,20 +86,10 @@ export default function Tickets({
   const router = useRouter();
   const pathname = usePathname();
 
-  useEffect(() => {
-    (async () => {
-      try {
-        // const session = await fetch(`/api/session`);
-        // let user = await session.json();
-        const tickets = await ApiClient(null).get(
-          `/tickets/all?eventId=${id}&pageNo=${1}`
-        );
-        setTickets(tickets.data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, [id]);
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: currency || "USD",
+  });
 
   useEffect(() => {
     const initialValue = 0;
@@ -124,7 +113,7 @@ export default function Tickets({
       fee: +fee.toFixed(2),
     });
     // console.log(total);
-  }, [count, id, setTickets, setTotal]);
+  }, [count, id, setTotal]);
 
   const getDefault = (ticket: any) => {
     let defaultValue: any = count.filter((i: any) => {
@@ -169,16 +158,18 @@ export default function Tickets({
                   <div className="mb-0 flex-shrink-0">
                     <p className="text-lg">{item.name}</p>
                   </div>
-                  <div className="flex grow justify-between justify-items-end text-right">
+                  <div className="flex justify-between justify-items-end text-left">
                     <div className="mr-2">
                       {statusDetail(item.startDate, item.endDate)}
-                      <p className="truncate text-xs text-gray-500">
+                      <p className=" truncate whitespace-normal text-xs text-gray-500">
                         {item.description}
                       </p>
                     </div>
-                    <div>
+                    <div className="text-right">
                       <span className="mr-3">
-                        {item.type == "free" ? "Free" : `$${item.price}`}
+                        {item.type == "free"
+                          ? "Free"
+                          : `${formatter.format(item.price)}`}
                       </span>
                       <select
                         id="count"
@@ -277,7 +268,7 @@ export default function Tickets({
           </dl>
         </section>
 
-        <div className="justify-stretch flex flex-col px-4 py-4 sm:px-4">
+        <div className="flex flex-col justify-stretch px-4 py-4 sm:px-4">
           <button
             // type="button"
             className="inline-flex items-center justify-center rounded-md border border-transparent bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"

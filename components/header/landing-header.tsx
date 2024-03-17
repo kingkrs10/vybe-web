@@ -111,8 +111,8 @@ const loaderProp = ({ src }) => {
   return src;
 };
 
-export default function LandingNav() {
-  const { data: session } = useSession();
+export default function LandingNav({ session }: { session: any }) {
+  // const { data: session } = useSession();
   return (
     <Popover className="relative z-50 bg-white">
       <div className="mx-auto max-w-7xl px-4  sm:px-6">
@@ -313,10 +313,10 @@ export default function LandingNav() {
                   <div>
                     <Menu.Button className="flex max-w-xs items-center rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
                       <span className="sr-only">Open user menu</span>
-                      {session?.user?.image && (
+                      {session?.image && (
                         <Image
                           alt="Man"
-                          src={session?.user?.image!}
+                          src={session?.image!}
                           referrerPolicy="no-referrer"
                           className="h-8 w-8 rounded-full object-cover"
                           width={32}

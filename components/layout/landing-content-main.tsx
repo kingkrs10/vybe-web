@@ -5,13 +5,8 @@ import { checkoutStepAtom, completedPurchaseAtom } from "@/lib/atoms";
 import dynamic from "next/dynamic";
 import { CheckCircleIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { useEffect } from "react";
+import TicketDetails from "@/components/layout/landing-ticket-details";
 
-const TicketDetails = dynamic(
-  () => import("@/components/layout/landing-ticket-details"),
-  {
-    ssr: false,
-  }
-);
 const GuestDetails = dynamic(
   () => import("@/components/layout/guest-details"),
   {
@@ -26,10 +21,12 @@ const PaymentDetails = dynamic(
 );
 
 export default function LandingContent({
-  id,
+  event,
+  tickets,
   session,
 }: {
-  id: string;
+  event: any;
+  tickets: any;
   session: any;
 }) {
   const [step] = useAtom(checkoutStepAtom);
@@ -75,11 +72,22 @@ export default function LandingContent({
       )}
       <div className="mx-auto grid max-w-3xl grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2 lg:col-start-1">
-          {step == 1 && <TicketDetails id={id} session={session} />}
-          {step == 2 && <GuestDetails id={id} session={session} />}
-          {step == 3 && <PaymentDetails id={id} session={session} />}
+          {step == 1 && <TicketDetails data={event} session={session} />}
+          {step == 2 && <GuestDetails id={event.eventId} session={session} />}
+          {step == 3 && (
+            <PaymentDetails
+              ticket={event}
+              // currency={event.currency}
+              session={session}
+            />
+          )}
         </div>
-        <Tickets id={id} session={session} />
+        <Tickets
+          tickets={tickets}
+          id={event.eventId}
+          currency={event.currency}
+          session={session}
+        />
       </div>
     </main>
   );

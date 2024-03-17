@@ -11,7 +11,7 @@ import Image from "next/image";
 const userNavigation = [
   // { name: "Your Profile", href: "/dashboard/profile" },
   // { name: "Settings", href: "/dashboard/settings" },
-  { name: "Sign in", href: "/login" },
+  // { name: "Sign in", href: "/login" },
   { name: "Sign in", href: "/login" },
 ];
 
@@ -19,9 +19,10 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function HeaderMenu() {
+export default function HeaderMenu({ session }: { session: any }) {
   const [sidebarOpen, setSidebarOpen] = useAtom(menuAtom);
-  const { data: session } = useSession();
+  // console.log(session);
+  // const { data: session } = useSession();
   return (
     <>
       <div className="sticky top-0 z-20 flex h-16 flex-shrink-0 border-b border-gray-200 bg-white">
@@ -73,12 +74,12 @@ export default function HeaderMenu() {
               <div>
                 <Menu.Button className="flex max-w-xs items-center rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
                   <span className="sr-only">Open user menu</span>
-                  {session?.user?.image && (
+                  {session?.image && (
                     <Image
                       alt="Profile picture"
                       width={32}
                       height={32}
-                      src={session?.user?.image!}
+                      src={session?.image!}
                       referrerPolicy="no-referrer"
                       className="h-8 w-8 rounded-full object-cover"
                     />
@@ -95,7 +96,7 @@ export default function HeaderMenu() {
                 leaveTo="transform opacity-0 scale-95"
               >
                 <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  {session?.user?.email !== undefined ? (
+                  {session?.email !== undefined ? (
                     <>
                       <Menu.Item key={1}>
                         <a

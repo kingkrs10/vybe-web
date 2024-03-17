@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef, Fragment } from "react";
 import categoryList from "@/resources/categories.json";
 import countryList from "@/resources/countries-cities.json";
 import timezones from "@/resources/timezones.json";
+import currencies from "@/resources/currencies.json";
 import Image from "next/image";
 import { StandaloneSearchBox, LoadScript } from "@react-google-maps/api";
 import DatePicker from "react-datepicker";
@@ -30,6 +31,7 @@ export default function EventForm({ data }: { data: any }) {
   const [description, setDescription] = useState(data.description);
   const [category, setCategory] = useState(data.category);
   const [type, setType] = useState(data.type);
+  const [currency, setCurrency] = useState(data.currency);
   const [address, setAddress] = useState(data.address);
   const [country, setCountry] = useState(data.country);
   const [city, setCity] = useState(data.city);
@@ -119,6 +121,7 @@ export default function EventForm({ data }: { data: any }) {
       description,
       category,
       type,
+      currency,
       address: address?.address,
       country,
       city,
@@ -419,6 +422,31 @@ export default function EventForm({ data }: { data: any }) {
                                   </option>
                                 );
                               })}
+                          </select>
+                        </div>
+
+                        <div className="col-span-6 sm:col-span-3">
+                          <label
+                            htmlFor="category"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            Category
+                          </label>
+                          <select
+                            id="currency"
+                            name="currency"
+                            defaultValue={currency}
+                            onChange={(text) => setCurrency(text.target.value)}
+                            // autoComplete="category"
+                            className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
+                          >
+                            {currencies.map((key, index) => {
+                              return (
+                                <option key={index} value={key.code}>
+                                  {key.name}
+                                </option>
+                              );
+                            })}
                           </select>
                         </div>
                       </div>
