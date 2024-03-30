@@ -39,8 +39,11 @@ export default function PaymentDetails({
       const stripeTotal: string = parseInt(
         (totalAmount * 100).toString()
       ).toString();
+      // console.log(stripeTotal, ticket.currency, user?.data?.stripeCustomerId);
       const intent = await ApiClient(user?.token).get(
-        `/stripe/paymentIntent?customer=${user?.data?.stripeCustomerId}&amount=${stripeTotal}&currency=${ticket.currency}`
+        `/stripe/paymentIntent?customer=${
+          user?.data?.stripeCustomerId
+        }&amount=${stripeTotal}&currency=${ticket.currency || "USD"}`
       );
       setClientSecret(intent.data.data.client_secret);
     } catch (error) {
@@ -85,7 +88,7 @@ export default function PaymentDetails({
     >
       {clientSecret && (
         <div className="mx-auto bg-white p-6 shadow sm:rounded-lg">
-          <Elements stripe={stripePromise} options={options}>
+          <Elements stripe={stripePromise} key={clientSecret} options={options}>
             <PaymentForm id={ticket.id} session={session} />
           </Elements>
         </div>

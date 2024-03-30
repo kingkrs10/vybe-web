@@ -19,6 +19,7 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
 import Logo from "../layout/logo";
+import Link from "next/link";
 
 // const solutions = [
 //   {
@@ -119,7 +120,9 @@ export default function LandingNav({ session }: { session: any }) {
         <div className="flex items-center justify-between py-6 md:justify-start md:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
             <span className="sr-only">VYBE Events</span>
-            <Logo />
+            <Link href={`/`}>
+              <Logo />
+            </Link>
           </div>
           <div className="-my-2 -mr-2 md:hidden">
             <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500">

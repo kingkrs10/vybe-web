@@ -5,7 +5,7 @@ import { atomWithStorage } from "jotai/utils";
 const menuAtom = atom(false);
 const selectedMenuAtom = atomWithStorage("menu", "");
 const ticketsAtom = atomWithStorage("tickets", []);
-const guestsAtom = atomWithStorage("guests", []);
+const guestsAtom = atomWithStorage<any>("guests", []);
 const sessionAtom = atomWithStorage("session", []);
 const totalAtom = atomWithStorage("total", {
   totalAmount: 0,

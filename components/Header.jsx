@@ -50,8 +50,8 @@ function MobileNavLink({ children, ...props }) {
   );
 }
 
-export function Header() {
-  const { data: session } = useSession();
+export function Header({ session }) {
+  // const { data: session } = useSession();
   return (
     <div>
       <nav>
@@ -78,7 +78,7 @@ export function Header() {
               Create an event
             </Link> */}
             <div className="hidden md:block">
-              {session?.user === undefined ? (
+              {session?.data === undefined ? (
                 <Link
                   href="/login"
                   passHref
@@ -157,7 +157,7 @@ export function Header() {
                             <MobileNavLink href="#faqs">FAQs</MobileNavLink>
                           </div>
                           <div className="mt-8 flex flex-col gap-4">
-                            {session?.user === undefined ? (
+                            {session?.data === undefined ? (
                               // <Link
                               //   href="/login"
                               //   passHref
