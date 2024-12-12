@@ -43,7 +43,7 @@ export default function Settings() {
       </section>
 
       <section className="mt-4 rounded-lg border-2 border-gray-100 bg-white">
-        <div className="mx-auto max-w-screen-xl py-4 px-4">
+        <div className="mx-auto max-w-screen-xl px-4 py-4">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-16">
             <div className="relative h-64 overflow-hidden rounded-lg sm:h-80 lg:h-full">
               <Image

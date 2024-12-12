@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import { useEffect, useState } from "react";
 import ApiClient from "@/lib/axios";
 import moment from "moment";

@@ -789,7 +789,7 @@ function SalesScreen({ custom, animated = false }) {
                     <tr>
                       <td className="relative border-t border-transparent py-4 pl-4 pr-3 text-sm sm:pl-6">
                         <div className="font-medium text-gray-900">VIP</div>
-                        <div className="absolute right-0 left-6 -top-px h-px bg-gray-200"></div>
+                        <div className="absolute -top-px left-6 right-0 h-px bg-gray-200"></div>
                       </td>
                       <td className="hidden border-t border-gray-200 px-3 py-3.5 text-right text-sm text-gray-500 lg:table-cell">
                         0/122

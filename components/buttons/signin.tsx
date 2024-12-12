@@ -9,7 +9,7 @@ export default function Component({ signin }: { signin: any }) {
     return (
       <a
         className={
-          "block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+          "block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
         }
         onClick={() => signIn()}
       >
@@ -20,7 +20,7 @@ export default function Component({ signin }: { signin: any }) {
     return (
       <a
         className={
-          "block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+          "block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
         }
         onClick={() => signOut()}
       >
