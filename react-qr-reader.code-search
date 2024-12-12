@@ -1,0 +1,9 @@
+# Query: react-qr-reader
+# ContextLines: 1
+
+1 result - 1 file
+
+app/dashboard/events/guestlist/[id]/page.tsx:
+  3  import { useEffect, useState, Fragment } from "react";
+  4: import { Html5Qrcode } from "html5-qrcode";
+  5  import { XCircleIcon, CheckCircleIcon } from "@heroicons/react/24/solid";

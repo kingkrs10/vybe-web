@@ -1,7 +1,7 @@
-"use client"
+"use client";
 import ApiClient from "@/lib/axios";
 import { useEffect, useState, Fragment } from "react";
-import { QrReader } from "react-qr-reader";
+import { Html5Qrcode } from "html5-qrcode";
 import { XCircleIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
 import { Transition } from "@headlessui/react";
 
@@ -15,6 +15,9 @@ export default function Guestlists({ params }: { params: any }) {
   const [camera, setCamera] = useState("");
   const [show, setShow] = useState(false);
   const [name, setName] = useState("");
+  const [scannerInstance, setScannerInstance] = useState<Html5Qrcode | null>(
+    null
+  );
 
   useEffect(() => {
     (async () => {
@@ -24,7 +27,6 @@ export default function Guestlists({ params }: { params: any }) {
       const response = await ApiClient(user?.token).get(
         `/guestlists/all?eventId=${params?.id}&pageNo=${request.pageNo}`
       );
-      // console.log(response.data.data);
       setData(response?.data?.data || []);
     })();
   }, [params.id]);
@@ -54,6 +56,40 @@ export default function Guestlists({ params }: { params: any }) {
     })();
   }, [camera, params?.id]);
 
+  const startScanner = () => {
+    const qrCodeRegionId = "reader";
+    const html5QrCode = new Html5Qrcode(qrCodeRegionId);
+
+    html5QrCode
+      .start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: { width: 250, height: 250 } },
+        (decodedText) => {
+          console.log(`QR Code scanned: ${decodedText}`);
+          setCamera(decodedText);
+          stopScanner(); // Automatically stop the scanner once a QR code is scanned
+        },
+        (errorMessage) => {
+          console.error(`Error scanning QR Code: ${errorMessage}`);
+        }
+      )
+      .catch((err) => {
+        console.error("Failed to start scanning:", err);
+      });
+
+    setScannerInstance(html5QrCode);
+  };
+
+  const stopScanner = () => {
+    if (scannerInstance) {
+      scannerInstance
+        .stop()
+        .then(() => console.log("Scanner stopped."))
+        .catch((err) => console.error("Failed to stop scanning:", err));
+    }
+    setScan(false);
+  };
+
   const stats = [{ name: "Total guests", stat: gueslist?.length }];
 
   return (
@@ -64,34 +100,15 @@ export default function Guestlists({ params }: { params: any }) {
             <button
               onClick={(e) => {
                 e.preventDefault();
-                setScan(false);
+                stopScanner();
                 setCamera("");
-                // QrReader?.stop();
               }}
               className="rounded-md bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-purple-800"
             >
               Close Scanner
             </button>
           </div>
-          <div id="reader" className="mt-6 h-full w-full">
-            <QrReader
-              scanDelay={1000}
-              constraints={{
-                facingMode: "environment",
-              }}
-              onResult={(result: any, error: any) => {
-                if (!!result) {
-                  setCamera(result?.text);
-                }
-                if (!!error) {
-                  console.info(error);
-                }
-              }}
-              // style={{ width: "100%", height: "100%" }}
-              className="top-8 h-full w-full"
-              // videoContainerStyle={{ width: "100%", height: "100%" }}
-            />
-          </div>
+          <div id="reader" className="mt-6 h-full w-full"></div>
         </>
       )}
 
@@ -104,6 +121,7 @@ export default function Guestlists({ params }: { params: any }) {
                   e.preventDefault();
                   setScan(true);
                   setCamera("");
+                  startScanner();
                 }}
                 className="rounded-md bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-purple-800"
               >
@@ -111,9 +129,6 @@ export default function Guestlists({ params }: { params: any }) {
               </button>
             </div>
             <div>
-              {/* <h3 className="text-lg font-medium leading-6 text-gray-900">
-            Last 30 days
-          </h3> */}
               <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
                 {stats.map((item) => (
                   <div
@@ -167,21 +182,6 @@ export default function Guestlists({ params }: { params: any }) {
                     >
                       Checked In
                     </th>
-                    {/* <th
-                  scope="col"
-                  className="hidden px-3 py-3.5 text-right text-sm font-semibold text-gray-500 lg:table-cell"
-                >
-                  Processing fee
-                </th>
-                <th
-                  scope="col"
-                  className="px-3 py-3.5 text-right text-sm font-semibold text-gray-500"
-                >
-                  Ticket revenue
-                </th> */}
-                    {/* <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                    <span className="sr-only">Select</span>
-                  </th> */}
                   </tr>
                 </thead>
                 <tbody>
@@ -229,40 +229,6 @@ export default function Guestlists({ params }: { params: any }) {
                       >
                         {plan.checkedIn === true ? "Yes" : "No"}
                       </td>
-                      {/* <td
-                    className={classNames(
-                      planIdx === 0 ? "" : "border-t border-gray-200",
-                      "hidden px-3 py-3.5 text-right text-sm text-gray-500 lg:table-cell"
-                    )}
-                  >
-                    {plan.storage}
-                  </td>
-                  <td
-                    className={classNames(
-                      planIdx === 0 ? "" : "border-t border-gray-200",
-                      "px-3 py-3.5 text-right text-sm text-gray-500"
-                    )}
-                  >
-                    <div className="sm:hidden">{plan.price}</div>
-                    <div className="hidden sm:block">{plan.price}</div>
-                  </td> */}
-                      {/* <td
-                      className={classNames(
-                        planIdx === 0 ? "" : "border-t border-transparent",
-                        "relative py-3.5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
-                      )}
-                    >
-                      <button
-                        type="button"
-                        className="inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-30"
-                        disabled={plan.isCurrent}
-                      >
-                        Select<span className="sr-only">, {plan.name}</span>
-                      </button>
-                      {planIdx !== 0 ? (
-                        <div className="absolute right-6 left-0 -top-px h-px bg-gray-200" />
-                      ) : null}
-                    </td> */}
                     </tr>
                   ))}
                 </tbody>
@@ -272,13 +238,11 @@ export default function Guestlists({ params }: { params: any }) {
         </div>
       )}
 
-      {/* Global notification live region, render this permanently at the end of the document */}
       <div
         aria-live="assertive"
         className="pointer-events-none fixed inset-0 z-20 flex items-end px-4 py-6 sm:items-start sm:p-6"
       >
         <div className="flex w-full flex-col items-center space-y-4 sm:items-end">
-          {/* Notification panel, dynamically insert this into the live region when it needs to be displayed */}
           <Transition
             show={show}
             as={Fragment}
@@ -302,9 +266,6 @@ export default function Guestlists({ params }: { params: any }) {
                     <p className="text-sm font-medium text-gray-900">
                       {name} checked in!
                     </p>
-                    {/* <p className="mt-1 text-sm text-gray-500">
-                        Anyone with a link can now view this file.
-                      </p> */}
                   </div>
                   <div className="ml-4 flex flex-shrink-0">
                     <button
@@ -327,3 +288,4 @@ export default function Guestlists({ params }: { params: any }) {
     </>
   );
 }
+
