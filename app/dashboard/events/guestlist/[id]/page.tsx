@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import ApiClient from "@/lib/axios";
 import { useEffect, useState, Fragment } from "react";
 import { QrReader } from "react-qr-reader";
